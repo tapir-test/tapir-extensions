@@ -1,4 +1,4 @@
-package de.rhocas.uitestextensions.datasource.excel.annotation
+package de.rhocas.rapit.datasource.excel.annotation
 
 import java.lang.annotation.Target
 

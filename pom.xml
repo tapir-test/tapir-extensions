@@ -10,19 +10,17 @@
 		<relativePath />
 	</parent>
 
-	<groupId>de.rhocas.uitestextensions</groupId>
-	<artifactId>ui-test-extensions</artifactId>
+	<groupId>de.rhocas.rapit</groupId>
+	<artifactId>rapit</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
-	<name>UI Test Extensions</name>
 
 	<properties>
 		<poi.version>3.17</poi.version>
 	</properties>
 
 	<modules>
-		<module>ui-test-extensions-datasource-excel</module>
+		<module>rapit-datasource-excel</module>
 	</modules>
 
 	<dependencyManagement>

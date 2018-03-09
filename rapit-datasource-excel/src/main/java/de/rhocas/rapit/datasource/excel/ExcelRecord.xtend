@@ -1,4 +1,4 @@
-package de.rhocas.uitestextensions.datasource.excel
+package de.rhocas.rapit.datasource.excel
 
 import java.util.Map
 import de.bmiag.tapir.data.Immutable

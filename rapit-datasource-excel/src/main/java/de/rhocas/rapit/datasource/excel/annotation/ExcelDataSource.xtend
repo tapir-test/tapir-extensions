@@ -1,7 +1,7 @@
-package de.rhocas.uitestextensions.datasource.excel.annotation
+package de.rhocas.rapit.datasource.excel.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.DynamicActive
-import de.rhocas.uitestextensions.datasource.excel.AbstractExcelDataSource
+import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource
 import java.lang.annotation.Target
 
 /**

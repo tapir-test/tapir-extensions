@@ -1,4 +1,4 @@
-package de.rhocas.uitestextensions.datasource.excel;
+package de.rhocas.rapit.datasource.excel;
 
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureOrder

@@ -35,3 +35,10 @@ hs_err_pid*
 /ui-test-extensions-datasource-excel/.settings/org.eclipse.jdt.core.prefs
 /ui-test-extensions-datasource-excel/.settings/org.eclipse.m2e.core.prefs
 /ui-test-extensions-datasource-excel/.settings/org.eclipse.xtend.core.Xtend.prefs
+/rapit-datasource-excel/.classpath
+/rapit-datasource-excel/.gitignore
+/rapit-datasource-excel/.project
+/rapit-datasource-excel/.settings/org.eclipse.core.resources.prefs
+/rapit-datasource-excel/.settings/org.eclipse.jdt.core.prefs
+/rapit-datasource-excel/.settings/org.eclipse.m2e.core.prefs
+/rapit-datasource-excel/.settings/org.eclipse.xtend.core.Xtend.prefs

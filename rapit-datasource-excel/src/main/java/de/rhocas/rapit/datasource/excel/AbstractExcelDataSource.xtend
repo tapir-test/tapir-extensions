@@ -1,4 +1,4 @@
-package de.rhocas.uitestextensions.datasource.excel
+package de.rhocas.rapit.datasource.excel
 
 import de.bmiag.tapir.datasource.api.AbstractDataSource
 import org.apache.poi.xssf.usermodel.XSSFRow

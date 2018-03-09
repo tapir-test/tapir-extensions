@@ -1,1 +1,1 @@
-The UI Test Extensions project contains various extensions for the tapir Test framework.
+The rapit project contains various unofficial extensions for the tapir Test framework.
