@@ -26,3 +26,12 @@ hs_err_pid*
 /ui-test-extensions/ui-test-extensions-datasource-excel/.settings
 /ui-test-extensions/ui-test-extensions-datasource-excel/target
 /ui-test-extensions/ui-test-extensions-datasource-excel/.classpath
+/.project
+/.settings/org.eclipse.core.resources.prefs
+/.settings/org.eclipse.m2e.core.prefs
+/ui-test-extensions-datasource-excel/.classpath
+/ui-test-extensions-datasource-excel/.project
+/ui-test-extensions-datasource-excel/.settings/org.eclipse.core.resources.prefs
+/ui-test-extensions-datasource-excel/.settings/org.eclipse.jdt.core.prefs
+/ui-test-extensions-datasource-excel/.settings/org.eclipse.m2e.core.prefs
+/ui-test-extensions-datasource-excel/.settings/org.eclipse.xtend.core.Xtend.prefs
