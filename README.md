@@ -1,1 +1,1 @@
-# ui-test-extensions
+The UI Test Extensions project contains various extensions for the tapir Test framework.
