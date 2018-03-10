@@ -24,6 +24,7 @@
 package de.rhocas.rapit.datasource.excel.annotation
 
 import de.bmiag.tapir.data.Immutable
+import java.util.Optional
 import org.eclipse.xtend.core.compiler.batch.XtendCompilerTester
 import org.junit.Test
 
@@ -31,7 +32,8 @@ import static org.hamcrest.collection.IsMapContaining.hasKey
 import static org.hamcrest.core.Is.is
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertThat
-import java.util.Optional
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import org.eclipse.xtend.lib.macro.services.Problem.Severity
 
 /**
  * This is the unit test for the {@link ExcelDataSourceProcessor}.
@@ -233,8 +235,6 @@ class ExcelDataSourceProcessorTest {
 			    		final String cellContent = conversionService.convert(cellContentString, String.class);
 			    		
 			    		it.setUsername(Optional.of(cellContent));
-			    	} else {
-			    		it.setUsername(Optional.empty());
 			    	}
 			    	
 			    	cell = excelRecord.get("password");
@@ -250,6 +250,26 @@ class ExcelDataSourceProcessorTest {
 			  }
 			}
 			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java').toString)
+		]
+	}
+	
+	@Test
+	def dataSourceWithoutImmutableAnnotationShouldBeMarkedWithError() {
+		compilerTester.compile('''
+		package de.rhocas.rapit.test
+		
+		import «ExcelDataSource.name»
+		
+		@«ExcelDataSource.simpleName»
+		class User {
+		}
+		''') [
+			val problems = allProblems
+			assertThat(problems, hasSize(1))
+			
+			val problem = problems.get(0)
+			assertThat(problem.message, is('The annotation can only be used in conjunction with interface de.bmiag.tapir.data.Immutable.'))
+			assertThat(problem.severity, is(Severity.ERROR))
 		]
 	}
 	

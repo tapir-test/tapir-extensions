@@ -40,6 +40,6 @@ import java.lang.annotation.Target
  * @since 1.0.0
  */
 @Target(TYPE)
-@DynamicActive
+@DynamicActive(processorRequired = true)
 annotation ExcelDataSource {
 }

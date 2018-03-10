@@ -100,8 +100,6 @@ class ExcelDataSourceProcessor extends AbstractClassProcessor {
 								final «field.type.actualTypeArguments.get(0)» cellContent = conversionService.convert(cellContentString, «field.type.actualTypeArguments.get(0)».class);
 								
 								it.set«field.simpleName.toFirstUpper»(«Optional».of(cellContent));
-							} else {
-								it.set«field.simpleName.toFirstUpper»(«Optional».empty());
 							}
 						«ELSE»
 							if (cell != null) {
