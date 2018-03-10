@@ -5,7 +5,7 @@ The rapit project contains various unofficial extensions for the tapir Test fram
 
 ### rapit Datasource Excel
 
-Note that this module uses the Apache Poi library, which means that the licenses of Apache Po apply, when you use them.
+Note that this module uses the Apache Poi library, which means that the licenses of Apache Poi apply, when you use them.
 
 The rapit Datasource Excel module is an adapter for tapir's datasource module. It allows you to fill your test data containers with data from Excel files. It works similar as the official CSV datasource module. To use it, you simply need to add it as Maven dependency. As all tapir modules, it contains an auto configuration.
 
