@@ -90,7 +90,17 @@ class AbstractExcelDataSourceTest {
 		assertThat(data.get(2).username, is('Jim'))
 		assertThat(data.get(2).password.get, is('secret123'))
 	}
+	
+	@Test
+	def void sheetWithMissingColumnShouldThrowException() {
+		val resource = new ClassPathResource('missingcolumn.xlsx')
+		val dataSource = new UserExcelDataSource
 
+		expectedException.expect(IllegalArgumentException)
+		expectedException.expectMessage('No column named \'password\' specified')
+		dataSource.getData(resource)
+	}
+	
 }
 
 @Immutable
