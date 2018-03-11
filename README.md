@@ -60,7 +60,7 @@ Now rapit will generate the _UserExcelDataSource_ for you and maps the columns o
 
 In this case the header names in the Excel sheet must be _user_ and _pass_.
 
-The conversion from the excel cells to the field types is performed with Spring's _ConversionService_. The cell's content is read as String and converted with the conversion service. This allows you to tap into the conversion by overriding the binding of this bean.
+The conversion from the excel cells to the field types is performed with Spring's _ConversionService_. The cell's content is read as String and converted with the conversion service. This allows you to tap into the conversion by overriding the binding of this bean. However, the string representation of the Excel cell might not always be usable for the conversion service, especially when it comes to dates and such. In those cases it is recommended to either implement your own datasource or to force Excel to interpret the content of the cell as text by using a leading apostrophe. 
 
 ## License
 
