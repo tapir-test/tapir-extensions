@@ -38,6 +38,8 @@ import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.convert.ConversionService
 import org.springframework.stereotype.Component
+import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration
+import org.eclipse.xtend.lib.macro.services.GlobalTypeLookup
 
 /**
  * This is the default annotation processor for the {@link ExcelDataSource} annotation. It adds an implementation of {@link AbstractExcelDataSource} and
@@ -58,6 +60,13 @@ class ExcelDataSourceProcessor extends AbstractClassProcessor {
 			val annotation = annotatedClass.annotations.findFirst[annotationTypeDeclaration == ExcelDataSource.findTypeGlobally]
 			annotation.addError('''The annotation can only be used in conjunction with «Immutable».''')
 		} 
+		
+		// Make also sure that none of the fields uses a generic type (except Optional)
+		for (field : annotatedClass.declaredFields) {
+			if (!field.getRealType(context).actualTypeArguments.empty) {
+				field.addError('''The field type must not have any generics. Only «Optional.simpleName»<...> may be used.''')
+			}
+		}
 	}
 	
 	override doRegisterGlobals(ClassDeclaration annotatedClass, extension RegisterGlobalsContext context) {
@@ -94,21 +103,12 @@ class ExcelDataSourceProcessor extends AbstractClassProcessor {
 						
 						cell = excelRecord.get("«columnName»");
 						
-						«IF Optional.findTypeGlobally.isAssignableFrom(field.type.type)»
-							if (cell != null) {
-								final String cellContentString = cell.toString();
-								final «field.type.actualTypeArguments.get(0)» cellContent = conversionService.convert(cellContentString, «field.type.actualTypeArguments.get(0)».class);
-								
-								it.set«field.simpleName.toFirstUpper»(«Optional».of(cellContent));
-							}
-						«ELSE»
-							if (cell != null) {
-								final String cellContentString = cell.toString();
-								final «field.type» cellContent = conversionService.convert(cellContentString, «field.type».class);
-								
-								it.set«field.simpleName.toFirstUpper»(cellContent);
-							}
-						«ENDIF»
+						if (cell != null) {
+							final String cellContentString = cell.toString();
+							final «field.getRealType(context)» cellContent = conversionService.convert(cellContentString, «field.getRealType(context)».class);
+							
+							it.set«field.simpleName.toFirstUpper»(cellContent);
+						}
 					«ENDFOR»
 				}
 				);
@@ -118,6 +118,18 @@ class ExcelDataSourceProcessor extends AbstractClassProcessor {
 	
 	private def String getFullQualifiedDataSourceName(ClassDeclaration annotatedClass) {
 		'''«annotatedClass.qualifiedName»ExcelDataSource'''
+	}
+	
+	private def getRealType(FieldDeclaration field, extension GlobalTypeLookup context) {
+		if (field.isOptional(context)) {
+			field.type.actualTypeArguments.get(0)
+		} else {
+			field.type
+		}
+	}
+	
+	private def isOptional(FieldDeclaration field, extension GlobalTypeLookup context) {
+		Optional.findTypeGlobally.isAssignableFrom(field.type.type)
 	}
 	
 }

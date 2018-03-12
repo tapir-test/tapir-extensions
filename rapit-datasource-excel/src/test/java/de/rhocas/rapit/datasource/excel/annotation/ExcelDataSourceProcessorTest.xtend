@@ -211,7 +211,6 @@ class ExcelDataSourceProcessorTest {
 			import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource;
 			import de.rhocas.rapit.datasource.excel.ExcelRecord;
 			import de.rhocas.rapit.test.User;
-			import java.util.Optional;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -234,7 +233,7 @@ class ExcelDataSourceProcessorTest {
 			    		final String cellContentString = cell.toString();
 			    		final String cellContent = conversionService.convert(cellContentString, String.class);
 			    		
-			    		it.setUsername(Optional.of(cellContent));
+			    		it.setUsername(cellContent);
 			    	}
 			    	
 			    	cell = excelRecord.get("password");

@@ -120,7 +120,7 @@ class UserExcelDataSource extends AbstractExcelDataSource<User> {
 
 			cell = excelRecord.get('password')
 			if (cell !== null) {
-				password = Optional.of(cell.toString)
+				password = cell.toString
 			}
 		]
 	}
