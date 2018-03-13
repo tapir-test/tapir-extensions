@@ -86,7 +86,7 @@ This module contains a reporting listener which writes an Excel report about the
 		<version>1.0.0</version>
 	</dependency>
 	
-As many other tapir modules, it contains an auto configuration, which means that it is already executed once it is part of the classpath. The execution listener has an order of 7000, which is equal to the Allure listener. Specify the output directory for the export with the value _rapid.reporting.excel.outputdirectory_.
+As many other tapir modules, it contains an auto configuration, which means that it is already executed once it is part of the classpath. The execution listener has an order of 7000, which is equal to the Allure listener. Specify the output directory for the export with the property _rapid.reporting.excel.outputDirectory_. If you want to report to show step parameters, set the property _rapid.reporting.excel.displayStepParameters_ to _true_. In this case it is recommended to use a custom labeled data container with _singleLine_ set to _true_.
 
 ## License
 

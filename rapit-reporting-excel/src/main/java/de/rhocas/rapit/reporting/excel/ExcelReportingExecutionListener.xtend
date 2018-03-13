@@ -36,8 +36,8 @@ import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Map
+import org.apache.commons.io.FileUtils
 import org.apache.poi.ss.usermodel.FillPatternType
-import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFRichTextString
@@ -46,7 +46,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
-import org.apache.commons.io.FileUtils
 
 /**
  * The listener for the excel reporting module.
@@ -59,8 +58,11 @@ import org.apache.commons.io.FileUtils
 @Order(7000)
 class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 
-	@Value("${rapid.reporting.excel.outputdirectory:.}")
+	@Value("${rapid.reporting.excel.outputDirectory:.}")
 	String outputDirectory
+	
+	@Value("${rapid.reporting.excel.displayStepParameters:false}")
+	boolean displayStepParameters
 
 	override finalizeReport(ExecutionPlan executionPlan, Map<Identifiable, ExecutionReport> reportMap) {
 		val workbook = new XSSFWorkbook
@@ -93,9 +95,9 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 			fillWorkbook(child, reportMap, workbook)
 		}
 		
-		sheet.autoSizeColumn(0)
-		sheet.autoSizeColumn(1)
-		sheet.autoSizeColumn(2)
+		for (column : 0..3) {
+			sheet.autoSizeColumn(column)
+		}
 	}
 
 	private def dispatch void fillWorkbook(TestClass element, Map<Identifiable, ExecutionReport> reportMap, XSSFWorkbook workbook) {
@@ -113,9 +115,9 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 			writeIntoRow(step, reportMap, row, workbook, false)
 		}
 		
-		sheet.autoSizeColumn(0)
-		sheet.autoSizeColumn(1)
-		sheet.autoSizeColumn(2)
+		for (column : 0..3) {
+			sheet.autoSizeColumn(column)
+		}
 	}
 
 	private def void writeIntoRow(ExecutionModelElement element, Map<Identifiable, ExecutionReport> reportMap, XSSFRow row, XSSFWorkbook workbook, boolean bold) {
@@ -141,8 +143,17 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		style.font = font
 		cell.cellStyle = style
 		
+		style = workbook.createCellStyle
 		cell = row.createCell(2)
 		cell.cellValue = new XSSFRichTextString('''«report.stop - report.start» ms''')
+		cell.cellStyle = style
+		
+		if (report.throwable.isPresent) {
+			style = workbook.createCellStyle
+			cell = row.createCell(2)
+			cell.cellValue = new XSSFRichTextString(report.throwable.get.toString)
+			cell.cellStyle = style
+		}
 	}
 	
 	private def createNormalFont(XSSFWorkbook workbook) {
@@ -170,8 +181,12 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		element.name
 	}
 	
-	private def dispatch getName(TestStep element) {
-		element.name
+	private def dispatch String getName(TestStep element) {
+		if (element.parameters.empty || !displayStepParameters) {
+			element.name
+		} else {
+			'''«element.name» [«FOR parameter : element.parameters SEPARATOR ', '»«parameter.name» = «parameter.label»«ENDFOR»]'''
+		}
 	}
 
 	private def toReadableName(ExecutionResult result) {
