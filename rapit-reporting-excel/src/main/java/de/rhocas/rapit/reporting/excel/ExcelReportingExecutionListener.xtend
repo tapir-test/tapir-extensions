@@ -82,12 +82,12 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		
 		// Create a first row for the test suite itself
 		var row = sheet.createRow(rowCounter++)
-		writeIntoRow(element, reportMap, row, workbook)
+		writeIntoRow(element, reportMap, row, workbook, true)
 
 		for (child : element.children) {
 			// Write the element into the current sheet
 			row = sheet.createRow(rowCounter++)
-			writeIntoRow(child, reportMap, row, workbook)
+			writeIntoRow(child, reportMap, row, workbook, false)
 			 
 			// As this is a test suite, we also have to create sheets for the elements within the test suite
 			fillWorkbook(child, reportMap, workbook)
