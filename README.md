@@ -7,7 +7,7 @@ The rapit project contains various unofficial extensions for the tapir Test fram
 
 Note that this module uses the Apache Poi library, which means that the licenses of Apache Poi apply, when you use them.
 
-The rapit Datasource Excel module is an adapter for tapir's datasource module. It allows you to fill your test data containers with data from Excel files. It works similar as the official CSV datasource module. To use it, you simply need to add it as Maven dependency. As all tapir modules, it contains an auto configuration.
+The rapit Datasource Excel module is an adapter for tapir's datasource module. It allows you to fill your test data containers with data from Excel files. It works similar as the official CSV datasource module. To use it, you simply need to add it as Maven dependency. 
 
 	<dependency>
 		<groupId>de.rhocas.rapit</groupId>
@@ -64,7 +64,7 @@ The conversion from the excel cells to the field types is performed with Spring'
 
 ### rapit Reporting Base
 
-This module contains an implementation of tapir's execution listener, which can be used as a base for concrete reporting classes. 
+This module contains an implementation of tapir's execution listener, which can be used as a base for concrete reporting classes. To use it, you simply need to add it as Maven dependency. 
 
 	<dependency>
 		<groupId>de.rhocas.rapit</groupId>
@@ -73,6 +73,20 @@ This module contains an implementation of tapir's execution listener, which can 
 	</dependency>
 
 tapir's default implementations use either frameworks which have to be informed about each event (JUnit) or have an internal model, which stores the events (Allure). However, some people might want to develop reporting listeners which simply convert the resulting execution at the end into a report instead of listening to each single execution event. The rapit reporting base provides the _AbstractBaseReportingListener_ class which collects all the events during the execution. The concrete implementation of this class is informed after the execution and is provided with tapir's execution plan and a mapping to retrieve information about the execution.
+
+### rapit Excel Reporting
+
+Note that this module uses the Apache Poi library, which means that the licenses of Apache Poi apply, when you use them.
+
+This module contains a reporting listener which writes an Excel report about the test execution. To use it, you simply need to add it as Maven dependency. 
+
+	<dependency>
+		<groupId>de.rhocas.rapit</groupId>
+		<artifactId>rapit-reporting-excel</artifactId>
+		<version>1.0.0</version>
+	</dependency>
+	
+As many other tapir modules, it contains an auto configuration, which means that it is already executed once it is part of the classpath. The execution listener has an order of 7000, which is equal to the Allure listener. Specify the output directory for the export with the value _rapid.reporting.excel.outputdirectory_.
 
 ## License
 
