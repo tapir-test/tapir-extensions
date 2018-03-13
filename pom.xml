@@ -103,6 +103,13 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Duser.language=DE -Duser.country=DE</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -122,16 +129,16 @@
 			<organizationUrl>https://github.com/nils-christian</organizationUrl>
 		</developer>
 	</developers>
-	
+
 	<organization>
 		<name>Private</name>
 		<url>https://github.com/nils-christian</url>
 	</organization>
-	
-  	<description>rapit</description>
-  	<url>https://github.com/nils-christian/rapit</url>
-  	<inceptionYear>2018</inceptionYear>
-  	
+
+	<description>rapit</description>
+	<url>https://github.com/nils-christian/rapit</url>
+	<inceptionYear>2018</inceptionYear>
+
 	<scm>
 		<connection>scm:git:git://github.com/nils-christian/rapit.git</connection>
 		<developerConnection>scm:git:ssh://github.com:nils-christian/rapit.git</developerConnection>
