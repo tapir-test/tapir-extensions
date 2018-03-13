@@ -64,7 +64,15 @@ The conversion from the excel cells to the field types is performed with Spring'
 
 ### rapit Reporting Base
 
-This module contains an implementation of tapir's execution listener, which can be used as a base for concrete reporting classes. tapir's default implementations use either frameworks which have to be informed about each event (JUnit) or have an internal model, which stores the events (Allure). However, some people might want to develop reporting listeners which simply convert the resulting execution at the end into a report instead of listening to each single execution event. The rapit reporting base provides the _AbstractBaseReportingListener_ class which collects all the events during the execution. The concrete implementation of this class is informed after the execution and is provided with tapir's execution plan and a mapping to retrieve information about the execution.
+This module contains an implementation of tapir's execution listener, which can be used as a base for concrete reporting classes. 
+
+	<dependency>
+		<groupId>de.rhocas.rapit</groupId>
+		<artifactId>rapit-reporting-base</artifactId>
+		<version>1.0.0</version>
+	</dependency>
+
+tapir's default implementations use either frameworks which have to be informed about each event (JUnit) or have an internal model, which stores the events (Allure). However, some people might want to develop reporting listeners which simply convert the resulting execution at the end into a report instead of listening to each single execution event. The rapit reporting base provides the _AbstractBaseReportingListener_ class which collects all the events during the execution. The concrete implementation of this class is informed after the execution and is provided with tapir's execution plan and a mapping to retrieve information about the execution.
 
 ## License
 
