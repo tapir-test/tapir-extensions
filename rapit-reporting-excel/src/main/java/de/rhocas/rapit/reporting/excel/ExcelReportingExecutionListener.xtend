@@ -46,6 +46,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import org.apache.commons.io.FileUtils
 
 /**
  * The listener for the excel reporting module.
@@ -58,7 +59,7 @@ import org.springframework.stereotype.Component
 @Order(7000)
 class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 
-	@Value("${rapid.reporting.excel.outputdirectory}")
+	@Value("${rapid.reporting.excel.outputdirectory:.}")
 	String outputDirectory
 
 	override finalizeReport(ExecutionPlan executionPlan, Map<Identifiable, ExecutionReport> reportMap) {
@@ -176,7 +177,8 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 
 	private def writeWorkbook(ExecutionPlan executionPlan, Workbook workbook) {
 		val outputFile = new File(outputDirectory, '''rapit-report-excel-execution-«executionPlan.id».xlsx''')
-
+		FileUtils.forceMkdirParent(outputFile)
+	
 		val outputStream = new FileOutputStream(outputFile)
 		try {
 			workbook.write(outputStream)
