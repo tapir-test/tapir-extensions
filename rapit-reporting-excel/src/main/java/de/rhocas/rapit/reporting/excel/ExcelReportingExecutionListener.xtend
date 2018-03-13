@@ -105,12 +105,12 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		
 		// Create a first row for the test class itself
 		var row = sheet.createRow(rowCounter++)
-		writeIntoRow(element, reportMap, row, workbook)
+		writeIntoRow(element, reportMap, row, workbook, true)
 		
 		for (step : element.steps) {
 			// Write the steps into the current sheet
 			row = sheet.createRow(rowCounter++)
-			writeIntoRow(step, reportMap, row, workbook)
+			writeIntoRow(step, reportMap, row, workbook, false)
 		}
 		
 		sheet.autoSizeColumn(0)
@@ -118,22 +118,24 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		sheet.autoSizeColumn(2)
 	}
 
-	private def void writeIntoRow(ExecutionModelElement element, Map<Identifiable, ExecutionReport> reportMap, XSSFRow row, XSSFWorkbook workbook) {
+	private def void writeIntoRow(ExecutionModelElement element, Map<Identifiable, ExecutionReport> reportMap, XSSFRow row, XSSFWorkbook workbook, boolean bold) {
 		val report = reportMap.get(element)
 
-	  	val font = workbook.createFont()
-	    font.setFontHeightInPoints(10 as short)
-	    font.setFontName('Arial')
-	    font.setColor(IndexedColors.WHITE.getIndex())
-	    font.setBold(true)
-	    font.setItalic(false)
-
-		var cell = row.createCell(0)
-		cell.cellValue = new XSSFRichTextString(element.name)
-		cell = row.createCell(1)
-		cell.cellValue = new XSSFRichTextString(report.result.toReadableName)
+	  	val font = if (bold) createBoldFont(workbook) else createNormalFont(workbook)
 
 		var style = workbook.createCellStyle
+		style.font = font
+		var cell = row.createCell(0)
+		cell.cellValue = new XSSFRichTextString(element.name)
+		cell.cellStyle = style
+		
+		style = workbook.createCellStyle
+		style.font = font
+		cell = row.createCell(1)
+		cell.cellValue = new XSSFRichTextString(report.result.toReadableName)
+		cell.cellStyle = style
+
+		style = workbook.createCellStyle
 		style.fillForegroundColor = new XSSFColor(report.result.toColor)
 		style.fillPattern = FillPatternType.SOLID_FOREGROUND
 		style.font = font
@@ -141,6 +143,23 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		
 		cell = row.createCell(2)
 		cell.cellValue = new XSSFRichTextString('''«report.stop - report.start» ms''')
+	}
+	
+	private def createNormalFont(XSSFWorkbook workbook) {
+		val font = workbook.createFont
+	
+	    font.fontHeightInPoints = 12 as short
+	    font.fontName = 'Arial'
+	    
+	    font 
+	}
+	
+	private def createBoldFont(XSSFWorkbook workbook) {
+		val font = createNormalFont(workbook)
+		
+		font.bold = true
+		
+		font
 	}
 	
 	private def dispatch getName(TestSuite element) {
