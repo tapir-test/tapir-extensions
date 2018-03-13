@@ -150,7 +150,7 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 		
 		if (report.throwable.isPresent) {
 			style = workbook.createCellStyle
-			cell = row.createCell(2)
+			cell = row.createCell(3)
 			cell.cellValue = new XSSFRichTextString(report.throwable.get.toString)
 			cell.cellStyle = style
 		}
