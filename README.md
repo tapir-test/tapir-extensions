@@ -62,6 +62,10 @@ In this case the header names in the Excel sheet must be _user_ and _pass_.
 
 The conversion from the excel cells to the field types is performed with Spring's _ConversionService_. The cell's content is read as String and converted with the conversion service. This allows you to tap into the conversion by overriding the binding of this bean. However, the string representation of the Excel cell might not always be usable for the conversion service, especially when it comes to dates and such. In those cases it is recommended to either implement your own datasource or to force Excel to interpret the content of the cell as text by using a leading apostrophe. 
 
+### rapit Reporting Base
+
+This module contains an implementation of tapir's execution listener, which can be used as a base for concrete reporting classes. tapir's default implementations use either frameworks which have to be informed about each event (JUnit) or have an internal model, which stores the events (Allure). However, some people might want to develop reporting listeners which simply convert the resulting execution at the end into a report instead of listening to each single execution event. The rapit reporting base provides the _AbstractBaseReportingListener_ class which collects all the events during the execution. The concrete implementation of this class is informed after the execution and is provided with tapir's execution plan and a mapping to retrieve information about the execution.
+
 ## License
 
 The rapit project is licensed under the MIT license. You can find a copy of it in the LICENSE file in the root folder of the project. Note that third party libraries, which are added as transitive dependencies, may have further and other licenses.
