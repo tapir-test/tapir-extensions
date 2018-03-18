@@ -24,6 +24,7 @@
  package de.rhocas.rapit.datasource.execution.gui.application.views
 
 import de.bmiag.tapir.execution.model.Identifiable
+import de.rhocas.rapit.datasource.execution.gui.application.components.DescriptionCellValueFactory
 import de.rhocas.rapit.datasource.execution.gui.application.components.ParametersCellValueFactory
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -111,7 +112,7 @@ final class ExecutionPlanView extends VBox {
 			columns.add(new TreeTableColumn<Identifiable, String>() => [
 				text = 'Description'
 				
-				cellValueFactory = new TreeItemPropertyValueFactory('description')
+				cellValueFactory = new DescriptionCellValueFactory()
 			])
 
 			columns.add(new TreeTableColumn<Identifiable, String>() => [
