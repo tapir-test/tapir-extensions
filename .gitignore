@@ -60,3 +60,7 @@ hs_err_pid*
 /rapit-reporting-excel-test/.settings
 /rapit-reporting-excel-test/target
 /rapit-reporting-excel-test/.classpath
+/rapit-execution-gui/.project
+/rapit-execution-gui/.settings
+/rapit-execution-gui/target
+/rapit-execution-gui/.classpath

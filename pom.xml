@@ -24,6 +24,7 @@
 		<module>rapit-datasource-excel-test</module>
 		<module>rapit-reporting-base</module>
 		<module>rapit-reporting-excel</module>
+		<module>rapit-execution-gui</module>
 	</modules>
 
 	<dependencyManagement>
@@ -41,6 +42,11 @@
 			<dependency>
 				<groupId>de.rhocas.rapit</groupId>
 				<artifactId>rapit-reporting-excel</artifactId>
+				<version>1.1.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.rapit</groupId>
+				<artifactId>rapit-execution-gui</artifactId>
 				<version>1.1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
