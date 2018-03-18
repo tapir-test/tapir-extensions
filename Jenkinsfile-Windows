@@ -3,7 +3,7 @@ pipeline {
 	agent any
 
 	environment {
-		DOCKER_IMAGE = 'maven:3.5-jdk-8'
+		DOCKER_IMAGE = 'frekele/maven:3.5.2-jdk8'
 	}
 	
 	stages {
