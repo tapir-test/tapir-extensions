@@ -24,11 +24,11 @@
 package de.rhocas.rapit.datasource.execution.gui
 
 import de.bmiag.tapir.execution.plan.ExecutionPlanBuilder
-import org.springframework.stereotype.Component
-import org.springframework.context.annotation.Primary
+import de.rhocas.rapit.datasource.execution.gui.application.ExecutionApplication
 import de.rhocas.rapit.datasource.execution.gui.application.ExecutionPlanHolder
 import javafx.application.Application
-import de.rhocas.rapit.datasource.execution.gui.application.ExecutionApplication
+
+import static de.rhocas.rapit.datasource.execution.gui.application.ExecutionPlanHolder.*
 
 /**
  * This is the implementation of an {@link ExecutionPlanBuilder} which starts a GUI to choose which elements should be executed.
@@ -37,8 +37,6 @@ import de.rhocas.rapit.datasource.execution.gui.application.ExecutionApplication
  * 
  * @since 1.1.0 
  */
-@Primary
-@Component
 final class ExecutionPlanGUIBuilder extends ExecutionPlanBuilder {
 
 	override buildExecutionPlan(Class<?> javaClass) {

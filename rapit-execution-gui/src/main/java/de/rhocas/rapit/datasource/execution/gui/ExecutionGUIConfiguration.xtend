@@ -21,10 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.execution.gui
+package de.rhocas.rapit.datasource.execution.gui
 
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureOrder
+import org.springframework.context.annotation.Bean
 
 /**
  * The configuration for the execution GUI module.
@@ -38,5 +39,10 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder
 class ExecutionGUIConfiguration {
 
 	public static final int AUTO_CONFIGURE_ORDER = 0
- 
+
+	@Bean("tapirExecutionPlanBuilder")
+	def tapirExecutionPlanBuilder() {
+		new ExecutionPlanGUIBuilder
+	}
+
 }
