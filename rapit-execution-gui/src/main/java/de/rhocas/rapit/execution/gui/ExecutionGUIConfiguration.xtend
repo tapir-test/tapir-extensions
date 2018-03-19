@@ -21,34 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui.application.components
+package de.rhocas.rapit.execution.gui
 
-import de.bmiag.tapir.execution.model.Documentable
-import de.bmiag.tapir.execution.model.Identifiable
-import javafx.beans.property.SimpleStringProperty
-import javafx.beans.value.ObservableValue
-import javafx.scene.control.TreeTableColumn.CellDataFeatures
-import javafx.util.Callback
+import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
+import org.springframework.boot.autoconfigure.AutoConfigureOrder
+import org.springframework.context.annotation.Bean
 
 /**
- * A cell value factory which extracts the description from {@link Documentable} elements.
+ * The configuration for the execution GUI module.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class DescriptionCellValueFactory implements Callback<CellDataFeatures<Identifiable, String>, ObservableValue<String>> {
+@ModuleConfiguration
+@AutoConfigureOrder(ExecutionGUIConfiguration.AUTO_CONFIGURE_ORDER)
+class ExecutionGUIConfiguration {
 
-	override call(CellDataFeatures<Identifiable, String> cellDataFeatures) {
-		val value = cellDataFeatures.value.value
+	public static final int AUTO_CONFIGURE_ORDER = 0
 
-		if (value instanceof Documentable) {
-			val description = value.description
-
-			if (description.present) {
-				return new SimpleStringProperty(description.get)
-			}
-		}
+	@Bean("tapirExecutionPlanBuilder")
+	def tapirExecutionPlanBuilder() {
+		new ExecutionPlanGUIBuilder
 	}
 
 }

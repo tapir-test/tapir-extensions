@@ -21,31 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui.application.components
+package de.rhocas.rapit.execution.gui.application.components
 
-import de.bmiag.tapir.execution.model.TestClass
+import de.bmiag.tapir.execution.model.Documentable
+import de.bmiag.tapir.execution.model.Identifiable
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.value.ObservableValue
+import javafx.scene.control.TreeTableColumn.CellDataFeatures
+import javafx.util.Callback
 
 /**
- * A selectable tree item which holds an instance of {@link TestClass}.
+ * A cell value factory which extracts the description from {@link Documentable} elements.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class TestClassTreeItem extends AbstractLazyCheckBoxTreeItem<TestClass> {
+final class DescriptionCellValueFactory implements Callback<CellDataFeatures<Identifiable, String>, ObservableValue<String>> {
 
-	new(TestClass testClass) {
-		super(testClass)
-	}
+	override call(CellDataFeatures<Identifiable, String> cellDataFeatures) {
+		val value = cellDataFeatures.value.value
 
-	override isLeaf() {
-		(value as TestClass).steps.isEmpty
-	}
+		if (value instanceof Documentable) {
+			val description = value.description
 
-	override createChildren() {
-		(value as TestClass).steps.map [ step |
-			new TestStepTreeItem(step)
-		]
+			if (description.present) {
+				return new SimpleStringProperty(description.get)
+			}
+		}
 	}
 
 }

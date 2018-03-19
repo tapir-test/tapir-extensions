@@ -21,36 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui.application.components
+package de.rhocas.rapit.execution.gui.application.components
 
 import de.bmiag.tapir.execution.model.TestClass
-import de.bmiag.tapir.execution.model.TestSuite
 
 /**
- * A selectable tree item which holds an instance of {@link TestSuite}.
+ * A selectable tree item which holds an instance of {@link TestClass}.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class TestSuiteTreeItem extends AbstractLazyCheckBoxTreeItem<TestSuite> {
+final class TestClassTreeItem extends AbstractLazyCheckBoxTreeItem<TestClass> {
 
-	new(TestSuite testSuite) {
-		super(testSuite)
+	new(TestClass testClass) {
+		super(testClass)
 	}
 
 	override isLeaf() {
-		(value as TestSuite).children.isEmpty
+		(value as TestClass).steps.isEmpty
 	}
 
 	override createChildren() {
-		(value as TestSuite).children.map [ child |
-			if (child instanceof TestClass) {
-				new TestClassTreeItem(child)
-			} else if (child instanceof TestSuite) {
-				new TestSuiteTreeItem(child)
-			}
+		(value as TestClass).steps.map [ step |
+			new TestStepTreeItem(step)
 		]
 	}
-	
+
 }

@@ -21,30 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui.application
+ package de.rhocas.rapit.execution.gui.application.components
 
-import de.bmiag.tapir.execution.model.ExecutionPlan
+import de.bmiag.tapir.execution.model.Identifiable
+import java.util.List
+import javafx.scene.control.CheckBoxTreeItem
+import javafx.scene.control.TreeItem
 
 /**
- * A simple class holding an instance of an {@link ExecutionPlan}.
+ * A selectable tree item which holds an instance of {@link Identifiable} and initializes its children in a lazy way.
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0  
+ * @since 1.1.0
  */
-final class ExecutionPlanHolder {
+abstract class AbstractLazyCheckBoxTreeItem<T extends Identifiable> extends CheckBoxTreeItem<Identifiable> {
+	
+	boolean childrenInitialized
 
-	static ExecutionPlan executionPlan
-
-	private new() {
+	new(T t) {
+		super(t)
 	}
 
-	static def getExecutionPlan() {
-		executionPlan
-	}
+	override final getChildren() {
+		if (!childrenInitialized) {
+			childrenInitialized = true
+			super.children.all = createChildren()
+		}
 
-	static def void setExecutionPlan(ExecutionPlan newExecutionPlan) {
-		executionPlan = newExecutionPlan
+		super.children
 	}
-
+	
+	def abstract List<TreeItem<Identifiable>> createChildren()
+	
 }

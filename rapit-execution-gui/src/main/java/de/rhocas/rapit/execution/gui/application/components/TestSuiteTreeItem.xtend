@@ -21,37 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.execution.gui.application.components
+package de.rhocas.rapit.execution.gui.application.components
 
-import de.bmiag.tapir.execution.model.Identifiable
-import java.util.List
-import javafx.scene.control.CheckBoxTreeItem
-import javafx.scene.control.TreeItem
+import de.bmiag.tapir.execution.model.TestClass
+import de.bmiag.tapir.execution.model.TestSuite
 
 /**
- * A selectable tree item which holds an instance of {@link Identifiable} and initializes its children in a lazy way.
+ * A selectable tree item which holds an instance of {@link TestSuite}.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-abstract class AbstractLazyCheckBoxTreeItem<T extends Identifiable> extends CheckBoxTreeItem<Identifiable> {
-	
-	boolean childrenInitialized
+final class TestSuiteTreeItem extends AbstractLazyCheckBoxTreeItem<TestSuite> {
 
-	new(T t) {
-		super(t)
+	new(TestSuite testSuite) {
+		super(testSuite)
 	}
 
-	override final getChildren() {
-		if (!childrenInitialized) {
-			childrenInitialized = true
-			super.children.all = createChildren()
-		}
-
-		super.children
+	override isLeaf() {
+		(value as TestSuite).children.isEmpty
 	}
-	
-	def abstract List<TreeItem<Identifiable>> createChildren()
+
+	override createChildren() {
+		(value as TestSuite).children.map [ child |
+			if (child instanceof TestClass) {
+				new TestClassTreeItem(child)
+			} else if (child instanceof TestSuite) {
+				new TestSuiteTreeItem(child)
+			}
+		]
+	}
 	
 }

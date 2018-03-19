@@ -21,28 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui
+package de.rhocas.rapit.execution.gui.application.components
 
-import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
-import org.springframework.boot.autoconfigure.AutoConfigureOrder
-import org.springframework.context.annotation.Bean
+import de.bmiag.tapir.execution.model.ExecutionPlan
+import de.bmiag.tapir.execution.model.TestClass
+import de.bmiag.tapir.execution.model.TestSuite
 
 /**
- * The configuration for the execution GUI module.
+ * A selectable tree item which holds an instance of {@link ExecutionPlan}.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-@ModuleConfiguration
-@AutoConfigureOrder(ExecutionGUIConfiguration.AUTO_CONFIGURE_ORDER)
-class ExecutionGUIConfiguration {
+final class ExecutionPlanTreeItem extends AbstractLazyCheckBoxTreeItem<ExecutionPlan> {
 
-	public static final int AUTO_CONFIGURE_ORDER = 0
+	new(ExecutionPlan executionPlan) {
+		super(executionPlan)
+	}
 
-	@Bean("tapirExecutionPlanBuilder")
-	def tapirExecutionPlanBuilder() {
-		new ExecutionPlanGUIBuilder
+	override isLeaf() {
+		(value as ExecutionPlan).children.isEmpty
+	}
+
+	override createChildren() {
+		(value as ExecutionPlan).children.map [ child |
+			if (child instanceof TestClass) {
+				new TestClassTreeItem(child)
+			} else if (child instanceof TestSuite) {
+				new TestSuiteTreeItem(child)
+			}
+		]
 	}
 
 }

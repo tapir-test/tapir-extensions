@@ -21,32 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.execution.gui.application.components
+package de.rhocas.rapit.execution.gui
 
-import de.bmiag.tapir.execution.model.Identifiable
-import javafx.beans.value.ObservableValue
-import javafx.scene.control.TreeTableColumn.CellDataFeatures
-import javafx.util.Callback
-import de.bmiag.tapir.execution.model.Parameterized
-import javafx.beans.property.SimpleStringProperty
+import de.bmiag.tapir.execution.plan.ExecutionPlanBuilder
+import de.rhocas.rapit.execution.gui.application.ExecutionApplication
+import de.rhocas.rapit.execution.gui.application.ExecutionPlanHolder
+import javafx.application.Application
+
+import static de.rhocas.rapit.execution.gui.application.ExecutionPlanHolder.*
 
 /**
- * A cell value factory which extracts the parameters from {@link Parameterized} elements.
+ * This is the implementation of an {@link ExecutionPlanBuilder} which starts a GUI to choose which elements should be executed.
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 1.1.0 
  */
-final class ParametersCellValueFactory implements Callback<CellDataFeatures<Identifiable, String>, ObservableValue<String>> {
+final class ExecutionPlanGUIBuilder extends ExecutionPlanBuilder {
 
-	override call(CellDataFeatures<Identifiable, String> cellDataFeatures) {
-		val value = cellDataFeatures.value.value
+	override buildExecutionPlan(Class<?> javaClass) {
+		// Get the original execution plan from the super class
+		ExecutionPlanHolder.executionPlan = super.buildExecutionPlan(javaClass)
 
-		if (value instanceof Parameterized) {
-			val parameters = value.parameters
-
-			return new SimpleStringProperty(parameters.join(',', [parameter|'''«parameter.name» = «parameter.label»''']))
-		}
+		// Now fire up the GUI and return its result as new execution plan
+		Application.launch(ExecutionApplication, #[])
+		ExecutionPlanHolder.executionPlan
 	}
 
 }

@@ -21,31 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui
+package de.rhocas.rapit.execution.gui.application
 
-import de.bmiag.tapir.execution.plan.ExecutionPlanBuilder
-import de.rhocas.rapit.datasource.execution.gui.application.ExecutionApplication
-import de.rhocas.rapit.datasource.execution.gui.application.ExecutionPlanHolder
-import javafx.application.Application
-
-import static de.rhocas.rapit.datasource.execution.gui.application.ExecutionPlanHolder.*
+import de.bmiag.tapir.execution.model.ExecutionPlan
 
 /**
- * This is the implementation of an {@link ExecutionPlanBuilder} which starts a GUI to choose which elements should be executed.
+ * A simple class holding an instance of an {@link ExecutionPlan}.
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0 
+ * @since 1.1.0  
  */
-final class ExecutionPlanGUIBuilder extends ExecutionPlanBuilder {
+final class ExecutionPlanHolder {
 
-	override buildExecutionPlan(Class<?> javaClass) {
-		// Get the original execution plan from the super class
-		ExecutionPlanHolder.executionPlan = super.buildExecutionPlan(javaClass)
+	static ExecutionPlan executionPlan
 
-		// Now fire up the GUI and return its result as new execution plan
-		Application.launch(ExecutionApplication, #[])
-		ExecutionPlanHolder.executionPlan
+	private new() {
+	}
+
+	static def getExecutionPlan() {
+		executionPlan
+	}
+
+	static def void setExecutionPlan(ExecutionPlan newExecutionPlan) {
+		executionPlan = newExecutionPlan
 	}
 
 }

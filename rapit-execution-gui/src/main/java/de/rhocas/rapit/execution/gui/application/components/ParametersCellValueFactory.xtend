@@ -21,37 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.execution.gui.application.components
+ package de.rhocas.rapit.execution.gui.application.components
 
-import de.bmiag.tapir.execution.model.ExecutionPlan
-import de.bmiag.tapir.execution.model.TestClass
-import de.bmiag.tapir.execution.model.TestSuite
+import de.bmiag.tapir.execution.model.Identifiable
+import javafx.beans.value.ObservableValue
+import javafx.scene.control.TreeTableColumn.CellDataFeatures
+import javafx.util.Callback
+import de.bmiag.tapir.execution.model.Parameterized
+import javafx.beans.property.SimpleStringProperty
 
 /**
- * A selectable tree item which holds an instance of {@link ExecutionPlan}.
+ * A cell value factory which extracts the parameters from {@link Parameterized} elements.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class ExecutionPlanTreeItem extends AbstractLazyCheckBoxTreeItem<ExecutionPlan> {
+final class ParametersCellValueFactory implements Callback<CellDataFeatures<Identifiable, String>, ObservableValue<String>> {
 
-	new(ExecutionPlan executionPlan) {
-		super(executionPlan)
-	}
+	override call(CellDataFeatures<Identifiable, String> cellDataFeatures) {
+		val value = cellDataFeatures.value.value
 
-	override isLeaf() {
-		(value as ExecutionPlan).children.isEmpty
-	}
+		if (value instanceof Parameterized) {
+			val parameters = value.parameters
 
-	override createChildren() {
-		(value as ExecutionPlan).children.map [ child |
-			if (child instanceof TestClass) {
-				new TestClassTreeItem(child)
-			} else if (child instanceof TestSuite) {
-				new TestSuiteTreeItem(child)
-			}
-		]
+			return new SimpleStringProperty(parameters.join(',', [parameter|'''«parameter.name» = «parameter.label»''']))
+		}
 	}
 
 }

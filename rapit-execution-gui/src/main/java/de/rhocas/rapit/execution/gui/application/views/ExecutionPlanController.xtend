@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.execution.gui.application.views
+ package de.rhocas.rapit.execution.gui.application.views
 
 import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.Identifiable
@@ -29,10 +29,10 @@ import de.bmiag.tapir.execution.model.StructuralElement
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
-import de.rhocas.rapit.datasource.execution.gui.application.ExecutionPlanHolder
+import de.rhocas.rapit.execution.gui.application.ExecutionPlanHolder
 import java.util.List
 
-import static de.rhocas.rapit.datasource.execution.gui.application.ExecutionPlanHolder.*
+import static de.rhocas.rapit.execution.gui.application.ExecutionPlanHolder.*
 
 /**
  * The controller for the execution plan GUI.

@@ -21,11 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.execution.gui.application
+ package de.rhocas.rapit.execution.gui.application
 
-import de.rhocas.rapit.datasource.execution.gui.application.views.ExecutionPlanController
-import de.rhocas.rapit.datasource.execution.gui.application.views.ExecutionPlanView
-import de.rhocas.rapit.datasource.execution.gui.application.views.ExecutionPlanViewModel
+import de.rhocas.rapit.execution.gui.application.views.ExecutionPlanController
+import de.rhocas.rapit.execution.gui.application.views.ExecutionPlanView
+import de.rhocas.rapit.execution.gui.application.views.ExecutionPlanViewModel
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.layout.AnchorPane
