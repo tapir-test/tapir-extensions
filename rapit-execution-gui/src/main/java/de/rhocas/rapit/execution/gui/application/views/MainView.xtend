@@ -29,6 +29,8 @@ import de.rhocas.rapit.execution.gui.application.components.ParametersCellValueF
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBoxTreeItem
+import javafx.scene.control.Label
+import javafx.scene.control.TextArea
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.cell.CheckBoxTreeTableCell
@@ -36,22 +38,11 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import org.eclipse.xtend.lib.annotations.Accessors
+import javafx.scene.control.Separator
 
-/**
- * The view for the execution plan GUI.
- * 
- * @author Nils Christian Ehmke
- * 
- * @since 1.1.0
- */
-@Accessors
-final class ExecutionPlanView extends VBox {
-
-	val TreeTableView<Identifiable> treeTableView
-	ExecutionPlanController executionPlanController
-
-	new() {
+final class MainView extends VBox {
+	
+	new(MainViewModel mainViewModel) {
 		padding = new Insets(10)
 
 		children.add(new HBox() => [
@@ -59,42 +50,65 @@ final class ExecutionPlanView extends VBox {
 			spacing = 10
 
 			children.add(new Button() => [
-				minWidth = 100
+				minWidth = 180
 				text = 'Select All'
 				
-				onAction = [executionPlanController.performSelectAll]
+				onAction = [mainViewModel.performSelectAll]
 			])
 
 			children.add(new Button() => [
-				minWidth = 100
+				minWidth = 180
 				text = 'Deselect All'
 				
-				onAction = [executionPlanController.performDeselectAll]
+				onAction = [mainViewModel.performDeselectAll]
 			])
 			
 			children.add(new Button() => [
-				minWidth = 100
+				minWidth = 180
+				text = 'Reinitialize Execution Plan'
+
+				HBox.setMargin(it, new Insets(0.0, 0.0, 0.0, 20.0))
+				
+				onAction = [mainViewModel.performReinitializeExecutionPlan]
+			])
+			
+			children.add(new Button() => [
+				minWidth = 180
 				text = 'Start Tests'
 
 				HBox.setMargin(it, new Insets(0.0, 0.0, 0.0, 20.0))
 				
-				onAction = [executionPlanController.performStartTests]
+				onAction = [mainViewModel.performStartTests]
 			])
 			
 			children.add(new Button() => [
-				minWidth = 100
+				minWidth = 180
 				text = 'Cancel'
 
-				onAction = [executionPlanController.performCancel]
+				onAction = [mainViewModel.performCancel]
 			])
 		])
-
-		treeTableView = new TreeTableView<Identifiable>() => [
+		
+		children.add(new Separator() => [
+			margin = new Insets(10.0, 0.0, 0.0, 0.0)
+		])
+		
+		children.add(new Label() => [
+			margin = new Insets(10.0, 0.0, 0.0, 0.0)
+			text = 'Execution Plan'
+		])
+		
+		children.add(new TreeTableView<Identifiable>() => [
 			VBox.setVgrow(it, Priority.ALWAYS)
+			margin = new Insets(5.0, 0.0, 0.0, 0.0)
 			
+			rootProperty.bind(mainViewModel.executionPlanRoot)
 			tableMenuButtonVisible = true
 			showRoot = false
 			editable = true
+			placeholder = new Label() => [
+				text = 'No Execution Plan available'
+			]
 
 			columns.add(new TreeTableColumn<Identifiable, Boolean>() => [
 				text = 'Execute'
@@ -120,12 +134,21 @@ final class ExecutionPlanView extends VBox {
 				 
 				cellValueFactory = new ParametersCellValueFactory()
 			])
-		]
+			
+			// Distribute the columns evenly 
+			columns.forEach[column|column.prefWidthProperty.bind(widthProperty.divide(columns.size))]
+		])
 
-		// Distribute the columns evenly
-		treeTableView.columns.forEach[column|column.prefWidthProperty.bind(treeTableView.widthProperty.divide(treeTableView.columns.size))]
-
-		children.add(treeTableView)
+		children.add(new Label() => [
+			margin = new Insets(10.0, 0.0, 0.0, 0.0)
+			text = 'Spring Properties'
+		])
+		
+		children.add(new TextArea() => [
+			margin = new Insets(5.0, 0.0, 0.0, 0.0)
+			
+			textProperty.bindBidirectional(mainViewModel.propertiesContent)
+		])
 	}
-
+	
 }

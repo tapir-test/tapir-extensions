@@ -90,15 +90,7 @@ As many other tapir modules, it contains an auto configuration, which means that
 
 ### rapit Execution GUI (since 1.1.0)
 
-This module contains a GUI which allows you to select which test elements should be executed. To use it, you simply need to add it as Maven dependency.
-
-	<dependency>
-		<groupId>de.rhocas.rapit</groupId>
-		<artifactId>rapit-execution-gui</artifactId>
-		<version>1.1.0</version>
-	</dependency>
-
-As many other tapir modules, it contains an auto configuration, which means that it is already executed once it is part of the classpath. When you start your tests, the GUI is started and shows you the whole execution plan. You can select and select arbitrary elements. This is extremely useful if you are developing tests and want to execute only some of the test steps. Or if your test failed and you want to continue the execution at some point. 
+Coming soon.
 
 ## License
 

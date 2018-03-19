@@ -23,29 +23,28 @@
  */
 package de.rhocas.rapit.execution.gui
 
-import de.bmiag.tapir.execution.plan.ExecutionPlanBuilder
-import de.rhocas.rapit.execution.gui.application.ExecutionApplication
-import de.rhocas.rapit.execution.gui.application.ExecutionPlanHolder
+import de.rhocas.rapit.execution.gui.application.views.MainView
+import de.rhocas.rapit.execution.gui.application.views.MainViewModel
 import javafx.application.Application
+import javafx.scene.Scene
+import javafx.stage.Stage
 
-import static de.rhocas.rapit.execution.gui.application.ExecutionPlanHolder.*
+final class RapitLauncher extends Application {
 
-/**
- * This is the implementation of an {@link ExecutionPlanBuilder} which starts a GUI to choose which elements should be executed.
- * 
- * @author Nils Christian Ehmke
- * 
- * @since 1.1.0 
- */
-final class ExecutionPlanGUIBuilder extends ExecutionPlanBuilder {
+	def static void main(String[] args) {
+		RapitLauncher.launch(args)
+	}
 
-	override buildExecutionPlan(Class<?> javaClass) {
-		// Get the original execution plan from the super class
-		ExecutionPlanHolder.executionPlan = super.buildExecutionPlan(javaClass)
+	override start(Stage primaryStage) throws Exception {
+		val parameters = parameters
+		val mainViewModel = new MainViewModel(parameters)
+		val mainView = new MainView(mainViewModel)
+		val scene = new Scene(mainView)
 
-		// Now fire up the GUI and return its result as new execution plan
-		Application.launch(ExecutionApplication, #[])
-		ExecutionPlanHolder.executionPlan
+		primaryStage.title = 'rapit Execution GUI'
+		primaryStage.scene = scene
+		primaryStage.maximized = true
+		primaryStage.show
 	}
 
 }
