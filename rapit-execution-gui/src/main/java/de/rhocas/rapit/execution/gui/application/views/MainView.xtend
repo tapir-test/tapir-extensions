@@ -26,19 +26,23 @@
 import de.bmiag.tapir.execution.model.Identifiable
 import de.rhocas.rapit.execution.gui.application.components.DescriptionCellValueFactory
 import de.rhocas.rapit.execution.gui.application.components.ParametersCellValueFactory
+import de.rhocas.rapit.execution.gui.application.data.Property
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.Label
-import javafx.scene.control.TextArea
+import javafx.scene.control.Separator
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.cell.CheckBoxTreeTableCell
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.control.cell.TextFieldTableCell
 import javafx.scene.control.cell.TreeItemPropertyValueFactory
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.control.Separator
 
 final class MainView extends VBox {
 	
@@ -101,8 +105,9 @@ final class MainView extends VBox {
 		children.add(new TreeTableView<Identifiable>() => [
 			VBox.setVgrow(it, Priority.ALWAYS)
 			margin = new Insets(5.0, 0.0, 0.0, 0.0)
-			
+			 
 			rootProperty.bind(mainViewModel.executionPlanRoot)
+			
 			tableMenuButtonVisible = true
 			showRoot = false
 			editable = true
@@ -144,10 +149,59 @@ final class MainView extends VBox {
 			text = 'Spring Properties'
 		])
 		
-		children.add(new TextArea() => [
-			margin = new Insets(5.0, 0.0, 0.0, 0.0)
+		children.add(new HBox() => [
+			margin = new Insets(10.0, 0.0, 0.0, 0.0)
+			spacing = 10
 			
-			textProperty.bindBidirectional(mainViewModel.propertiesContent)
+			children.add(new Button() => [
+				text = 'Add Property'
+				minWidth = 120
+				
+				onAction = [mainViewModel.performAddProperty]
+			])
+			
+			children.add(new Button() => [
+				text = 'Delete Property'
+				minWidth = 120
+				
+				onAction = [mainViewModel.performDeleteProperty]
+			])
+		])
+		
+		children.add(new TableView<Property>() => [
+			margin = new Insets(10.0, 0.0, 0.0, 0.0)
+			editable = true
+			placeholder = new Label() => [
+				text = 'No Properties available'
+			]
+			 
+			itemsProperty.bindBidirectional(mainViewModel.propertiesContent)
+			mainViewModel.selectedProperty.bind(selectionModel.selectedItemProperty) 
+			
+			columns.add(new TableColumn<Property, String>() => [
+				text = 'Key'
+				
+				cellValueFactory = new PropertyValueFactory('key')
+				cellFactory = TextFieldTableCell.forTableColumn()
+				onEditCommit = [event |
+					val property = event.tableView.items.get(event.tablePosition.row)
+					property.key = event.newValue
+				]
+			])
+			
+			columns.add(new TableColumn<Property, String>() => [
+				text = 'Value'
+				
+				cellValueFactory = new PropertyValueFactory('value')
+				cellFactory = TextFieldTableCell.forTableColumn()
+				onEditCommit = [event |
+					val property = event.tableView.items.get(event.tablePosition.row)
+					property.value = event.newValue
+				]
+			])
+			
+			// Distribute the columns evenly 
+			columns.forEach[column|column.prefWidthProperty.bind(widthProperty.divide(columns.size))]
 		])
 	}
 	

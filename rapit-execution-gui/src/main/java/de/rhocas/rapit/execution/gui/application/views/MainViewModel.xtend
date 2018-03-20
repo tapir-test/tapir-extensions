@@ -21,24 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.execution.gui.application.views
+package de.rhocas.rapit.execution.gui.application.views
 
 import de.bmiag.tapir.bootstrap.TapirBootstrapper
 import de.bmiag.tapir.execution.TapirExecutor.TapirExecutorFactory
+import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.Identifiable
+import de.bmiag.tapir.execution.model.TestSuite
 import de.rhocas.rapit.execution.gui.application.components.ExecutionPlanTreeItem
+import de.rhocas.rapit.execution.gui.application.data.Property
 import javafx.application.Application.Parameters
+import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
-import javafx.beans.property.SimpleStringProperty
+import javafx.collections.FXCollections
 
 @Accessors
 final class MainViewModel {
 
 	val executionPlanRoot = new SimpleObjectProperty<TreeItem<Identifiable>>()
-	val propertiesContent = new SimpleStringProperty()
+	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
+	val selectedProperty = new SimpleObjectProperty<Property>
 	val Class<?> testClass
 	var ConfigurableApplicationContext tapirContext
 
@@ -52,37 +58,72 @@ final class MainViewModel {
 
 	def void performReinitializeExecutionPlan() {
 		// Set the given properties
-		val properties = propertiesContent.valueSafe
-		properties.split('\n').stream //
-		.map[trim] //
-		.map[split('=')] //
-		.filter[it.size == 2] //
-		.forEach[System.setProperty(it.get(0), it.get(1))]
+		propertiesContent.value.filter[key !== null].forEach[System.setProperty(key, value)]
 
-		// (Re)start the tapir context
+		// Restart the tapir context and show the execution plan
+		val tapirExecutor = restartTapirContext()
+		val executionPlan = tapirExecutor.executionPlan
+		val executionPlanItem = new ExecutionPlanTreeItem(executionPlan)
+		executionPlanRoot.set(executionPlanItem)
+		selectAllNodes(executionPlanItem)
+		expandNodes(executionPlanItem)
+	}
+	
+	private def restartTapirContext() {
 		if (tapirContext !== null) {
 			tapirContext.stop
 		}
 		tapirContext = TapirBootstrapper.bootstrap(testClass)
 
-		// Display the execution plan
 		val tapirExecutorFactory = tapirContext.getBean(TapirExecutorFactory)
-		val tapirExecutor = tapirExecutorFactory.getExecutorForClass(testClass)
-		val executionPlan = tapirExecutor.executionPlan
-		executionPlanRoot.set(new ExecutionPlanTreeItem(executionPlan))
+		tapirExecutorFactory.getExecutorForClass(testClass)
+	}
+	
+	private def void expandNodes(TreeItem<Identifiable> treeItem) {
+		treeItem.expanded = true
+		
+		val value = treeItem.value
+		if (value instanceof ExecutionPlan || value instanceof TestSuite) {
+			treeItem.children.forEach[expandNodes]
+		}
 	}
 
 	def void performSelectAll() {
+		selectAllNodes(executionPlanRoot.get)
+	}
+
+	private def void selectAllNodes(TreeItem<Identifiable> treeItem) {
+		(treeItem as CheckBoxTreeItem<Identifiable>).selected = true
+		treeItem.children.forEach[selectAllNodes]
 	}
 
 	def void performDeselectAll() {
+		deselectAllNodes(executionPlanRoot.get)
+	}
+
+	private def void deselectAllNodes(TreeItem<Identifiable> treeItem) {
+		(treeItem as CheckBoxTreeItem<Identifiable>).selected = false
+		treeItem.children.forEach[deselectAllNodes]
 	}
 
 	def void performStartTests() {
+		val tapirExecutor = restartTapirContext()
+		tapirExecutor.execute
 	}
 
 	def void performCancel() {
 		tapirContext.stop
+	}
+	
+	def performAddProperty() {
+		propertiesContent.add(new Property())
+	}
+	
+	def performDeleteProperty() {
+		val selectedProperty = selectedProperty.get
+		if (selectedProperty !== null) {
+			propertiesContent.remove(selectedProperty)
+		}
 	}
 
 }
