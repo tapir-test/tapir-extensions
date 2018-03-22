@@ -29,7 +29,9 @@ import java.util.List
 import org.springframework.stereotype.Component
 
 /**
- * This invocation handler is called by tapir before each test step and makes sure that the not selected steps are skipped.
+ * This invocation handler is called by tapir before each test step. In the case of the rapit launcher it makes sure that the test steps, which
+ * have not been selected by the user, are simply skipped. As this invocation handler is active in each tapir test case once it is part of the 
+ * classpath, it does not filter anything, if it has not been configured by the rapit launcher.
  * 
  * @author Nils Christian Ehmke
  * 
@@ -49,7 +51,7 @@ class RapitStepExecutionInvocationHandler implements StepExecutionInvocationHand
 		if (selectedTestSteps === null) {
 			return Result.PROCEED
 		}
-		
+
 		if (selectedTestSteps.contains(testStep)) {
 			return Result.PROCEED
 		} else {

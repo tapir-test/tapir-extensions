@@ -44,7 +44,14 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 
-final class MainView extends VBox {
+/**
+ * The view of the main page.
+ * 
+ * @author Nils Christian Ehmke
+ * 
+ * @since 1.1.0 
+ */
+class MainView extends VBox {
 	
 	new(MainViewModel mainViewModel) {
 		padding = new Insets(10)
@@ -89,7 +96,7 @@ final class MainView extends VBox {
 		children.add(new Separator() => [
 			margin = new Insets(10.0, 0.0, 0.0, 0.0)
 		])
-		
+
 		children.add(new Label() => [
 			margin = new Insets(10.0, 0.0, 0.0, 0.0)
 			text = 'Execution Plan'

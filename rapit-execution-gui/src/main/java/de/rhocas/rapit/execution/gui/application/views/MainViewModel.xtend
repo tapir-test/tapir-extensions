@@ -46,11 +46,18 @@ import org.slf4j.LoggerFactory
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
 
+/**
+ * The view model of the main page.
+ * 
+ * @author Nils Christian Ehmke
+ * 
+ * @since 1.1.0 
+ */
 @Accessors
-final class MainViewModel {
+class MainViewModel {
 
 	static val logger = LoggerFactory.getLogger(MainViewModel)
-	
+
 	val executionPlanRoot = new SimpleObjectProperty<TreeItem<Identifiable>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
 	val selectedProperty = new SimpleObjectProperty<Property>
@@ -71,10 +78,16 @@ final class MainViewModel {
 		}
 	}
 
+	/**
+	 * This method is executed once everything else of the application is initialized.
+	 */
 	def void start() {
 		performReinitializeExecutionPlan()
 	}
 
+	/**
+	 * This method is performed when the user wants to reinitialize the execution plan.
+	 */
 	def void performReinitializeExecutionPlan() {
 		try {
 			// Set the given properties
@@ -111,6 +124,9 @@ final class MainViewModel {
 		}
 	}
 
+	/**
+	 * This method is performed when the user wants to select all items.
+	 */
 	def void performSelectAll() {
 		try {
 			selectAllNodes(executionPlanRoot.get)
@@ -123,7 +139,10 @@ final class MainViewModel {
 		(treeItem as CheckBoxTreeItem<Identifiable>).selected = true
 		treeItem.children.forEach[selectAllNodes]
 	}
-
+	
+	/**
+	 * This method is performed when the user wants to deselect all items.
+	 */
 	def void performDeselectAll() {
 		try {
 			deselectAllNodes(executionPlanRoot.get)
@@ -136,7 +155,10 @@ final class MainViewModel {
 		(treeItem as CheckBoxTreeItem<Identifiable>).selected = false
 		treeItem.children.forEach[deselectAllNodes]
 	}
-
+	
+	/**
+	 * This method is performed when the user wants to start the tests.
+	 */
 	def void performStartTests() {
 		try {
 			val tapirExecutor = restartTapirContext()
@@ -160,12 +182,16 @@ final class MainViewModel {
 				#[]
 			}
 		} else {
+			// All other tree items are no leafs, which means that we have to search them as well
 			treeItem.children.map[selectedSteps] //
 			.flatten //
 			.toList
 		}
 	}
-
+	
+	/**
+	 * This method is performed when the user wants to add a property entry.
+	 */
 	def performAddProperty() {
 		try {
 			propertiesContent.add(new Property())
@@ -173,7 +199,10 @@ final class MainViewModel {
 			handleException(ex)
 		}
 	}
-
+	
+	/**
+	 * This method is performed when the user wants to delete a property entry.
+	 */
 	def performDeleteProperty() {
 		try {
 			val selectedProperty = selectedProperty.get
@@ -184,10 +213,10 @@ final class MainViewModel {
 			handleException(ex)
 		}
 	}
-	
+
 	private def handleException(Exception exception) {
 		logger.error('An exception occurred', exception)
-		
+
 		val alert = new Alert(AlertType.ERROR)
 		alert.title = 'Error'
 		alert.headerText = exception.localizedMessage

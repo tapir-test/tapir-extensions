@@ -30,7 +30,8 @@ import javafx.scene.Scene
 import javafx.stage.Stage
 
 /**
- * This is the rapit launcher for tapir test cases.
+ * This is the rapit launcher for tapir test cases. It allows to start arbitrary parts of a test case or a test suite, as long as the tests and the
+ * bootstrap configuration can be found in the classpath.
  * 
  * @author Nils Christian Ehmke
  * 
@@ -53,18 +54,18 @@ final class RapitLauncher extends Application {
 			primaryStage.scene = scene
 			primaryStage.maximized = true
 			primaryStage.show
-			
+
 			mainViewModel.start
 		} catch (IllegalArgumentException ex) {
 			printError(ex)
 			printUsage()
 		}
 	}
-	
-	def printError(IllegalArgumentException exception) {
+
+	private def printError(IllegalArgumentException exception) {
 		System.err.println('''Error: «exception.localizedMessage»''')
 	}
-	
+
 	private def printUsage() {
 		System.err.println('''Usage: java «RapitLauncher.name» <test class or test suite>''')
 	}

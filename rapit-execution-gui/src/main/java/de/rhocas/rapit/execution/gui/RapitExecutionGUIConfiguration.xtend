@@ -26,7 +26,8 @@ package de.rhocas.rapit.execution.gui
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
 
 /**
- * This is the configuration for the rapit execution GUI module.
+ * This is the configuration for the rapit execution GUI module. This is just necessary to add the invocation handler of the rapit launcher to the
+ * Spring context of the tapir test case. 
  * 
  * @author Nils Christian Ehmke
  * 
