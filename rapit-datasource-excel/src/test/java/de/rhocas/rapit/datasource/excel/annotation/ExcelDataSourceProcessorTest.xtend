@@ -24,16 +24,17 @@
 package de.rhocas.rapit.datasource.excel.annotation
 
 import de.bmiag.tapir.data.Immutable
+import java.util.List
 import java.util.Optional
 import org.eclipse.xtend.core.compiler.batch.XtendCompilerTester
+import org.eclipse.xtend.lib.macro.services.Problem.Severity
 import org.junit.Test
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.collection.IsMapContaining.hasKey
 import static org.hamcrest.core.Is.is
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertThat
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize
-import org.eclipse.xtend.lib.macro.services.Problem.Severity
 
 /**
  * This is the unit test for the {@link ExcelDataSourceProcessor}.
@@ -268,6 +269,33 @@ class ExcelDataSourceProcessorTest {
 			
 			val problem = problems.get(0)
 			assertThat(problem.message, is('The annotation can only be used in conjunction with interface de.bmiag.tapir.data.Immutable.'))
+			assertThat(problem.severity, is(Severity.ERROR))
+		]
+	}
+	
+	@Test
+	def dataSourceWithInvalidGenericShouldOptionalFieldShouldBeMarkedWithError() {
+		compilerTester.compile('''
+		package de.rhocas.rapit.test
+		
+		import «ExcelDataSource.name»
+		import «Immutable.name»
+		import «List.name»
+		
+		@«ExcelDataSource.simpleName»
+		@«Immutable.simpleName»
+		class User {
+			
+			«List.simpleName»<String> ids
+			String password
+			
+		}
+		''') [
+			val problems = allProblems
+			assertThat(problems, hasSize(1))
+			
+			val problem = problems.get(0)
+			assertThat(problem.message, is('The field type must not have any generics. Only Optional<...> may be used.'))
 			assertThat(problem.severity, is(Severity.ERROR))
 		]
 	}
