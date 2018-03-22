@@ -102,7 +102,7 @@ Once the module is in your classpath, you can start the launcher by calling the 
 
 The GUI of the rapit launcher allows you not only to start your tests, but also to show the execution plan with different properties. In the lower part of the application, you can add properties and update the view by clicking on "Reinitialize Execution Plan". This is very useful if you are using tapir's variant or conditional module.
 
-Unfortunately the usage of the launcher has a drawback: In Eclipse you can only start your tests with it, if the test cases are located in the main source folder (src/main/java by default). Otherwise the launcher cannot find the classes.
+Unfortunately the usage of the launcher has a drawback: In Eclipse you can only start your tests with it, if the test cases are located in the main source folder (src/main/java by default). Otherwise the launcher cannot find the classes. Note also that the GUI uses JavaFX, which means that you might have to install JavaFX in addition, if you are using OpenJDK.
 
 ## License
 
