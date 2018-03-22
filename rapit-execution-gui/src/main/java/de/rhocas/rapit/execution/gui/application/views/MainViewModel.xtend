@@ -42,10 +42,15 @@ import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
+import org.slf4j.LoggerFactory
+import javafx.scene.control.Alert
+import javafx.scene.control.Alert.AlertType
 
 @Accessors
 final class MainViewModel {
 
+	static val logger = LoggerFactory.getLogger(MainViewModel)
+	
 	val executionPlanRoot = new SimpleObjectProperty<TreeItem<Identifiable>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
 	val selectedProperty = new SimpleObjectProperty<Property>
@@ -54,23 +59,37 @@ final class MainViewModel {
 
 	new(Parameters parameters) {
 		val rawParameters = parameters.raw
-		val firstParameter = rawParameters.get(0)
-		testClass = Class.forName(firstParameter)
+		if (rawParameters.size < 1) {
+			throw new IllegalArgumentException('The rapit launcher requires the test class or test suite as first parameter')
+		}
 
+		val firstParameter = rawParameters.get(0)
+		try {
+			testClass = Class.forName(firstParameter)
+		} catch (ClassNotFoundException ex) {
+			throw new IllegalArgumentException('''The class '«firstParameter»' can not be found''')
+		}
+	}
+
+	def void start() {
 		performReinitializeExecutionPlan()
 	}
 
 	def void performReinitializeExecutionPlan() {
-		// Set the given properties
-		propertiesContent.value.filter[key !== null].forEach[System.setProperty(key, value)]
+		try {
+			// Set the given properties
+			propertiesContent.value.filter[key !== null].forEach[System.setProperty(key, value)]
 
-		// Restart the tapir context and show the execution plan
-		val tapirExecutor = restartTapirContext()
-		val executionPlan = tapirExecutor.executionPlan
-		val executionPlanItem = new ExecutionPlanTreeItem(executionPlan)
-		executionPlanRoot.set(executionPlanItem)
-		selectAllNodes(executionPlanItem)
-		expandNodes(executionPlanItem)
+			// Restart the tapir context and show the execution plan
+			val tapirExecutor = restartTapirContext()
+			val executionPlan = tapirExecutor.executionPlan
+			val executionPlanItem = new ExecutionPlanTreeItem(executionPlan)
+			executionPlanRoot.set(executionPlanItem)
+			selectAllNodes(executionPlanItem)
+			expandNodes(executionPlanItem)
+		} catch (Exception ex) {
+			handleException(ex)
+		}
 	}
 
 	private def restartTapirContext() {
@@ -93,7 +112,11 @@ final class MainViewModel {
 	}
 
 	def void performSelectAll() {
-		selectAllNodes(executionPlanRoot.get)
+		try {
+			selectAllNodes(executionPlanRoot.get)
+		} catch (Exception ex) {
+			handleException(ex)
+		}
 	}
 
 	private def void selectAllNodes(TreeItem<Identifiable> treeItem) {
@@ -102,7 +125,11 @@ final class MainViewModel {
 	}
 
 	def void performDeselectAll() {
-		deselectAllNodes(executionPlanRoot.get)
+		try {
+			deselectAllNodes(executionPlanRoot.get)
+		} catch (Exception ex) {
+			handleException(ex)
+		}
 	}
 
 	private def void deselectAllNodes(TreeItem<Identifiable> treeItem) {
@@ -111,14 +138,18 @@ final class MainViewModel {
 	}
 
 	def void performStartTests() {
-		val tapirExecutor = restartTapirContext()
+		try {
+			val tapirExecutor = restartTapirContext()
 
-		// Configure our own invocation handler, which skips the tests if necessary
-		val selectedSteps = getSelectedSteps(executionPlanRoot.get)
-		val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
-		stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
+			// Configure our own invocation handler, which skips the tests if necessary
+			val selectedSteps = getSelectedSteps(executionPlanRoot.get)
+			val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
+			stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
 
-		tapirExecutor.execute
+			tapirExecutor.execute
+		} catch (Exception ex) {
+			handleException(ex)
+		}
 	}
 
 	private def List<TestStep> getSelectedSteps(TreeItem<Identifiable> treeItem) {
@@ -135,19 +166,32 @@ final class MainViewModel {
 		}
 	}
 
-	def void performCancel() {
-		tapirContext.stop
-	}
-
 	def performAddProperty() {
-		propertiesContent.add(new Property())
+		try {
+			propertiesContent.add(new Property())
+		} catch (Exception ex) {
+			handleException(ex)
+		}
 	}
 
 	def performDeleteProperty() {
-		val selectedProperty = selectedProperty.get
-		if (selectedProperty !== null) {
-			propertiesContent.remove(selectedProperty)
+		try {
+			val selectedProperty = selectedProperty.get
+			if (selectedProperty !== null) {
+				propertiesContent.remove(selectedProperty)
+			}
+		} catch (Exception ex) {
+			handleException(ex)
 		}
+	}
+	
+	private def handleException(Exception exception) {
+		logger.error('An exception occurred', exception)
+		
+		val alert = new Alert(AlertType.ERROR)
+		alert.title = 'Error'
+		alert.headerText = exception.localizedMessage
+		alert.showAndWait
 	}
 
 }

@@ -84,13 +84,6 @@ final class MainView extends VBox {
 				
 				onAction = [mainViewModel.performStartTests]
 			])
-			
-			children.add(new Button() => [
-				minWidth = 180
-				text = 'Cancel'
-
-				onAction = [mainViewModel.performCancel]
-			])
 		])
 		
 		children.add(new Separator() => [

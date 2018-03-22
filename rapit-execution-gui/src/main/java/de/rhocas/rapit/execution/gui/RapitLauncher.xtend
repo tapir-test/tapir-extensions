@@ -43,15 +43,30 @@ final class RapitLauncher extends Application {
 	}
 
 	override start(Stage primaryStage) throws Exception {
-		val parameters = parameters
-		val mainViewModel = new MainViewModel(parameters)
-		val mainView = new MainView(mainViewModel)
-		val scene = new Scene(mainView)
+		try {
+			val parameters = parameters
+			val mainViewModel = new MainViewModel(parameters)
+			val mainView = new MainView(mainViewModel)
+			val scene = new Scene(mainView)
 
-		primaryStage.title = 'rapit Execution GUI'
-		primaryStage.scene = scene
-		primaryStage.maximized = true
-		primaryStage.show
+			primaryStage.title = 'rapit Execution GUI'
+			primaryStage.scene = scene
+			primaryStage.maximized = true
+			primaryStage.show
+			
+			mainViewModel.start
+		} catch (IllegalArgumentException ex) {
+			printError(ex)
+			printUsage()
+		}
+	}
+	
+	def printError(IllegalArgumentException exception) {
+		System.err.println('''Error: «exception.localizedMessage»''')
+	}
+	
+	private def printUsage() {
+		System.err.println('''Usage: java «RapitLauncher.name» <test class or test suite>''')
 	}
 
 }
