@@ -45,6 +45,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.slf4j.LoggerFactory
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
+import de.bmiag.tapir.execution.model.TestClass
 
 /**
  * The view model of the main page.
@@ -121,6 +122,8 @@ class MainViewModel {
 		val value = treeItem.value
 		if (value instanceof ExecutionPlan || value instanceof TestSuite) {
 			treeItem.children.forEach[expandNodes]
+		} else if (value instanceof TestClass) {
+			treeItem.expanded = false
 		}
 	}
 
