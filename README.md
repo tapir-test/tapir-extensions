@@ -90,7 +90,19 @@ As many other tapir modules, it contains an auto configuration, which means that
 
 ### rapit Execution GUI (since 1.1.0)
 
-Coming soon.
+This module contains a new launcher to start tapir test cases and test suites. It allows you to select which parts of the execution plan should be executed. To use it, you simply need to add it as Maven dependency. 
+
+	<dependency>
+		<groupId>de.rhocas.rapit</groupId>
+		<artifactId>rapit-execution-gui</artifactId>
+		<version>1.1.0</version>
+	</dependency>
+
+Once the module is in your classpath, you can start the launcher by calling the main class "de.rhocas.rapit.execution.gui.RapitLauncher" with your test class or test suite as first parameter. In Eclipse you can add a launch configuration for this. Once the application is opened, it shows you the whole execution plan of the given test case. You can now select and deselect arbitrary steps in the execution plan. When you are finished, you can start the tests by clicking "Start Tests".
+
+The GUI of the rapit launcher allows you not only to start your tests, but also to show the execution plan with different properties. In the lower part of the application, you can add properties and update the view by clicking on "Reinitialize Execution Plan". This is very useful if you are using tapir's variant or conditional module.
+
+Unfortunately the usage of the launcher has a drawback: In Eclipse you can only start your tests with it, if the test cases are located in the main source folder (src/main/java by default). Otherwise the launcher cannot find the classes.
 
 ## License
 
