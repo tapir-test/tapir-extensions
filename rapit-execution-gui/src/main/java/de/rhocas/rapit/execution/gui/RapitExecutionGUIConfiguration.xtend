@@ -23,35 +23,16 @@
  */
 package de.rhocas.rapit.execution.gui
 
-import de.rhocas.rapit.execution.gui.application.views.MainView
-import de.rhocas.rapit.execution.gui.application.views.MainViewModel
-import javafx.application.Application
-import javafx.scene.Scene
-import javafx.stage.Stage
+import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
 
 /**
- * This is the rapit launcher for tapir test cases.
+ * This is the configuration for the rapit execution GUI module.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class RapitLauncher extends Application {
-
-	def static void main(String[] args) {
-		RapitLauncher.launch(args)
-	}
-
-	override start(Stage primaryStage) throws Exception {
-		val parameters = parameters
-		val mainViewModel = new MainViewModel(parameters)
-		val mainView = new MainView(mainViewModel)
-		val scene = new Scene(mainView)
-
-		primaryStage.title = 'rapit Execution GUI'
-		primaryStage.scene = scene
-		primaryStage.maximized = true
-		primaryStage.show
-	}
-
+@ModuleConfiguration
+class RapitExecutionGUIConfiguration {
+	
 }

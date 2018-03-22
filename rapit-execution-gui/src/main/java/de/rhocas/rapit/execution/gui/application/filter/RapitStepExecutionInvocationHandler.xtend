@@ -21,37 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.execution.gui
+package de.rhocas.rapit.execution.gui.application.filter
 
-import de.rhocas.rapit.execution.gui.application.views.MainView
-import de.rhocas.rapit.execution.gui.application.views.MainViewModel
-import javafx.application.Application
-import javafx.scene.Scene
-import javafx.stage.Stage
+import de.bmiag.tapir.execution.executor.StepExecutionInvocationHandler
+import de.bmiag.tapir.execution.model.TestStep
+import java.util.List
+import org.springframework.stereotype.Component
 
 /**
- * This is the rapit launcher for tapir test cases.
+ * This invocation handler is called by tapir before each test step and makes sure that the not selected steps are skipped.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class RapitLauncher extends Application {
+@Component
+class RapitStepExecutionInvocationHandler implements StepExecutionInvocationHandler {
 
-	def static void main(String[] args) {
-		RapitLauncher.launch(args)
+	List<TestStep> selectedTestSteps
+
+	def void setSelectedTestSteps(List<TestStep> selectedTestSteps) {
+		this.selectedTestSteps = selectedTestSteps
 	}
 
-	override start(Stage primaryStage) throws Exception {
-		val parameters = parameters
-		val mainViewModel = new MainViewModel(parameters)
-		val mainView = new MainView(mainViewModel)
-		val scene = new Scene(mainView)
+	override handlePreInvoke(TestStep testStep, Object testInstance) {
+		// If the component has not been configured, it should not filter anything
+		if (selectedTestSteps === null) {
+			return Result.PROCEED
+		}
+		
+		if (selectedTestSteps.contains(testStep)) {
+			return Result.PROCEED
+		} else {
+			return Result.SKIP
+		}
+	}
 
-		primaryStage.title = 'rapit Execution GUI'
-		primaryStage.scene = scene
-		primaryStage.maximized = true
-		primaryStage.show
+	override handlePostInvoke(TestStep testStep, Object testInstance) {
+		// Nothing to do here
 	}
 
 }

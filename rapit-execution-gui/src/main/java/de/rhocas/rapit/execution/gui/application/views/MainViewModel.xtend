@@ -27,17 +27,21 @@ import de.bmiag.tapir.bootstrap.TapirBootstrapper
 import de.bmiag.tapir.execution.TapirExecutor.TapirExecutorFactory
 import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.Identifiable
+import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
 import de.rhocas.rapit.execution.gui.application.components.ExecutionPlanTreeItem
+import de.rhocas.rapit.execution.gui.application.components.TestStepTreeItem
 import de.rhocas.rapit.execution.gui.application.data.Property
+import de.rhocas.rapit.execution.gui.application.filter.RapitStepExecutionInvocationHandler
+import java.util.List
 import javafx.application.Application.Parameters
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.collections.FXCollections
 import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
-import javafx.collections.FXCollections
 
 @Accessors
 final class MainViewModel {
@@ -68,7 +72,7 @@ final class MainViewModel {
 		selectAllNodes(executionPlanItem)
 		expandNodes(executionPlanItem)
 	}
-	
+
 	private def restartTapirContext() {
 		if (tapirContext !== null) {
 			tapirContext.stop
@@ -78,10 +82,10 @@ final class MainViewModel {
 		val tapirExecutorFactory = tapirContext.getBean(TapirExecutorFactory)
 		tapirExecutorFactory.getExecutorForClass(testClass)
 	}
-	
+
 	private def void expandNodes(TreeItem<Identifiable> treeItem) {
 		treeItem.expanded = true
-		
+
 		val value = treeItem.value
 		if (value instanceof ExecutionPlan || value instanceof TestSuite) {
 			treeItem.children.forEach[expandNodes]
@@ -108,17 +112,37 @@ final class MainViewModel {
 
 	def void performStartTests() {
 		val tapirExecutor = restartTapirContext()
+
+		// Configure our own invocation handler, which skips the tests if necessary
+		val selectedSteps = getSelectedSteps(executionPlanRoot.get)
+		val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
+		stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
+
 		tapirExecutor.execute
+	}
+
+	private def List<TestStep> getSelectedSteps(TreeItem<Identifiable> treeItem) {
+		if (treeItem instanceof TestStepTreeItem) {
+			if ((treeItem as CheckBoxTreeItem<Identifiable>).selected) {
+				#[treeItem.value as TestStep]
+			} else {
+				#[]
+			}
+		} else {
+			treeItem.children.map[selectedSteps] //
+			.flatten //
+			.toList
+		}
 	}
 
 	def void performCancel() {
 		tapirContext.stop
 	}
-	
+
 	def performAddProperty() {
 		propertiesContent.add(new Property())
 	}
-	
+
 	def performDeleteProperty() {
 		val selectedProperty = selectedProperty.get
 		if (selectedProperty !== null) {
