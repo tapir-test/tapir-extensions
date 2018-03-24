@@ -42,10 +42,10 @@ import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
-import org.slf4j.LoggerFactory
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
 import de.bmiag.tapir.execution.model.TestClass
+import org.apache.log4j.Logger
 
 /**
  * The view model of the main page.
@@ -57,7 +57,7 @@ import de.bmiag.tapir.execution.model.TestClass
 @Accessors
 class MainViewModel {
 
-	static val logger = LoggerFactory.getLogger(MainViewModel)
+	static val logger = Logger.getInstance(MainViewModel)
 
 	val executionPlanRoot = new SimpleObjectProperty<TreeItem<Identifiable>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
