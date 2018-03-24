@@ -28,6 +28,7 @@ import de.rhocas.rapit.execution.gui.application.views.MainViewModel
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
+import javafx.scene.image.Image
 
 /**
  * This is the rapit launcher for tapir test cases. It allows to start arbitrary parts of a test case or a test suite, as long as the tests and the
@@ -46,11 +47,12 @@ final class RapitLauncher extends Application {
 	override start(Stage primaryStage) throws Exception {
 		try {
 			val parameters = parameters
-			val mainViewModel = new MainViewModel(parameters)
+			val mainViewModel = new MainViewModel(parameters, primaryStage)
 			val mainView = new MainView(mainViewModel)
 			val scene = new Scene(mainView)
 
 			primaryStage.title = 'rapit Execution GUI'
+			primaryStage.icons += new Image(RapitLauncher.classLoader.getResourceAsStream('rapit-app-icon.png'))
 			primaryStage.scene = scene
 			primaryStage.maximized = true
 			primaryStage.show

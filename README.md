@@ -90,6 +90,8 @@ As many other tapir modules, it contains an auto configuration, which means that
 
 ### rapit Execution GUI (since 1.1.0)
 
+Note that this module uses icons from the essential app icon set at https://www.iconfinder.com/iconsets/essential-app-1.
+
 This module contains a new launcher to start tapir test cases and test suites. It allows you to select which parts of the execution plan should be executed. To use it, you simply need to add it as Maven dependency. 
 
 	<dependency>

@@ -43,6 +43,7 @@ import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
+import javafx.stage.Window
 import org.apache.logging.log4j.LogManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
@@ -64,8 +65,9 @@ class MainViewModel {
 	val selectedProperty = new SimpleObjectProperty<Property>
 	val Class<?> testClass
 	var ConfigurableApplicationContext tapirContext
+	val Window window
 
-	new(Parameters parameters) {
+	new(Parameters parameters, Window window) {
 		val rawParameters = parameters.raw
 		if (rawParameters.size < 1) {
 			throw new IllegalArgumentException('The rapit launcher requires the test class or test suite as first parameter')
@@ -77,6 +79,8 @@ class MainViewModel {
 		} catch (ClassNotFoundException ex) {
 			throw new IllegalArgumentException('''The class '«firstParameter»' can not be found''')
 		}
+
+		this.window = window
 	}
 
 	/**
@@ -222,6 +226,7 @@ class MainViewModel {
 
 		val alert = new Alert(AlertType.ERROR)
 		alert.title = 'Error'
+		alert.initOwner(window)
 		alert.headerText = exception.localizedMessage
 		alert.showAndWait
 	}
