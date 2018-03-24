@@ -27,6 +27,7 @@ import de.bmiag.tapir.bootstrap.TapirBootstrapper
 import de.bmiag.tapir.execution.TapirExecutor.TapirExecutorFactory
 import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.Identifiable
+import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
 import de.rhocas.rapit.execution.gui.application.components.ExecutionPlanTreeItem
@@ -38,14 +39,13 @@ import javafx.application.Application.Parameters
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
-import javafx.scene.control.CheckBoxTreeItem
-import javafx.scene.control.TreeItem
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.springframework.context.ConfigurableApplicationContext
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType
-import de.bmiag.tapir.execution.model.TestClass
-import org.apache.log4j.Logger
+import javafx.scene.control.CheckBoxTreeItem
+import javafx.scene.control.TreeItem
+import org.apache.logging.log4j.LogManager
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.springframework.context.ConfigurableApplicationContext
 
 /**
  * The view model of the main page.
@@ -57,7 +57,7 @@ import org.apache.log4j.Logger
 @Accessors
 class MainViewModel {
 
-	static val logger = Logger.getInstance(MainViewModel)
+	static val logger = LogManager.getLogger(MainViewModel)
 
 	val executionPlanRoot = new SimpleObjectProperty<TreeItem<Identifiable>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
