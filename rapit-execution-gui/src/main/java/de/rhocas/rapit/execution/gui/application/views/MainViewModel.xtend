@@ -24,16 +24,19 @@
 package de.rhocas.rapit.execution.gui.application.views
 
 import de.bmiag.tapir.bootstrap.TapirBootstrapper
+import de.bmiag.tapir.execution.TapirExecutor
 import de.bmiag.tapir.execution.TapirExecutor.TapirExecutorFactory
 import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.Identifiable
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
+import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
 import de.rhocas.rapit.execution.gui.application.components.ExecutionPlanTreeItem
 import de.rhocas.rapit.execution.gui.application.components.TestStepTreeItem
 import de.rhocas.rapit.execution.gui.application.data.Property
 import de.rhocas.rapit.execution.gui.application.filter.RapitStepExecutionInvocationHandler
+import de.rhocas.rapit.execution.gui.application.listener.RapitExecutionListener
 import java.util.List
 import javafx.application.Application.Parameters
 import javafx.application.Platform
@@ -49,9 +52,6 @@ import javafx.stage.Window
 import org.apache.logging.log4j.LogManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
-import de.rhocas.rapit.execution.gui.application.listener.RapitExecutionListener
-import de.bmiag.tapir.execution.TapirExecutor
-import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
 
 /**
  * The view model of the main page.
@@ -65,6 +65,7 @@ class MainViewModel {
 
 	static val logger = LogManager.getLogger(MainViewModel)
 
+	val refreshTableObservable = new SimpleObjectProperty
 	val executionPlanRoot = new SimpleObjectProperty<AbstractCheckBoxTreeItem<ExecutionPlan>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
 	val selectedProperty = new SimpleObjectProperty<Property>
@@ -192,6 +193,7 @@ class MainViewModel {
 				// Configure our own listener, which informs our view model about changes
 				val executionListener = tapirContext.getBean(RapitExecutionListener)
 				executionListener.executionPlanRoot = executionPlanRoot.get 
+				executionListener.refreshTableObservable = refreshTableObservable
 				
 				// Now start the actual execution
 				tapirExecutor.execute

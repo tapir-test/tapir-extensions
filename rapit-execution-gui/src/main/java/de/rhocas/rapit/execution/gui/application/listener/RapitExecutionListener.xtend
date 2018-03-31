@@ -31,10 +31,11 @@ import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
 import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
 import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
+import javafx.application.Platform
+import javafx.beans.property.ObjectProperty
 import javafx.scene.control.TreeItem
 import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Component
-import javafx.application.Platform
 
 /**
  * This is the listener responsible for updating the view model during the execution of the tapir test cases.
@@ -49,6 +50,7 @@ class RapitExecutionListener extends AbstractExecutionListener {
 	static val logger = LogManager.getLogger(RapitExecutionListener)
 	
 	var AbstractCheckBoxTreeItem<ExecutionPlan> executionPlanRoot 
+	var ObjectProperty<Object> refreshTableObservable
 		
 	override classSucceeded(TestClass testClass) {
 		setStatus(testClass, ExecutionStatus.SUCCEEDED)
@@ -104,7 +106,10 @@ class RapitExecutionListener extends AbstractExecutionListener {
 		val item = search(executionPlanRoot, testItem)
 		if (item instanceof AbstractCheckBoxTreeItem<?>) {
 			// And set its status
-			Platform.runLater[item.executionStatusProperty.set(executionStatus)]
+			Platform.runLater[
+				item.executionStatus = executionStatus
+				refreshTableObservable.value = new Object
+			]
 		} else {
 			logger.warn('''Test item with «testItem.id» could not be found in the execution plan''')
 		}
@@ -127,6 +132,10 @@ class RapitExecutionListener extends AbstractExecutionListener {
 	
 	def setExecutionPlanRoot(AbstractCheckBoxTreeItem<ExecutionPlan> executionPlanRoot) {
 		this.executionPlanRoot = executionPlanRoot
+	}
+	
+	def setRefreshTableObservable(ObjectProperty<Object> refreshTableObservable) {
+		this.refreshTableObservable = refreshTableObservable
 	}
 	
 	

@@ -25,7 +25,6 @@ package de.rhocas.rapit.execution.gui.application.components
 
 import de.bmiag.tapir.execution.model.Identifiable
 import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
-import javafx.beans.value.WeakChangeListener
 import javafx.scene.control.TreeTableRow
 
 /**
@@ -44,12 +43,8 @@ final class ExecutionStatusStyledTreeTableRow extends TreeTableRow<Identifiable>
 		styleClass.removeAll('row-failed', 'row-skipped', 'row-succeeded')
 
 		if (treeItem instanceof AbstractCheckBoxTreeItem<?>) {
-			// Add a (weak!) listener which updates the whole tree table once anything changes. A weak reference is necessary, as we will have a memory leak otherwise.
-			val executionStatusProperty = (treeItem as AbstractCheckBoxTreeItem<?>).executionStatusProperty
-			executionStatusProperty.addListener(new WeakChangeListener[observableValue, oldValue, newValue| treeTableView.refresh])
-
 			// Now add the new style class
-			val executionStatus = executionStatusProperty.get
+			val executionStatus = (treeItem as AbstractCheckBoxTreeItem<?>).executionStatus
 			val newStyleClass = findStyleClass(executionStatus)
 			if (newStyleClass !== null) {
 				styleClass.add(newStyleClass)

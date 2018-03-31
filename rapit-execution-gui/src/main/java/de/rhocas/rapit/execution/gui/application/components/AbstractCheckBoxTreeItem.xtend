@@ -26,10 +26,9 @@ package de.rhocas.rapit.execution.gui.application.components
 import de.bmiag.tapir.execution.model.Identifiable
 import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
 import java.util.List
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * A selectable tree item which holds an instance of {@link Identifiable} and contains the execution status of the test item.
@@ -38,9 +37,10 @@ import javafx.scene.control.TreeItem
  * 
  * @since 1.1.0
  */
+ @Accessors
 abstract class AbstractCheckBoxTreeItem<T extends Identifiable> extends CheckBoxTreeItem<Identifiable> {
 
-	ObjectProperty<ExecutionStatus> executionStatus = new SimpleObjectProperty(ExecutionStatus.NONE)
+	ExecutionStatus executionStatus = ExecutionStatus.NONE
 
 	new(T t) {
 		super(t)
@@ -49,9 +49,5 @@ abstract class AbstractCheckBoxTreeItem<T extends Identifiable> extends CheckBox
 	}
 
 	def abstract List<TreeItem<Identifiable>> createChildren()
-
-	def executionStatusProperty() {
-		executionStatus
-	}
 
 }

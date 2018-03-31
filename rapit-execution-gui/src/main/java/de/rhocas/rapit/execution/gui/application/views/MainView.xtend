@@ -113,6 +113,11 @@ class MainView extends VBox {
 			rootProperty.bind(mainViewModel.executionPlanRoot)
 			rowFactory = [ treeTableView | new ExecutionStatusStyledTreeTableRow()]
 			
+			mainViewModel.refreshTableObservable.addListener[
+				observableValue, oldValue, newValue|
+				refresh
+			]
+			
 			tableMenuButtonVisible = true
 			showRoot = false
 			editable = true
