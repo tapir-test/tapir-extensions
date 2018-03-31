@@ -47,7 +47,7 @@ final class RapitLauncher extends Application {
 	override start(Stage primaryStage) throws Exception {
 		try {
 			val parameters = parameters
-			val mainViewModel = new MainViewModel(parameters, primaryStage)
+			val mainViewModel = new MainViewModel(parameters)
 			val mainView = new MainView(mainViewModel)
 			val scene = new Scene(mainView)
 
