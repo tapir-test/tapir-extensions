@@ -1,0 +1,5 @@
+1.1.0
+	Added the 'rapit-execution-gui' module, which allows the execution of tapir test cases in a GUI.
+	
+1.0.0 (13 Mar 2018):
+	First public release
