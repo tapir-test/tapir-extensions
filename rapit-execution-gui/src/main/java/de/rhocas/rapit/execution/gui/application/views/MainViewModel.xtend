@@ -52,6 +52,9 @@ import org.apache.logging.log4j.LogManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
 import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
+import de.saxsys.mvvmfx.ViewModel
+import de.saxsys.mvvmfx.utils.commands.DelegateCommand
+import de.saxsys.mvvmfx.utils.commands.Action
 
 /**
  * The view model of the main page.
@@ -61,64 +64,69 @@ import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
  * @since 1.1.0 
  */
 @Accessors
-class MainViewModel {
+class MainViewModel implements ViewModel {
 
 	static val logger = LogManager.getLogger(MainViewModel)
+
+	val reinitializeExecutionPlanCommand = createCommand[performReinitializeExecutionPlan]
+	val selectAllCommand = createCommand[performSelectAll]
+	val deselectAllCommand = createCommand[performDeselectAll]
+	val startTestsCommand = createCommand[performStartTests]
+	val addPropertyCommand = createCommand[performAddProperty]
+	val deletePropertyCommand = createCommand[performDeleteProperty]
 
 	val refreshTableObservable = new SimpleObjectProperty
 	val executionPlanRoot = new SimpleObjectProperty<AbstractCheckBoxTreeItem<ExecutionPlan>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
 	val selectedProperty = new SimpleObjectProperty<Property>
 	val readOnlyMode = new SimpleBooleanProperty
-	val Class<?> testClass
+	var Class<?> testClass
 	var ConfigurableApplicationContext tapirContext
 	var TapirExecutor tapirExecutor
-
-	new(Parameters parameters) {
-		val rawParameters = parameters.raw
-		if (rawParameters.size < 1) {
-			throw new IllegalArgumentException('The rapit launcher requires the test class or test suite as first parameter')
-		}
-
-		val firstParameter = rawParameters.get(0)
-		try {
-			testClass = Class.forName(firstParameter)
-		} catch (ClassNotFoundException ex) {
-			throw new IllegalArgumentException('''The class '«firstParameter»' can not be found''')
-		}
-	}
 
 	/**
 	 * This method is executed once everything else of the application is initialized.
 	 */
-	def void start() {
-		performReinitializeExecutionPlan()
-	}
-
-	/**
-	 * This method is performed when the user wants to reinitialize the execution plan.
-	 */
-	def void performReinitializeExecutionPlan() {
+	def void start(Parameters parameters) {
 		try {
-			// Set the given properties
-			propertiesContent.value.filter[key !== null].forEach[System.setProperty(key, value)]
-
-			// Restart the tapir context and show the execution plan
-			restartTapirContext()
-			
-			val executionPlan = tapirExecutor.executionPlan
-			val executionPlanItem = new ExecutionPlanTreeItem(executionPlan)
-			executionPlanRoot.set(executionPlanItem)
-			selectAllNodes(executionPlanItem)
-			expandNodes(executionPlanItem)
+			val rawParameters = parameters.raw
+			if (rawParameters.size < 1) {
+				throw new IllegalArgumentException('The rapit launcher requires the test class or test suite as first parameter')
+			}
+	
+			val firstParameter = rawParameters.get(0)
+			try {
+				testClass = Class.forName(firstParameter)
+			} catch (ClassNotFoundException ex) {
+				throw new IllegalArgumentException('''The class '«firstParameter»' can not be found''')
+			}
+	
+			performReinitializeExecutionPlan()
 		} catch (Exception ex) {
 			handleException(ex)
 		}
 	}
 
+	/**
+	 * This method is performed when the user wants to reinitialize the execution plan.
+	 */
+	private def void performReinitializeExecutionPlan() {
+		// Set the given properties
+		propertiesContent.value.filter[key !== null].forEach[System.setProperty(key, value)]
+
+		// Restart the tapir context and show the execution plan
+		restartTapirContext()
+
+		val executionPlan = tapirExecutor.executionPlan
+		val executionPlanItem = new ExecutionPlanTreeItem(executionPlan)
+		executionPlanRoot.set(executionPlanItem)
+		selectAllNodes(executionPlanItem)
+		expandNodes(executionPlanItem)
+	}
+
 	private def restartTapirContext() {
 		if (tapirContext !== null) {
-			tapirContext.close 
+			tapirContext.close
 		}
 		tapirContext = TapirBootstrapper.bootstrap(testClass)
 
@@ -140,59 +148,51 @@ class MainViewModel {
 	/**
 	 * This method is performed when the user wants to select all items.
 	 */
-	def void performSelectAll() {
-		try {
-			selectAllNodes(executionPlanRoot.get)
-		} catch (Exception ex) {
-			handleException(ex)
-		}
+	private def void performSelectAll() {
+		selectAllNodes(executionPlanRoot.get)
 	}
 
 	private def void selectAllNodes(TreeItem<Identifiable> treeItem) {
 		(treeItem as CheckBoxTreeItem<Identifiable>).selected = true
 		treeItem.children.forEach[selectAllNodes]
 	}
-	
+
 	/**
 	 * This method is performed when the user wants to deselect all items.
 	 */
-	def void performDeselectAll() {
-		try {
-			deselectAllNodes(executionPlanRoot.get)
-		} catch (Exception ex) {
-			handleException(ex)
-		}
+	private def void performDeselectAll() {
+		deselectAllNodes(executionPlanRoot.get)
 	}
 
 	private def void deselectAllNodes(TreeItem<Identifiable> treeItem) {
 		(treeItem as CheckBoxTreeItem<Identifiable>).selected = false
 		treeItem.children.forEach[deselectAllNodes]
 	}
-	
+
 	/**
 	 * This method is performed when the user wants to start the tests.
 	 */
-	def void performStartTests() {
+	private def void performStartTests() {
 		new Thread [
 			try {
 				readOnlyMode.set(true)
-				
+
 				// We reset the execution step of the whole execution plan so that the rows are not colored
 				resetExecutionState(executionPlanRoot.get)
-				
+
 				// We have to get the selected steps before we reinitialize the execution plan
 				val selectedSteps = getSelectedSteps(executionPlanRoot.get)
 				Platform.runLater[refreshTableObservable.value = new Object]
-				
+
 				// Configure our own invocation handler, which skips the tests if necessary
 				val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
 				stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
-				
+
 				// Configure our own listener, which informs our view model about changes
 				val executionListener = tapirContext.getBean(RapitExecutionListener)
-				executionListener.executionPlanRoot = executionPlanRoot.get 
+				executionListener.executionPlanRoot = executionPlanRoot.get
 				executionListener.refreshTableObservable = refreshTableObservable
-				
+
 				// Now start the actual execution
 				tapirExecutor.execute
 			} catch (Exception ex) {
@@ -202,7 +202,7 @@ class MainViewModel {
 			}
 		].start
 	}
-	
+
 	private def void resetExecutionState(TreeItem<Identifiable> treeItem) {
 		(treeItem as AbstractCheckBoxTreeItem<?>).executionStatus = ExecutionStatus.NONE
 		treeItem.children.forEach[resetExecutionState(it)]
@@ -222,30 +222,38 @@ class MainViewModel {
 			.toList
 		}
 	}
-	
+
 	/**
 	 * This method is performed when the user wants to add a property entry.
 	 */
-	def performAddProperty() {
-		try {
-			propertiesContent.add(new Property())
-		} catch (Exception ex) {
-			handleException(ex)
-		}
+	private def performAddProperty() {
+		propertiesContent.add(new Property())
 	}
-	
+
 	/**
 	 * This method is performed when the user wants to delete a property entry.
 	 */
-	def performDeleteProperty() {
-		try {
-			val selectedProperty = selectedProperty.get
-			if (selectedProperty !== null) {
-				propertiesContent.remove(selectedProperty)
-			}
-		} catch (Exception ex) {
-			handleException(ex)
+	private def performDeleteProperty() {
+		val selectedProperty = selectedProperty.get
+		if (selectedProperty !== null) {
+			propertiesContent.remove(selectedProperty)
 		}
+	}
+
+	private def createCommand(Runnable aAction) {
+		new DelegateCommand [
+			new Action() {
+
+				override protected action() throws Exception {
+					try {
+						aAction.run
+					} catch (Exception ex) {
+						handleException(ex)
+					}
+				}
+
+			}
+		]
 	}
 
 	private def handleException(Exception exception) {

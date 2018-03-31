@@ -44,6 +44,11 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
+import de.saxsys.mvvmfx.JavaView
+import javafx.fxml.Initializable
+import java.net.URL
+import java.util.ResourceBundle
+import de.saxsys.mvvmfx.InjectViewModel
 
 /**
  * The view of the main page.
@@ -52,12 +57,16 @@ import javafx.scene.layout.VBox
  * 
  * @since 1.1.0 
  */
-class MainView extends VBox {
+class MainView extends VBox implements JavaView<MainViewModel>, Initializable {
 	
-	new(MainViewModel mainViewModel) {
+	@InjectViewModel
+	MainViewModel mainViewModel
+	
+	val TreeTableView<Identifiable> executionPlanTreeTableView
+	val TableView<Property> propertiesTableView
+	
+	new() {
 		padding = new Insets(10)
-		disableProperty.bind(mainViewModel.readOnlyMode)
-
 		stylesheets.add(MainView.canonicalName.replace('.', '/') + '.css')
 
 		children.add(new HBox() => [
@@ -68,14 +77,14 @@ class MainView extends VBox {
 				minWidth = 180
 				text = 'Select All'
 				
-				onAction = [mainViewModel.performSelectAll]
+				onAction = [mainViewModel.selectAllCommand.execute]
 			])
 
 			children.add(new Button() => [
 				minWidth = 180
 				text = 'Deselect All'
 				
-				onAction = [mainViewModel.performDeselectAll]
+				onAction = [mainViewModel.deselectAllCommand.execute]
 			])
 			
 			children.add(new Button() => [
@@ -84,7 +93,7 @@ class MainView extends VBox {
 
 				HBox.setMargin(it, new Insets(0.0, 0.0, 0.0, 20.0))
 				
-				onAction = [mainViewModel.performReinitializeExecutionPlan]
+				onAction = [mainViewModel.reinitializeExecutionPlanCommand.execute]
 			])
 			
 			children.add(new Button() => [
@@ -93,7 +102,7 @@ class MainView extends VBox {
 
 				HBox.setMargin(it, new Insets(0.0, 0.0, 0.0, 20.0))
 				
-				onAction = [mainViewModel.performStartTests]
+				onAction = [mainViewModel.startTestsCommand.execute]
 			])
 		])
 		
@@ -106,18 +115,11 @@ class MainView extends VBox {
 			text = 'Execution Plan'
 		])
 		
-		children.add(new TreeTableView<Identifiable>() => [
+		executionPlanTreeTableView = new TreeTableView<Identifiable>() => [
 			VBox.setVgrow(it, Priority.ALWAYS)
 			margin = new Insets(5.0, 0.0, 0.0, 0.0)
 			 
-			rootProperty.bind(mainViewModel.executionPlanRoot)
 			rowFactory = [ treeTableView | new ExecutionStatusStyledTreeTableRow()]
-			
-			mainViewModel.refreshTableObservable.addListener[
-				observableValue, oldValue, newValue|
-				refresh
-			]
-			
 			tableMenuButtonVisible = true
 			showRoot = false
 			editable = true
@@ -152,7 +154,8 @@ class MainView extends VBox {
 			
 			// Distribute the columns evenly 
 			columns.forEach[column|column.prefWidthProperty.bind(widthProperty.divide(columns.size))]
-		])
+		]
+		children.add(executionPlanTreeTableView)
 
 		children.add(new Label() => [
 			margin = new Insets(10.0, 0.0, 0.0, 0.0)
@@ -167,27 +170,24 @@ class MainView extends VBox {
 				text = 'Add Property'
 				minWidth = 120
 				
-				onAction = [mainViewModel.performAddProperty]
+				onAction = [mainViewModel.addPropertyCommand.execute]
 			])
 			
 			children.add(new Button() => [
 				text = 'Delete Property'
 				minWidth = 120
 				
-				onAction = [mainViewModel.performDeleteProperty]
+				onAction = [mainViewModel.deletePropertyCommand.execute]
 			])
 		])
 		
-		children.add(new TableView<Property>() => [
+		propertiesTableView = new TableView<Property>() => [
 			margin = new Insets(10.0, 0.0, 0.0, 0.0)
 			editable = true
 			placeholder = new Label() => [
 				text = 'No Properties available'
 			]
 			 
-			itemsProperty.bindBidirectional(mainViewModel.propertiesContent)
-			mainViewModel.selectedProperty.bind(selectionModel.selectedItemProperty) 
-			
 			columns.add(new TableColumn<Property, String>() => [
 				text = 'Key'
 				
@@ -212,7 +212,24 @@ class MainView extends VBox {
 			
 			// Distribute the columns evenly 
 			columns.forEach[column|column.prefWidthProperty.bind(widthProperty.divide(columns.size))]
-		])
+		]
+		children.add(propertiesTableView)
+	}
+	
+	override initialize(URL location, ResourceBundle resources) {
+		// View
+		disableProperty.bind(mainViewModel.readOnlyMode)
+		
+		// Execution plan
+		executionPlanTreeTableView.rootProperty.bind(mainViewModel.executionPlanRoot)
+		mainViewModel.refreshTableObservable.addListener[
+			observableValue, oldValue, newValue|
+			executionPlanTreeTableView.refresh
+		]
+		
+		// Properties
+		propertiesTableView.itemsProperty.bindBidirectional(mainViewModel.propertiesContent)
+		mainViewModel.selectedProperty.bind(propertiesTableView.selectionModel.selectedItemProperty) 
 	}
 	
 }

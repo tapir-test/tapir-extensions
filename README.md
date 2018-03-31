@@ -76,7 +76,7 @@ tapir's default implementations use either frameworks which have to be informed 
 
 ### rapit Excel Reporting (since 1.0.0)
 
-Note that this module uses the Apache Poi library, which means that the licenses of Apache Poi apply, when you use them.
+Note that this module uses the Apache Poi library, which means that the licenses of Apache Poi apply, when you use it.
 
 This module contains a reporting listener which writes an Excel report about the test execution. To use it, you simply need to add it as Maven dependency. 
 
@@ -90,7 +90,7 @@ As many other tapir modules, it contains an auto configuration, which means that
 
 ### rapit Execution GUI (since 1.1.0)
 
-Note that this module uses icons from the essential app icon set at https://www.iconfinder.com/iconsets/essential-app-1.
+Note that this module uses icons from the essential app icon set at https://www.iconfinder.com/iconsets/essential-app-1. This module uses also the mvvmFX framework, which means that the licenses of mvvmFX (and its dependencies) apply, when you use it.
 
 This module contains a new launcher to start tapir test cases and test suites. It allows you to select which parts of the execution plan should be executed. To use it, you simply need to add it as Maven dependency. 
 
