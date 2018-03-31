@@ -21,37 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.execution.gui.application.components
+package de.rhocas.rapit.execution.gui.application.components
 
 import de.bmiag.tapir.execution.model.Identifiable
+import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
 import java.util.List
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem
 
 /**
- * A selectable tree item which holds an instance of {@link Identifiable} and initializes its children in a lazy way.
+ * A selectable tree item which holds an instance of {@link Identifiable} and contains the execution status of the test item.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-abstract class AbstractLazyCheckBoxTreeItem<T extends Identifiable> extends CheckBoxTreeItem<Identifiable> {
-	
-	boolean childrenInitialized
+abstract class AbstractCheckBoxTreeItem<T extends Identifiable> extends CheckBoxTreeItem<Identifiable> {
+
+	ObjectProperty<ExecutionStatus> executionStatus = new SimpleObjectProperty(ExecutionStatus.NONE)
 
 	new(T t) {
 		super(t)
+
+		children.all = createChildren
 	}
 
-	override final getChildren() {
-		if (!childrenInitialized) {
-			childrenInitialized = true
-			super.children.all = createChildren()
-		}
-
-		super.children
-	}
-	
 	def abstract List<TreeItem<Identifiable>> createChildren()
-	
+
+	def executionStatusProperty() {
+		executionStatus
+	}
+
 }

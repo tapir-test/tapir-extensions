@@ -33,7 +33,7 @@ import de.bmiag.tapir.execution.model.TestSuite
  * 
  * @since 1.1.0
  */
-final class TestSuiteTreeItem extends AbstractLazyCheckBoxTreeItem<TestSuite> {
+final class TestSuiteTreeItem extends AbstractCheckBoxTreeItem<TestSuite> {
 
 	new(TestSuite testSuite) {
 		super(testSuite)

@@ -36,6 +36,8 @@ import de.rhocas.rapit.execution.gui.application.data.Property
 import de.rhocas.rapit.execution.gui.application.filter.RapitStepExecutionInvocationHandler
 import java.util.List
 import javafx.application.Application.Parameters
+import javafx.application.Platform
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
@@ -47,6 +49,9 @@ import javafx.stage.Window
 import org.apache.logging.log4j.LogManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
+import de.rhocas.rapit.execution.gui.application.listener.RapitExecutionListener
+import de.bmiag.tapir.execution.TapirExecutor
+import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
 
 /**
  * The view model of the main page.
@@ -60,11 +65,13 @@ class MainViewModel {
 
 	static val logger = LogManager.getLogger(MainViewModel)
 
-	val executionPlanRoot = new SimpleObjectProperty<TreeItem<Identifiable>>()
+	val executionPlanRoot = new SimpleObjectProperty<AbstractCheckBoxTreeItem<ExecutionPlan>>()
 	val propertiesContent = new SimpleListProperty<Property>(FXCollections.observableArrayList())
 	val selectedProperty = new SimpleObjectProperty<Property>
+	val readOnlyMode = new SimpleBooleanProperty
 	val Class<?> testClass
 	var ConfigurableApplicationContext tapirContext
+	var TapirExecutor tapirExecutor
 	val Window window
 
 	new(Parameters parameters, Window window) {
@@ -99,7 +106,8 @@ class MainViewModel {
 			propertiesContent.value.filter[key !== null].forEach[System.setProperty(key, value)]
 
 			// Restart the tapir context and show the execution plan
-			val tapirExecutor = restartTapirContext()
+			restartTapirContext()
+			
 			val executionPlan = tapirExecutor.executionPlan
 			val executionPlanItem = new ExecutionPlanTreeItem(executionPlan)
 			executionPlanRoot.set(executionPlanItem)
@@ -112,12 +120,12 @@ class MainViewModel {
 
 	private def restartTapirContext() {
 		if (tapirContext !== null) {
-			tapirContext.stop
+			tapirContext.close 
 		}
 		tapirContext = TapirBootstrapper.bootstrap(testClass)
 
 		val tapirExecutorFactory = tapirContext.getBean(TapirExecutorFactory)
-		tapirExecutorFactory.getExecutorForClass(testClass)
+		tapirExecutor = tapirExecutorFactory.getExecutorForClass(testClass)
 	}
 
 	private def void expandNodes(TreeItem<Identifiable> treeItem) {
@@ -167,18 +175,32 @@ class MainViewModel {
 	 * This method is performed when the user wants to start the tests.
 	 */
 	def void performStartTests() {
-		try {
-			val tapirExecutor = restartTapirContext()
-
-			// Configure our own invocation handler, which skips the tests if necessary
-			val selectedSteps = getSelectedSteps(executionPlanRoot.get)
-			val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
-			stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
-
-			tapirExecutor.execute
-		} catch (Exception ex) {
-			handleException(ex)
-		}
+		// We have to get the selected steps before we reinitialize the execution plan
+		val selectedSteps = getSelectedSteps(executionPlanRoot.get)
+		
+		// This method has to be called inside the JavaFX thread
+		performReinitializeExecutionPlan()
+		
+		new Thread [
+			try {
+				readOnlyMode.set(true)
+				
+				// Configure our own invocation handler, which skips the tests if necessary
+				val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
+				stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
+				
+				// Configure our own listener, which informs our view model about changes
+				val executionListener = tapirContext.getBean(RapitExecutionListener)
+				executionListener.executionPlanRoot = executionPlanRoot.get 
+				
+				// Now start the actual execution
+				tapirExecutor.execute
+			} catch (Exception ex) {
+				handleException(ex)
+			} finally {
+				readOnlyMode.set(false)
+			}
+		].start
 	}
 
 	private def List<TestStep> getSelectedSteps(TreeItem<Identifiable> treeItem) {
@@ -222,13 +244,18 @@ class MainViewModel {
 	}
 
 	private def handleException(Exception exception) {
-		logger.error('An exception occurred', exception)
+		val Runnable runnable = [
+			logger.error('An exception occurred', exception)
 
-		val alert = new Alert(AlertType.ERROR)
-		alert.title = 'Error'
-		alert.initOwner(window)
-		alert.headerText = exception.localizedMessage
-		alert.showAndWait
+			val alert = new Alert(AlertType.ERROR)
+			alert.title = 'Error'
+			alert.initOwner(window)
+			alert.headerText = exception.localizedMessage
+			alert.showAndWait
+		]
+
+		// This method may be called from outside the JavaFX thread. In this case we have to make sure that it is executed in the JavaFX thread.
+		Platform.runLater(runnable)
 	}
 
 }

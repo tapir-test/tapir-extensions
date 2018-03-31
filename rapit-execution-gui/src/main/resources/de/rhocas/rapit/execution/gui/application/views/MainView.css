@@ -1,0 +1,11 @@
+.row-failed {
+	-fx-background: salmon;
+}
+
+.row-skipped {
+	-fx-background: silver;
+}
+
+.row-succeeded {
+	-fx-background: lightgreen;
+}

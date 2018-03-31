@@ -24,9 +24,12 @@
  package de.rhocas.rapit.execution.gui.application.views
 
 import de.bmiag.tapir.execution.model.Identifiable
+import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
 import de.rhocas.rapit.execution.gui.application.components.DescriptionCellValueFactory
 import de.rhocas.rapit.execution.gui.application.components.ParametersCellValueFactory
+import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
 import de.rhocas.rapit.execution.gui.application.data.Property
+import javafx.beans.value.WeakChangeListener
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBoxTreeItem
@@ -35,6 +38,7 @@ import javafx.scene.control.Separator
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TreeTableColumn
+import javafx.scene.control.TreeTableRow
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.cell.CheckBoxTreeTableCell
 import javafx.scene.control.cell.PropertyValueFactory
@@ -55,6 +59,9 @@ class MainView extends VBox {
 	
 	new(MainViewModel mainViewModel) {
 		padding = new Insets(10)
+		disableProperty.bind(mainViewModel.readOnlyMode)
+
+		stylesheets.add(MainView.canonicalName.replace('.', '/') + '.css')
 
 		children.add(new HBox() => [
 			margin = new Insets(0.0, 0.0, 10, 0.0)
@@ -108,6 +115,38 @@ class MainView extends VBox {
 			 
 			rootProperty.bind(mainViewModel.executionPlanRoot)
 			
+			rowFactory = [ treeTableView |
+				new TreeTableRow<Identifiable> {
+
+					override protected updateItem(Identifiable identifiable, boolean empty) {
+						super.updateItem(identifiable, empty)
+
+						// Remove a potential style class from an earlier run
+						styleClass.removeAll('row-failed', 'row-skipped', 'row-succeeded')
+
+						if (treeItem instanceof AbstractCheckBoxTreeItem<?>) {
+							val executionStatusProperty = (treeItem as AbstractCheckBoxTreeItem<?>).executionStatusProperty
+							executionStatusProperty.addListener(new WeakChangeListener[observableValue, oldValue, newValue | refresh])
+
+							val executionStatus = executionStatusProperty.get
+							val newStyleClass = findStyleClass(executionStatus)
+							styleClass.add(newStyleClass)
+						}
+					}
+
+					private def findStyleClass(ExecutionStatus executionStatus) {
+						switch (executionStatus) {
+							case FAILED: 'row-failed'
+							case SUCCEEDED: 'row-succeeded'
+							case SKIPPED: 'row-skipped'
+							case NONE: null
+							default: null
+						}
+					}
+
+				}
+			]
+			
 			tableMenuButtonVisible = true
 			showRoot = false
 			editable = true
@@ -124,7 +163,7 @@ class MainView extends VBox {
 
 			columns.add(new TreeTableColumn<Identifiable, String>() => [
 				text = 'Name'
-				
+
 				cellValueFactory = new TreeItemPropertyValueFactory('name')
 			])
 

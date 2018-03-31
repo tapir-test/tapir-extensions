@@ -32,7 +32,7 @@ import de.bmiag.tapir.execution.model.TestClass
  * 
  * @since 1.1.0
  */
-final class TestClassTreeItem extends AbstractLazyCheckBoxTreeItem<TestClass> {
+final class TestClassTreeItem extends AbstractCheckBoxTreeItem<TestClass> {
 
 	new(TestClass testClass) {
 		super(testClass)

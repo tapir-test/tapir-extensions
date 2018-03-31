@@ -25,7 +25,6 @@ package de.rhocas.rapit.execution.gui.application.components
 
 import de.bmiag.tapir.execution.model.Identifiable
 import de.bmiag.tapir.execution.model.TestStep
-import javafx.scene.control.CheckBoxTreeItem
 
 /**
  * A selectable tree item which holds an instance of {@link TestStep}.
@@ -34,10 +33,14 @@ import javafx.scene.control.CheckBoxTreeItem
  * 
  * @since 1.1.0
  */
-final class TestStepTreeItem extends CheckBoxTreeItem<Identifiable> {
+final class TestStepTreeItem extends AbstractCheckBoxTreeItem<Identifiable> {
 
 	new(TestStep testStep) {
 		super(testStep)
+	}
+	
+	override createChildren() {
+		#[]
 	}
 
 }

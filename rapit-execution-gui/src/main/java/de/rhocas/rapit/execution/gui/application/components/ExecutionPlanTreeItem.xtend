@@ -34,7 +34,7 @@ import de.bmiag.tapir.execution.model.TestSuite
  * 
  * @since 1.1.0
  */
-final class ExecutionPlanTreeItem extends AbstractLazyCheckBoxTreeItem<ExecutionPlan> {
+final class ExecutionPlanTreeItem extends AbstractCheckBoxTreeItem<ExecutionPlan> {
 
 	new(ExecutionPlan executionPlan) {
 		super(executionPlan)
