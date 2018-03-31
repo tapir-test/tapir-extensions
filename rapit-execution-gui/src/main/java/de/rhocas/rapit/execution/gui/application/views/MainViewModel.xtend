@@ -51,6 +51,7 @@ import javafx.scene.control.TreeItem
 import org.apache.logging.log4j.LogManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
+import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
 
 /**
  * The view model of the main page.
@@ -172,15 +173,16 @@ class MainViewModel {
 	 * This method is performed when the user wants to start the tests.
 	 */
 	def void performStartTests() {
-		// We have to get the selected steps before we reinitialize the execution plan
-		val selectedSteps = getSelectedSteps(executionPlanRoot.get)
-		
-		// This method has to be called inside the JavaFX thread
-		performReinitializeExecutionPlan()
-		
 		new Thread [
 			try {
 				readOnlyMode.set(true)
+				
+				// We reset the execution step of the whole execution plan so that the rows are not colored
+				resetExecutionState(executionPlanRoot.get)
+				
+				// We have to get the selected steps before we reinitialize the execution plan
+				val selectedSteps = getSelectedSteps(executionPlanRoot.get)
+				Platform.runLater[refreshTableObservable.value = new Object]
 				
 				// Configure our own invocation handler, which skips the tests if necessary
 				val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
@@ -199,6 +201,11 @@ class MainViewModel {
 				readOnlyMode.set(false)
 			}
 		].start
+	}
+	
+	private def void resetExecutionState(TreeItem<Identifiable> treeItem) {
+		(treeItem as AbstractCheckBoxTreeItem<?>).executionStatus = ExecutionStatus.NONE
+		treeItem.children.forEach[resetExecutionState(it)]
 	}
 
 	private def List<TestStep> getSelectedSteps(TreeItem<Identifiable> treeItem) {
