@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/nils-christian/rapit.svg?branch=master)](https://travis-ci.org/nils-christian/rapit)
+
 # rapit
 The rapit project contains various unofficial extensions for the tapir Test framework.
 
