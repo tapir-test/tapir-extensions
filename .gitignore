@@ -1,66 +1,7 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/ui-test-extensions/.project
-/ui-test-extensions/.settings
-/ui-test-extensions/ui-test-extensions-datasource-excel/.project
-/ui-test-extensions/ui-test-extensions-datasource-excel/.settings
-/ui-test-extensions/ui-test-extensions-datasource-excel/target
-/ui-test-extensions/ui-test-extensions-datasource-excel/.classpath
-/.project
-/.settings/org.eclipse.core.resources.prefs
-/.settings/org.eclipse.m2e.core.prefs
-/ui-test-extensions-datasource-excel/.classpath
-/ui-test-extensions-datasource-excel/.project
-/ui-test-extensions-datasource-excel/.settings/org.eclipse.core.resources.prefs
-/ui-test-extensions-datasource-excel/.settings/org.eclipse.jdt.core.prefs
-/ui-test-extensions-datasource-excel/.settings/org.eclipse.m2e.core.prefs
-/ui-test-extensions-datasource-excel/.settings/org.eclipse.xtend.core.Xtend.prefs
-/tapir extensions-datasource-excel/.classpath
-/tapir extensions-datasource-excel/.gitignore
-/tapir extensions-datasource-excel/.project
-/tapir extensions-datasource-excel/.settings/org.eclipse.core.resources.prefs
-/tapir extensions-datasource-excel/.settings/org.eclipse.jdt.core.prefs
-/tapir extensions-datasource-excel/.settings/org.eclipse.m2e.core.prefs
-/tapir extensions-datasource-excel/.settings/org.eclipse.xtend.core.Xtend.prefs
-/tapir extensions-datasource-excel-test/.classpath
-/tapir extensions-datasource-excel-test/.project
-/tapir extensions-datasource-excel-test/.settings/org.eclipse.core.resources.prefs
-/tapir extensions-datasource-excel-test/.settings/org.eclipse.jdt.core.prefs
-/tapir extensions-datasource-excel-test/.settings/org.eclipse.m2e.core.prefs
-/tapir extensions-datasource-excel-test/.settings/org.eclipse.xtend.core.Xtend.prefs
-/tapir extensions-reporting-excel/.project
-/tapir extensions-reporting-excel/.settings
-/tapir extensions-reporting-excel/target
-/tapir extensions-reporting-excel/.classpath
-/tapir extensions-reporting-base/.project
-/tapir extensions-reporting-base/.settings
-/tapir extensions-reporting-base/target
-/tapir extensions-reporting-base/.classpath
-/tapir extensions-reporting-excel-test/.project
-/tapir extensions-reporting-excel-test/.settings
-/tapir extensions-reporting-excel-test/target
-/tapir extensions-reporting-excel-test/.classpath
-/tapir extensions-execution-gui/.project
-/tapir extensions-execution-gui/.settings
-/tapir extensions-execution-gui/target
-/tapir extensions-execution-gui/.classpath
+
+**/.project
+**/.classpath
+**/.settings
+**/target
