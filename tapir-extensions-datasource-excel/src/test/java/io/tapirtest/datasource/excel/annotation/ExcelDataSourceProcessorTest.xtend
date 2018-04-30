@@ -1,7 +1,7 @@
 /*
  * MIT License
  * 
- * Copyright (c) 2018 Nils Christian Ehmke
+ * Copyright (c) 2018 b+m Informatik AG
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -63,8 +63,8 @@ class ExcelDataSourceProcessorTest {
 		}
 		''') [
 			assertThat(allGeneratedResources.size, is(2))
-			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/User.java'))
-			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java'))
+			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/io/tapirtest/test/User.java'))
+			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/io/tapirtest/test/UserExcelDataSource.java'))
 			
 			assertEquals('''
 			package io.tapirtest.test;
@@ -109,7 +109,7 @@ class ExcelDataSourceProcessorTest {
 			    );
 			  }
 			}
-			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java').toString)
+			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/io/tapirtest/test/UserExcelDataSource.java').toString)
 		]
 	}
 	
@@ -134,8 +134,8 @@ class ExcelDataSourceProcessorTest {
 		}
 		''') [
 			assertThat(allGeneratedResources.size, is(2))
-			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/User.java'))
-			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java'))
+			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/io/tapirtest/test/User.java'))
+			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/io/tapirtest/test/UserExcelDataSource.java'))
 			
 			assertEquals('''
 			package io.tapirtest.test;
@@ -180,7 +180,7 @@ class ExcelDataSourceProcessorTest {
 			    );
 			  }
 			}
-			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java').toString)
+			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/io/tapirtest/test/UserExcelDataSource.java').toString)
 		]
 	}
 	
@@ -203,8 +203,8 @@ class ExcelDataSourceProcessorTest {
 		}
 		''') [
 			assertThat(allGeneratedResources.size, is(2))
-			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/User.java'))
-			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java'))
+			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/io/tapirtest/test/User.java'))
+			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/io/tapirtest/test/UserExcelDataSource.java'))
 			
 			assertEquals('''
 			package io.tapirtest.test;
@@ -249,7 +249,7 @@ class ExcelDataSourceProcessorTest {
 			    );
 			  }
 			}
-			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java').toString)
+			'''.toString, allGeneratedResources.get('/myProject/xtend-gen/io/tapirtest/test/UserExcelDataSource.java').toString)
 		]
 	}
 	
