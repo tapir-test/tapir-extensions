@@ -13,7 +13,7 @@
 
 	<groupId>io.tapirtest</groupId>
 	<artifactId>tapir-extensions</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -34,22 +34,22 @@
 			<dependency>
 				<groupId>io.tapirtest</groupId>
 				<artifactId>tapir-extensions-datasource-excel</artifactId>
-				<version>1.1.0-SNAPSHOT</version>
+				<version>3.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapirtest</groupId>
 				<artifactId>tapir-extensions-reporting-base</artifactId>
-				<version>1.1.0-SNAPSHOT</version>
+				<version>3.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapirtest</groupId>
 				<artifactId>tapir-extensions-reporting-excel</artifactId>
-				<version>1.1.0-SNAPSHOT</version>
+				<version>3.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapirtest</groupId>
 				<artifactId>tapir-extensions-execution-gui</artifactId>
-				<version>1.1.0-SNAPSHOT</version>
+				<version>3.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
