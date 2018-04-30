@@ -29,7 +29,7 @@ import de.rhocas.rapit.datasource.excel.annotation.ExcelDataSource
 import java.util.Date
 import java.util.Optional
 
-@ExcelDataSource
+@ExcelDataSource 
 @Immutable
 class User {
 

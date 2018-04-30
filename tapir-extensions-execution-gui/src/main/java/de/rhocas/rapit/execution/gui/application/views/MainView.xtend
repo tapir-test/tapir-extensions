@@ -28,6 +28,8 @@ import de.rhocas.rapit.execution.gui.application.components.DescriptionCellValue
 import de.rhocas.rapit.execution.gui.application.components.ExecutionStatusStyledTreeTableRow
 import de.rhocas.rapit.execution.gui.application.components.ParametersCellValueFactory
 import de.rhocas.rapit.execution.gui.application.data.Property
+import javafx.beans.value.ObservableValue
+import javafx.beans.value.ChangeListener
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBoxTreeItem
@@ -222,9 +224,14 @@ class MainView extends VBox implements JavaView<MainViewModel>, Initializable {
 		
 		// Execution plan
 		executionPlanTreeTableView.rootProperty.bind(mainViewModel.executionPlanRoot)
-		mainViewModel.refreshTableObservable.addListener[
-			observableValue, oldValue, newValue|
-			executionPlanTreeTableView.refresh
+		mainViewModel.refreshTableObservable.addListener [
+			new ChangeListener<Object>() {
+
+				override changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+					executionPlanTreeTableView.refresh
+				}
+
+			}
 		]
 		
 		// Properties
