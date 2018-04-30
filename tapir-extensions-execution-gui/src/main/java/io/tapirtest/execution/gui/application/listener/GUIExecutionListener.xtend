@@ -45,9 +45,9 @@ import org.springframework.stereotype.Component
  * @since 1.1.0
  */
 @Component
-class RapitExecutionListener extends AbstractExecutionListener {
+class GUIExecutionListener extends AbstractExecutionListener {
 	
-	static val logger = LogManager.getLogger(RapitExecutionListener)
+	static val logger = LogManager.getLogger(GUIExecutionListener)
 	
 	var AbstractCheckBoxTreeItem<ExecutionPlan> executionPlanRoot 
 	var ObjectProperty<Object> refreshTableObservable

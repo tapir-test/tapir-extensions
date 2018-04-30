@@ -210,7 +210,7 @@ class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 	}
 
 	private def writeWorkbook(ExecutionPlan executionPlan, Workbook workbook) {
-		val outputFile = new File(outputDirectory, '''rapit-report-excel-execution-«executionPlan.id».xlsx''')
+		val outputFile = new File(outputDirectory, '''tapir-extensions-report-excel-execution-«executionPlan.id».xlsx''')
 		FileUtils.forceMkdirParent(outputFile)
 	
 		val outputStream = new FileOutputStream(outputFile)

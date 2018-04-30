@@ -35,8 +35,8 @@ import io.tapirtest.execution.gui.application.components.AbstractCheckBoxTreeIte
 import io.tapirtest.execution.gui.application.components.ExecutionPlanTreeItem
 import io.tapirtest.execution.gui.application.components.TestStepTreeItem
 import io.tapirtest.execution.gui.application.data.Property
-import io.tapirtest.execution.gui.application.filter.RapitStepExecutionInvocationHandler
-import io.tapirtest.execution.gui.application.listener.RapitExecutionListener
+import io.tapirtest.execution.gui.application.filter.GUIStepExecutionInvocationHandler
+import io.tapirtest.execution.gui.application.listener.GUIExecutionListener
 import java.util.List
 import javafx.application.Application.Parameters
 import javafx.application.Platform
@@ -91,7 +91,7 @@ class MainViewModel implements ViewModel {
 		try {
 			val rawParameters = parameters.raw
 			if (rawParameters.size < 1) {
-				throw new IllegalArgumentException('The rapit launcher requires the test class or test suite as first parameter')
+				throw new IllegalArgumentException('The tapir extensions launcher requires the test class or test suite as first parameter')
 			}
 	
 			val firstParameter = rawParameters.get(0)
@@ -185,11 +185,11 @@ class MainViewModel implements ViewModel {
 				Platform.runLater[refreshTableObservable.value = new Object]
 
 				// Configure our own invocation handler, which skips the tests if necessary
-				val stepExecutionInvocationHandler = tapirContext.getBean(RapitStepExecutionInvocationHandler)
+				val stepExecutionInvocationHandler = tapirContext.getBean(GUIStepExecutionInvocationHandler)
 				stepExecutionInvocationHandler.selectedTestSteps = selectedSteps
 
 				// Configure our own listener, which informs our view model about changes
-				val executionListener = tapirContext.getBean(RapitExecutionListener)
+				val executionListener = tapirContext.getBean(GUIExecutionListener)
 				executionListener.executionPlanRoot = executionPlanRoot.get
 				executionListener.refreshTableObservable = refreshTableObservable
 

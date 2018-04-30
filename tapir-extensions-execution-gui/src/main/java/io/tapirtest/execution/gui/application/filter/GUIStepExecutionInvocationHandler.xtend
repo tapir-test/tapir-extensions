@@ -29,16 +29,16 @@ import java.util.List
 import org.springframework.stereotype.Component
 
 /**
- * This invocation handler is called by tapir before each test step. In the case of the rapit launcher it makes sure that the test steps, which
+ * This invocation handler is called by tapir before each test step. In the case of the GUI launcher it makes sure that the test steps, which
  * have not been selected by the user, are simply skipped. As this invocation handler is active in each tapir test case once it is part of the 
- * classpath, it does not filter anything, if it has not been configured by the rapit launcher.
+ * classpath, it does not filter anything, if it has not been configured by the GUI launcher.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
 @Component
-class RapitStepExecutionInvocationHandler implements StepExecutionInvocationHandler {
+class GUIStepExecutionInvocationHandler implements StepExecutionInvocationHandler {
 
 	List<TestStep> selectedTestSteps
 

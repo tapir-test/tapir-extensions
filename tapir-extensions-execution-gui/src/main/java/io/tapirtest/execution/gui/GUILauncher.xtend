@@ -31,17 +31,17 @@ import javafx.scene.image.Image
 import javafx.stage.Stage
 
 /**
- * This is the rapit launcher for tapir test cases. It allows to start arbitrary parts of a test case or a test suite, as long as the tests and the
+ * This is the GUI launcher for tapir test cases. It allows to start arbitrary parts of a test case or a test suite, as long as the tests and the
  * bootstrap configuration can be found in the classpath.
  * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-final class RapitLauncher extends Application {
+final class GUILauncher extends Application {
 
 	def static void main(String[] args) {
-		RapitLauncher.launch(args)
+		GUILauncher.launch(args)
 	}
 
 	override start(Stage primaryStage) throws Exception {
@@ -49,8 +49,8 @@ final class RapitLauncher extends Application {
 			val tuple = FluentViewLoader.javaView(MainView).load
 			val scene = new Scene(tuple.view)
 
-			primaryStage.title = 'rapit Execution GUI'
-			primaryStage.icons += new Image(RapitLauncher.classLoader.getResourceAsStream('rapit-app-icon.png'))
+			primaryStage.title = 'tapir-extensions Execution GUI'
+			primaryStage.icons += new Image(GUILauncher.classLoader.getResourceAsStream('tapir-extensions-app-icon.png'))
 			primaryStage.scene = scene
 			primaryStage.maximized = true
 			primaryStage.show
@@ -67,7 +67,7 @@ final class RapitLauncher extends Application {
 	}
 
 	private def printUsage() {
-		System.err.println('''Usage: java «RapitLauncher.name» <test class or test suite>''')
+		System.err.println('''Usage: java «GUILauncher.name» <test class or test suite>''')
 	}
 
 }

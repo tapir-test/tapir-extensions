@@ -123,29 +123,35 @@
 	<developers>
 		<developer>
 			<name>Nils Christian Ehmke</name>
-			<email>nils@rhocas.de</email>
-			<organization>Private</organization>
-			<organizationUrl>https://github.com/nils-christian</organizationUrl>
+			<email>nils-christian.ehmke@bmiag.de</email>
+			<organization>b+m Informatik AG</organization>
+			<organizationUrl>http://bmiag.de/</organizationUrl>
+		</developer>
+		<developer>
+			<name>Oliver Libutzki</name>
+			<email>oliver.libutzki@bmiag.de</email>
+			<organization>b+m Informatik AG</organization>
+			<organizationUrl>http://bmiag.de/</organizationUrl>
 		</developer>
 	</developers>
 
 	<organization>
-		<name>Private</name>
-		<url>https://github.com/nils-christian</url>
+		<name>b+m Informatik AG</name>
+		<url>http://bmiag.de/</url>
 	</organization>
 
-	<description>rapit</description>
-	<url>https://github.com/nils-christian/rapit</url>
+	<description>tapir extensions</description>
+	<url>https://github.com/tapir-test/tapir-extensions</url>
 	<inceptionYear>2018</inceptionYear>
 
 	<scm>
-		<connection>scm:git:git://github.com/nils-christian/rapit.git</connection>
-		<developerConnection>scm:git:ssh://github.com:nils-christian/rapit.git</developerConnection>
-		<url>http://github.com/nils-christian/rapit/tree/master</url>
+		<connection>scm:git:git://github.com/tapir-test/tapir-extensions.git</connection>
+		<developerConnection>scm:git:ssh://github.com:tapir-test/tapir-extensions.git</developerConnection>
+		<url>http://github.com/tapir-test/tapir-extensions/tree/master</url>
 	</scm>
 
 	<issueManagement>
-		<url>https://github.com/nils-christian/rapit/issues</url>
+		<url>https://github.com/tapir-test/tapir-extensions/issues</url>
 	</issueManagement>
 
 	<distributionManagement>
