@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.execution.gui.application.filter
+package io.tapirtest.execution.gui.application.filter
 
 import de.bmiag.tapir.execution.executor.StepExecutionInvocationHandler
 import de.bmiag.tapir.execution.model.TestStep

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.execution.gui.application.listener
+ package io.tapirtest.execution.gui.application.listener
 
 import de.bmiag.tapir.execution.executor.AbstractExecutionListener
 import de.bmiag.tapir.execution.model.ExecutionPlan
@@ -29,8 +29,8 @@ import de.bmiag.tapir.execution.model.Identifiable
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
-import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
-import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
+import io.tapirtest.execution.gui.application.components.AbstractCheckBoxTreeItem
+import io.tapirtest.execution.gui.application.data.ExecutionStatus
 import javafx.application.Platform
 import javafx.beans.property.ObjectProperty
 import javafx.scene.control.TreeItem

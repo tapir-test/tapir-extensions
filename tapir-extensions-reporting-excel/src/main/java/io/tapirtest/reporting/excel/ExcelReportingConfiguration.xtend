@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.reporting.excel
+package io.tapirtest.reporting.excel
 
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
 import org.springframework.boot.autoconfigure.AutoConfigureOrder

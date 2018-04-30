@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.execution.gui.application.views
+package io.tapirtest.execution.gui.application.views
 
 import de.bmiag.tapir.bootstrap.TapirBootstrapper
 import de.bmiag.tapir.execution.TapirExecutor
@@ -31,12 +31,12 @@ import de.bmiag.tapir.execution.model.Identifiable
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
-import de.rhocas.rapit.execution.gui.application.components.AbstractCheckBoxTreeItem
-import de.rhocas.rapit.execution.gui.application.components.ExecutionPlanTreeItem
-import de.rhocas.rapit.execution.gui.application.components.TestStepTreeItem
-import de.rhocas.rapit.execution.gui.application.data.Property
-import de.rhocas.rapit.execution.gui.application.filter.RapitStepExecutionInvocationHandler
-import de.rhocas.rapit.execution.gui.application.listener.RapitExecutionListener
+import io.tapirtest.execution.gui.application.components.AbstractCheckBoxTreeItem
+import io.tapirtest.execution.gui.application.components.ExecutionPlanTreeItem
+import io.tapirtest.execution.gui.application.components.TestStepTreeItem
+import io.tapirtest.execution.gui.application.data.Property
+import io.tapirtest.execution.gui.application.filter.RapitStepExecutionInvocationHandler
+import io.tapirtest.execution.gui.application.listener.RapitExecutionListener
 import java.util.List
 import javafx.application.Application.Parameters
 import javafx.application.Platform
@@ -51,7 +51,7 @@ import javafx.scene.control.TreeItem
 import org.apache.logging.log4j.LogManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.springframework.context.ConfigurableApplicationContext
-import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
+import io.tapirtest.execution.gui.application.data.ExecutionStatus
 import de.saxsys.mvvmfx.ViewModel
 import de.saxsys.mvvmfx.utils.commands.DelegateCommand
 import de.saxsys.mvvmfx.utils.commands.Action

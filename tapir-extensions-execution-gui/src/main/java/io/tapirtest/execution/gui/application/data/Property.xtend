@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.execution.gui.application.data
+ package io.tapirtest.execution.gui.application.data
 
 import org.eclipse.xtend.lib.annotations.Accessors
 

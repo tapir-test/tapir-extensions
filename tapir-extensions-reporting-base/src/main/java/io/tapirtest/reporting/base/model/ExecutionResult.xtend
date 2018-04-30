@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.reporting.base.model
+ package io.tapirtest.reporting.base.model
 
 /**
  * This is an enum holding the possible results of an execution: succeeded, failed, and skipped.

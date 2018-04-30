@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.excel.annotation
+package io.tapirtest.datasource.excel.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.DynamicActive
-import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource
+import io.tapirtest.datasource.excel.AbstractExcelDataSource
 import java.lang.annotation.Target
 
 /**

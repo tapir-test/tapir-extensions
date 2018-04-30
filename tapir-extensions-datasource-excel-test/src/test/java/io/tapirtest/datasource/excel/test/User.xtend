@@ -21,15 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.excel.test
+ package io.tapirtest.datasource.excel.test
 
 import de.bmiag.tapir.data.Immutable
-import de.rhocas.rapit.datasource.excel.annotation.ExcelColumn
-import de.rhocas.rapit.datasource.excel.annotation.ExcelDataSource
+import io.tapirtest.datasource.excel.annotation.ExcelColumn
+import io.tapirtest.datasource.excel.annotation.ExcelDataSource
 import java.util.Date
 import java.util.Optional
 
-@ExcelDataSource 
+@ExcelDataSource
 @Immutable
 class User {
 

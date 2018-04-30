@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.excel
+package io.tapirtest.datasource.excel
 
 import de.bmiag.tapir.datasource.api.AbstractDataSource
 import org.apache.poi.hssf.usermodel.HSSFWorkbook

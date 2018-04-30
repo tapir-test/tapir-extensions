@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.execution.gui
+package io.tapirtest.execution.gui
 
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
 

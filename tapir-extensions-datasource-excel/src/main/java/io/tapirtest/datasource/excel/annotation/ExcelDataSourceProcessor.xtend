@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.excel.annotation
+package io.tapirtest.datasource.excel.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
 import de.bmiag.tapir.data.Immutable
-import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource
-import de.rhocas.rapit.datasource.excel.ExcelRecord
+import io.tapirtest.datasource.excel.AbstractExcelDataSource
+import io.tapirtest.datasource.excel.ExcelRecord
 import java.util.Optional
 import org.apache.poi.ss.usermodel.Cell
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor

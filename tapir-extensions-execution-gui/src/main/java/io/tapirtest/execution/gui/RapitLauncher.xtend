@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.execution.gui
+package io.tapirtest.execution.gui
 
-import de.rhocas.rapit.execution.gui.application.views.MainView
+import io.tapirtest.execution.gui.application.views.MainView
 import de.saxsys.mvvmfx.FluentViewLoader
 import javafx.application.Application
 import javafx.scene.Scene

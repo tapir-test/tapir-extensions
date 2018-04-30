@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.excel.annotation
+package io.tapirtest.datasource.excel.annotation
 
 import de.bmiag.tapir.data.Immutable
 import java.util.List
@@ -48,7 +48,7 @@ class ExcelDataSourceProcessorTest {
 	@Test
 	def dataSourceWithTwoFieldsShouldBeCorrectlyCompiled() {
 		compilerTester.compile('''
-		package de.rhocas.rapit.test
+		package io.tapirtest.test
 		
 		import «ExcelDataSource.name»
 		import «Immutable.name»
@@ -67,11 +67,11 @@ class ExcelDataSourceProcessorTest {
 			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java'))
 			
 			assertEquals('''
-			package de.rhocas.rapit.test;
+			package io.tapirtest.test;
 			
-			import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource;
-			import de.rhocas.rapit.datasource.excel.ExcelRecord;
-			import de.rhocas.rapit.test.User;
+			import io.tapirtest.datasource.excel.AbstractExcelDataSource;
+			import io.tapirtest.datasource.excel.ExcelRecord;
+			import io.tapirtest.test.User;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -116,7 +116,7 @@ class ExcelDataSourceProcessorTest {
 	@Test
 	def dataSourceWithExcelColumnShouldOverrideDefaultFieldNames() {
 		compilerTester.compile('''
-		package de.rhocas.rapit.test
+		package io.tapirtest.test
 		
 		import «ExcelDataSource.name»
 		import «Immutable.name»
@@ -138,11 +138,11 @@ class ExcelDataSourceProcessorTest {
 			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java'))
 			
 			assertEquals('''
-			package de.rhocas.rapit.test;
+			package io.tapirtest.test;
 			
-			import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource;
-			import de.rhocas.rapit.datasource.excel.ExcelRecord;
-			import de.rhocas.rapit.test.User;
+			import io.tapirtest.datasource.excel.AbstractExcelDataSource;
+			import io.tapirtest.datasource.excel.ExcelRecord;
+			import io.tapirtest.test.User;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -187,7 +187,7 @@ class ExcelDataSourceProcessorTest {
 	@Test
 	def dataSourceWithOptionalFieldShouldBeCorrectlyCompiled() {
 		compilerTester.compile('''
-		package de.rhocas.rapit.test
+		package io.tapirtest.test
 		
 		import «ExcelDataSource.name»
 		import «Immutable.name»
@@ -207,11 +207,11 @@ class ExcelDataSourceProcessorTest {
 			assertThat(allGeneratedResources, hasKey('/myProject/xtend-gen/de/rhocas/rapit/test/UserExcelDataSource.java'))
 			
 			assertEquals('''
-			package de.rhocas.rapit.test;
+			package io.tapirtest.test;
 			
-			import de.rhocas.rapit.datasource.excel.AbstractExcelDataSource;
-			import de.rhocas.rapit.datasource.excel.ExcelRecord;
-			import de.rhocas.rapit.test.User;
+			import io.tapirtest.datasource.excel.AbstractExcelDataSource;
+			import io.tapirtest.datasource.excel.ExcelRecord;
+			import io.tapirtest.test.User;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -256,7 +256,7 @@ class ExcelDataSourceProcessorTest {
 	@Test
 	def dataSourceWithoutImmutableAnnotationShouldBeMarkedWithError() {
 		compilerTester.compile('''
-		package de.rhocas.rapit.test
+		package io.tapirtest.test
 		
 		import «ExcelDataSource.name»
 		
@@ -276,7 +276,7 @@ class ExcelDataSourceProcessorTest {
 	@Test
 	def dataSourceWithInvalidGenericShouldOptionalFieldShouldBeMarkedWithError() {
 		compilerTester.compile('''
-		package de.rhocas.rapit.test
+		package io.tapirtest.test
 		
 		import «ExcelDataSource.name»
 		import «Immutable.name»

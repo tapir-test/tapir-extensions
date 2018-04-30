@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.datasource.excel.test
+ package io.tapirtest.datasource.excel.test
 
 import de.bmiag.tapir.bootstrap.annotation.BootstrapConfiguration
 

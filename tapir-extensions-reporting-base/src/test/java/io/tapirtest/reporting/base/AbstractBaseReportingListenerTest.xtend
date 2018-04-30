@@ -1,12 +1,12 @@
-package de.rhocas.rapit.reporting.base
+package io.tapirtest.reporting.base
 
 import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.Identifiable
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
-import de.rhocas.rapit.reporting.base.model.ExecutionReport
-import de.rhocas.rapit.reporting.base.model.ExecutionResult
+import io.tapirtest.reporting.base.model.ExecutionReport
+import io.tapirtest.reporting.base.model.ExecutionResult
 import java.util.Map
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Test

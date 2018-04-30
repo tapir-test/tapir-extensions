@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.execution.gui.application.components
+package io.tapirtest.execution.gui.application.components
 
 import de.bmiag.tapir.execution.model.Identifiable
-import de.rhocas.rapit.execution.gui.application.data.ExecutionStatus
+import io.tapirtest.execution.gui.application.data.ExecutionStatus
 import java.util.List
 import javafx.scene.control.CheckBoxTreeItem
 import javafx.scene.control.TreeItem

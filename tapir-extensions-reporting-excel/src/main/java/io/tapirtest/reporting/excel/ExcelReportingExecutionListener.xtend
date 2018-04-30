@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.reporting.excel
+package io.tapirtest.reporting.excel
 
 import de.bmiag.tapir.execution.model.ExecutionModelElement
 import de.bmiag.tapir.execution.model.ExecutionPlan
@@ -29,9 +29,9 @@ import de.bmiag.tapir.execution.model.Identifiable
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
-import de.rhocas.rapit.reporting.base.AbstractBaseReportingListener
-import de.rhocas.rapit.reporting.base.model.ExecutionReport
-import de.rhocas.rapit.reporting.base.model.ExecutionResult
+import io.tapirtest.reporting.base.AbstractBaseReportingListener
+import io.tapirtest.reporting.base.model.ExecutionReport
+import io.tapirtest.reporting.base.model.ExecutionResult
 import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream

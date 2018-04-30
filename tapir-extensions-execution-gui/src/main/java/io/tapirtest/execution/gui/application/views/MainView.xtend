@@ -21,13 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- package de.rhocas.rapit.execution.gui.application.views
+ package io.tapirtest.execution.gui.application.views
 
 import de.bmiag.tapir.execution.model.Identifiable
-import de.rhocas.rapit.execution.gui.application.components.DescriptionCellValueFactory
-import de.rhocas.rapit.execution.gui.application.components.ExecutionStatusStyledTreeTableRow
-import de.rhocas.rapit.execution.gui.application.components.ParametersCellValueFactory
-import de.rhocas.rapit.execution.gui.application.data.Property
+import io.tapirtest.execution.gui.application.components.DescriptionCellValueFactory
+import io.tapirtest.execution.gui.application.components.ExecutionStatusStyledTreeTableRow
+import io.tapirtest.execution.gui.application.components.ParametersCellValueFactory
+import io.tapirtest.execution.gui.application.data.Property
 import javafx.beans.value.ObservableValue
 import javafx.beans.value.ChangeListener
 import javafx.geometry.Insets

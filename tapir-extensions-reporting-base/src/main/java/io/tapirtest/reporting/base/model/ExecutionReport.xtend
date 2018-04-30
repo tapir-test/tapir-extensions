@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.reporting.base.model
+package io.tapirtest.reporting.base.model
 
 import java.util.Optional
 import org.eclipse.xtend.lib.annotations.Accessors

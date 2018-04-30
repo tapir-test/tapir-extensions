@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.rhocas.rapit.datasource.excel.annotation
+package io.tapirtest.datasource.excel.annotation
 
 import java.lang.annotation.Target
 
