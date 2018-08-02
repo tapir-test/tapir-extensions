@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor
+	name="tapir-bootstrap-archetype">
+	<requiredProperties>
+		<requiredProperty key="moduleName">
+			<validationRegex>[A-Z][A-Za-z0-9]+</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useTapirExecution">
+			<defaultValue>true</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useUnitTest">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useSelenium">
+			<defaultValue>true</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useJUnit5">
+			<defaultValue>true</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useJUnit4">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useAllure">
+			<defaultValue>true</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useExcelReporting">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useDataSource">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useConditionalExecution">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useProductLineTesting">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+	</requiredProperties>
+	<fileSets>
+
+
+		<fileSet filtered="true" packaged="true">
+			<directory>src/main/java</directory>
+		</fileSet>
+
+		<fileSet filtered="true" packaged="true">
+			<directory>src/test/java</directory>
+		</fileSet>
+
+		<fileSet filtered="true">
+			<directory>src/test/resources</directory>
+		</fileSet>
+	</fileSets>
+</archetype-descriptor>

@@ -39,6 +39,7 @@
 		<module>tapir-extensions-junit5</module>
 		<module>tapir-extensions-junit5-execution</module>
 		<module>tapir-extensions-junit5-execution-test</module>
+    	<module>tapir-extensions-archetype</module>
   </modules>
 
 </project>
