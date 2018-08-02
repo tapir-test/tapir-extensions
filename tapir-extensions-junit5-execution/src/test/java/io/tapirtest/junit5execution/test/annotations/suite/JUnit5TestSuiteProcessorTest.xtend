@@ -35,7 +35,7 @@ class JUnit5TestSuiteProcessorTest {
 			  }
 			  
 			  @«io.tapirtest.junit5execution.annotations.Test.simpleName»
-			  public void xtendCompliance() {
+			  public void _xtendCompliance() {
 			    
 			  }
 			}

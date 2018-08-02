@@ -31,7 +31,7 @@ class TapirJUnit5AnnotationProcessorUtil {
 	}
 	
 	/**
-	 * Adds a method called xtendCompliance to the given annotatedClass and annotates it with {@link Test}. This is just a workaround for the issue described in <a href="https://github.com/eclipse/xtext-xtend/issues/519">Xtend #519</a>.
+	 * Adds a method called _xtendCompliance to the given annotatedClass and annotates it with {@link Test}. This is just a workaround for the issue described in <a href="https://github.com/eclipse/xtext-xtend/issues/519">Xtend #519</a>.
 	 * 
 	 * @param annotatedClass
 	 *            the class which should be annotated
@@ -41,7 +41,7 @@ class TapirJUnit5AnnotationProcessorUtil {
 	 * @see <a href="https://github.com/eclipse/xtext-xtend/issues/519">Xtend #519</a>
 	 */
 	def void addTestAnnotatedMethod(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-		annotatedClass.addMethod("xtendCompliance") [
+		annotatedClass.addMethod("_xtendCompliance") [
 			val testType = Test.findTypeGlobally
 			addAnnotation(newAnnotationReference(testType))
 			body = ['''''']

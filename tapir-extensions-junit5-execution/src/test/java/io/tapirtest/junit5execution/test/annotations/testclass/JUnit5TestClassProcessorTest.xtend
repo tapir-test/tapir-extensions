@@ -51,7 +51,7 @@ class JUnit5TestClassProcessorTest {
 			  }
 			  
 			  @«Test.simpleName»
-			  public void xtendCompliance() {
+			  public void _xtendCompliance() {
 			    
 			  }
 			}
