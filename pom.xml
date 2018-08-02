@@ -36,6 +36,9 @@
 		<module>tapir-extensions-reporting-base</module>
 		<module>tapir-extensions-reporting-excel</module>
 		<module>tapir-extensions-execution-gui</module>
+		<module>tapir-extensions-junit5</module>
+		<module>tapir-extensions-junit5-execution</module>
+		<module>tapir-extensions-junit5-execution-test</module>
   </modules>
 
 </project>
