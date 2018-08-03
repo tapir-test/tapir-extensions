@@ -15,6 +15,7 @@ import org.junit.platform.engine.discovery.DiscoverySelectors;
 
 import io.tapirtest.junit5execution.discovery.JUnitExecutionDescription;
 import io.tapirtest.junit5execution.discovery.JUnitExecutionDescriptionBuilder;
+import io.tapirtest.junit5executiontest.data.IteratedTestClass;
 import io.tapirtest.junit5executiontest.data.TestClassIteratedParameterizedStep;
 import io.tapirtest.junit5executiontest.data.TestClassParameterizedStep;
 import io.tapirtest.junit5executiontest.data.TestClassSimpleStep;
@@ -33,7 +34,7 @@ public class JUnitExecutionDescriptionBuilderTest {
     static Stream<Arguments> dataProvider( ) {
         return Stream.of(
                 Arguments.of( DiscoverySelectors.selectClass( TestClassSimpleStep.class ), toArray( TestClassSimpleStep.class ) ),
-                Arguments.of( DiscoverySelectors.selectPackage( TestClassSimpleStep.class.getPackage( ).getName( ) ), toArray( TestClassIteratedParameterizedStep.class, TestClassParameterizedStep.class, TestClassSimpleStep.class, TestClassWithException.class ) ),
+                Arguments.of( DiscoverySelectors.selectPackage( TestClassSimpleStep.class.getPackage( ).getName( ) ), toArray( TestClassIteratedParameterizedStep.class, TestClassParameterizedStep.class, TestClassSimpleStep.class, TestClassWithException.class, IteratedTestClass.class ) ),
                 Arguments.of( DiscoverySelectors.selectUniqueId( getUniqueId( TestClassSimpleStep.class ) ), toArray( TestClassSimpleStep.class ) ),
                 Arguments.of( DiscoverySelectors.selectMethod( TestClassSimpleStep.class, "step1" ), toArray( TestClassSimpleStep.class ) ) );
     }
