@@ -42,14 +42,21 @@
 #end
 #if (${useJUnit4} == 'true')
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>de.bmiag.tapir</groupId>
             <artifactId>tapir-junit-execution</artifactId>
         </dependency>
 #end
-#if (${useAllure} == 'true')
+#if (${useAllure1} == 'true')
         <dependency>
             <groupId>de.bmiag.tapir</groupId>
             <artifactId>tapir-allure</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+#end
+#if (${useAllure2} == 'true')
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-extensions-allure2</artifactId>
             <scope>runtime</scope>
         </dependency>
 #end
@@ -142,7 +149,7 @@
             <artifactId>tapir-junit</artifactId>
         </dependency>
 #end
-#if (${useAllure} == 'true')
+#if (${useAllure1} == 'true' || ${useAllure2} == 'true')
 #if (${useJUnit5} == 'true')
         <dependency>
             <groupId>io.qameta.allure</groupId>
@@ -166,7 +173,7 @@
    
     <build>
         <plugins>
-if (${useTapirExecution} != 'true' && ${useAllure} == 'true')
+if (${useTapirExecution} != 'true' && (${useAllure1} == 'true' || ${useAllure2} == 'true'))
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>

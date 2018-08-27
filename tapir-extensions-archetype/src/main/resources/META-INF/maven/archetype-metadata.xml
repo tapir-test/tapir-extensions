@@ -17,15 +17,19 @@
 			<defaultValue>true</defaultValue>
 			<validationRegex>^(true|false)$</validationRegex>
 		</requiredProperty>
-		<requiredProperty key="useJUnit5">
-			<defaultValue>true</defaultValue>
-			<validationRegex>^(true|false)$</validationRegex>
-		</requiredProperty>
 		<requiredProperty key="useJUnit4">
 			<defaultValue>false</defaultValue>
 			<validationRegex>^(true|false)$</validationRegex>
 		</requiredProperty>
-		<requiredProperty key="useAllure">
+		<requiredProperty key="useJUnit5">
+			<defaultValue>true</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useAllure1">
+			<defaultValue>false</defaultValue>
+			<validationRegex>^(true|false)$</validationRegex>
+		</requiredProperty>
+		<requiredProperty key="useAllure2">
 			<defaultValue>true</defaultValue>
 			<validationRegex>^(true|false)$</validationRegex>
 		</requiredProperty>
