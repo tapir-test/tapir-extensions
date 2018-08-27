@@ -1,146 +1,146 @@
 #set($dollar = '$')
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>${groupId}</groupId>
-	<artifactId>${artifactId}</artifactId>
-	<version>${version}</version>
-	<name>${moduleName}</name>
-	
-	<parent>
-		<groupId>de.bmiag.tapir</groupId>
-		<artifactId>tapir-starter-module</artifactId>
-		<version>3.2.0-SNAPSHOT</version>
-		<relativePath />
-	</parent>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.tapirtest</groupId>
-				<artifactId>tapir-extensions-parent</artifactId>
-				<version>@project.version@</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	
-	<dependencies>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <name>${moduleName}</name>
+   
+    <parent>
+        <groupId>de.bmiag.tapir</groupId>
+        <artifactId>tapir-starter-module</artifactId>
+        <version>3.2.0-SNAPSHOT</version>
+        <relativePath />
+    </parent>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.tapirtest</groupId>
+                <artifactId>tapir-extensions-parent</artifactId>
+                <version>@project.version@</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <dependencies>
 #if (${useTapirExecution} == 'true')
 #if (${useSelenium} == 'true')
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-starter-selenium-execution</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-starter-selenium-execution</artifactId>
+         </dependency>
 #end
 #if (${useJUnit5} == 'true')
-		<dependency>
-			<groupId>io.tapirtest</groupId>
-			<artifactId>tapir-extensions-junit5-execution</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-extensions-junit5-execution</artifactId>
+        </dependency>
 #end
 #if (${useJUnit4} == 'true')
-		<dependency>
-			<groupId>io.tapirtest</groupId>
-			<artifactId>tapir-junit-execution</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-junit-execution</artifactId>
+        </dependency>
 #end
 #if (${useAllure} == 'true')
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-allure</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-allure</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 #end
 #if (${useExcelReporting} == 'true')
-		<dependency>
-			<groupId>io.tapirtest</groupId>
-			<artifactId>tapir-extensions-reporting-excel</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-extensions-reporting-excel</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 #end
 #if (${useDataSource} == 'true')
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-datasource-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-datasource-resource</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-datasource-csv</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.tapirtest</groupId>
-			<artifactId>tapir-extensions-datasource-excel</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-datasource-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-datasource-resource</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-datasource-csv</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-extensions-datasource-excel</artifactId>
+        </dependency>
 #end
 #if (${useConditionalExecution} == 'true')
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-conditional</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-conditional</artifactId>
+        </dependency>
 #end
 #if (${useProductLineTesting} == 'true')
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-configuration</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-variant</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-configuration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-variant</artifactId>
+        </dependency>
 #end
 #end
 #if (${useUnitTest} == 'true')
 #if (${useSelenium} == 'true')
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-selenium</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-page</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-html-basic-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-selenium-chrome</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-selenium-firefox</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-selenium-htmlunit</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.bmiag.tapir</groupId>
-			<artifactId>tapir-selenium-ie</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-selenium</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-page</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-html-basic-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-selenium-chrome</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-selenium-firefox</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-selenium-htmlunit</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.bmiag.tapir</groupId>
+            <artifactId>tapir-selenium-ie</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 #end
 #if (${useJUnit5} == 'true')
-		<dependency>
-			<groupId>io.tapirtest</groupId>
-			<artifactId>tapir-extensions-junit5</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-extensions-junit5</artifactId>
+        </dependency>
 #end
 #if (${useJUnit4} == 'true')
-		<dependency>
-			<groupId>io.tapirtest</groupId>
-			<artifactId>tapir-junit</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>io.tapirtest</groupId>
+            <artifactId>tapir-junit</artifactId>
+        </dependency>
 #end
 #if (${useAllure} == 'true')
 #if (${useJUnit5} == 'true')
@@ -155,8 +155,30 @@
             <artifactId>allure-junit4</artifactId>
         </dependency>
 #end
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
 #end
 #end
-	</dependencies>
-	
+    </dependencies>
+   
+    <build>
+        <plugins>
+if (${useTapirExecution} != 'true' && ${useAllure} == 'true')
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                    <systemProperties>
+                        <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+#end
+        </plugins>
+    </build>
 </project>
