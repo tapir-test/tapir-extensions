@@ -31,6 +31,7 @@
 
 	<modules>
 		<module>tapir-extensions-parent</module>
+		<module>tapir-extensions-allure2</module>
 		<module>tapir-extensions-datasource-excel</module>
 		<module>tapir-extensions-datasource-excel-test</module>
 		<module>tapir-extensions-reporting-base</module>
