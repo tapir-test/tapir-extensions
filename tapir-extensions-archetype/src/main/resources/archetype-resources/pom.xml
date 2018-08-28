@@ -17,7 +17,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.tapirtest</groupId>
+                <groupId>io.tapir-test</groupId>
                 <artifactId>tapir-extensions-parent</artifactId>
                 <version>@project.version@</version>
                 <type>pom</type>
@@ -36,7 +36,7 @@
 #end
 #if (${useJUnit5} == 'true')
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>io.tapir-test</groupId>
             <artifactId>tapir-extensions-junit5-execution</artifactId>
         </dependency>
 #end
@@ -55,14 +55,14 @@
 #end
 #if (${useAllure2} == 'true')
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>io.tapir-test</groupId>
             <artifactId>tapir-extensions-allure2</artifactId>
             <scope>runtime</scope>
         </dependency>
 #end
 #if (${useExcelReporting} == 'true')
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>io.tapir-test</groupId>
             <artifactId>tapir-extensions-reporting-excel</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -81,7 +81,7 @@
             <artifactId>tapir-datasource-csv</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>io.tapir-test</groupId>
             <artifactId>tapir-extensions-datasource-excel</artifactId>
         </dependency>
 #end
@@ -139,13 +139,13 @@
 #end
 #if (${useJUnit5} == 'true')
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>io.tapir-test</groupId>
             <artifactId>tapir-extensions-junit5</artifactId>
         </dependency>
 #end
 #if (${useJUnit4} == 'true')
         <dependency>
-            <groupId>io.tapirtest</groupId>
+            <groupId>io.tapir-test</groupId>
             <artifactId>tapir-junit</artifactId>
         </dependency>
 #end
