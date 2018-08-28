@@ -14,24 +14,62 @@
 		<relativePath>../tapir-extensions-parent</relativePath>
 	</parent>
 
-	<properties>
-		<junit.platform.version>1.2.0</junit.platform.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-engine</artifactId>
-			<version>${junit.platform.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<version>${junit.platform.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.bmiag.tapir</groupId>
 			<artifactId>tapir-execution</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.bmiag.tapir</groupId>
+			<artifactId>tapir-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.bmiag.tapir</groupId>
+			<artifactId>tapir-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.bmiag.tapir</groupId>
+			<artifactId>tapir-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.bmiag.tapir</groupId>
+			<artifactId>tapir-core-assertion</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.lib.macro</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.bmiag.tapir</groupId>
+			<artifactId>tapir-annotation-processing</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

@@ -30,7 +30,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Accessors
 class Property {

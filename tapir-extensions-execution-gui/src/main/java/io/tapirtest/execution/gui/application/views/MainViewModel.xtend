@@ -61,7 +61,7 @@ import de.saxsys.mvvmfx.utils.commands.Action
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0 
+ * @since 1.0.0 
  */
 @Accessors
 class MainViewModel implements ViewModel {

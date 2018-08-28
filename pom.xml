@@ -30,6 +30,7 @@
 	</issueManagement>
 
 	<modules>
+		<module>tapir-extensions-dependencies</module>
 		<module>tapir-extensions-parent</module>
 		<module>tapir-extensions-allure2</module>
 		<module>tapir-extensions-datasource-excel</module>

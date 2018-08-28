@@ -35,7 +35,7 @@ import javafx.util.Callback
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 1.0.0
  */
 final class DescriptionCellValueFactory implements Callback<CellDataFeatures<Identifiable, String>, ObservableValue<String>> {
 

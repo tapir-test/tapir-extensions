@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Component
 class GUIStepExecutionInvocationHandler implements StepExecutionInvocationHandler {

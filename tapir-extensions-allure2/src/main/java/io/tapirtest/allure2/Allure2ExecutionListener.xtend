@@ -24,6 +24,14 @@ import org.apache.logging.log4j.Logger
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 
+/**
+ * The {@code Allure2ExecutionListener} a adapter which passes the events which occur while executing the tapir execution plan
+ * to Allure 2.
+ * 
+ * @author Oliver Libutzki {@literal <}oliver.libutzki@libutzki.de{@literal >}
+ * 
+ * @since 1.0.0
+ */
 @Component("tapirAllure2ExecutionListener")
 @Order(7000)
 class Allure2ExecutionListener extends AbstractExecutionListener implements AttachmentListener {

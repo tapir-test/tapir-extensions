@@ -32,7 +32,7 @@ import de.bmiag.tapir.execution.model.TestSuite
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 1.0.0
  */
 final class ExecutionPlanTreeItem extends AbstractCheckBoxTreeItem<ExecutionPlan> {
 

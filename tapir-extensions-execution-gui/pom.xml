@@ -12,15 +12,31 @@
 	</parent>
 
 	<artifactId>tapir-extensions-execution-gui</artifactId>
-  	<name>${project.groupId}:${project.artifactId}</name>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>tapir Execution GUI</description>
-	<url>https://www.tapir-test.io</url> 
-	
+	<url>https://www.tapir-test.io</url>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.bmiag.tapir</groupId>
 			<artifactId>tapir-execution</artifactId>
-		</dependency> 
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.lib</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>de.saxsys</groupId>
 			<artifactId>mvvmfx</artifactId>

@@ -24,6 +24,7 @@
 package io.tapirtest.execution.gui
 
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
+import org.springframework.boot.autoconfigure.AutoConfigureOrder
 
 /**
  * This is the configuration for the tapir extensions execution GUI module. This is just necessary to add the invocation handler of the tapir extensions launcher to the
@@ -31,9 +32,10 @@ import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 1.0.0
  */
 @ModuleConfiguration
+@AutoConfigureOrder(ExecutionGUIConfiguration.AUTO_CONFIGURE_ORDER)
 class ExecutionGUIConfiguration {
-	
+	public static final int AUTO_CONFIGURE_ORDER = 7000
 }

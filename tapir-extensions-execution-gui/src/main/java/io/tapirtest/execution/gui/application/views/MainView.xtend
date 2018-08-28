@@ -57,7 +57,7 @@ import de.saxsys.mvvmfx.InjectViewModel
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0 
+ * @since 1.0.0 
  */
 class MainView extends VBox implements JavaView<MainViewModel>, Initializable {
 	
