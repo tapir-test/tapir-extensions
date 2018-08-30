@@ -1,5 +1,6 @@
 language: java
 script: "mvn clean deploy --settings maven-settings.xml"
+sudo: required
 
 branches:
   only:
