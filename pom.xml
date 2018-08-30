@@ -19,12 +19,11 @@
 	<inceptionYear>2018</inceptionYear>
 
 	<scm>
-		<connection>scm:git:git://github.com/tapir-test/tapir-extensions.git</connection>
-		<developerConnection>scm:git:ssh://github.com:tapir-test/tapir-extensions.git</developerConnection>
+		<connection>scm:git:https://github.com/tapir-test/tapir-extensions.git</connection>
+		<developerConnection>scm:git:https://github.com/tapir-test/tapir-extensions.git</developerConnection>
 		<url>http://github.com/tapir-test/tapir-extensions/tree/master</url>
 	</scm>
-	
-	
+
 	<issueManagement>
 		<url>https://github.com/tapir-test/tapir-extensions/issues</url>
 	</issueManagement>
