@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -12,7 +11,7 @@
 
 	<groupId>io.tapir-test</groupId>
 	<artifactId>tapir-extensions-dependencies</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -32,37 +31,37 @@
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-allure2</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-datasource-excel</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-reporting-base</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-reporting-excel</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-execution-gui</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-junit5-execution</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-junit5</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
@@ -224,4 +223,8 @@
 		</repository>
 	</distributionManagement>
 
+
+  <scm>
+    <tag>1.0.0</tag>
+  </scm>
 </project>
