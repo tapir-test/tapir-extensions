@@ -24,6 +24,7 @@
 		<junit.jupiter.version>5.2.0</junit.jupiter.version>
 		<junit.platform.version>1.2.0</junit.platform.version>
 		<allure2-model.version>1.0.0</allure2-model.version>
+		<tapir-shared-resources.version>1.0.1</tapir-shared-resources.version>
 	</properties>
 
 	<dependencyManagement>
