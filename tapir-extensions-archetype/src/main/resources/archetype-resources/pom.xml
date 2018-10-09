@@ -173,7 +173,7 @@
    
     <build>
         <plugins>
-if (${useTapirExecution} != 'true' && (${useAllure1} == 'true' || ${useAllure2} == 'true'))
+#if (${useTapirExecution} != 'true' && (${useAllure1} == 'true' || ${useAllure2} == 'true'))
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
