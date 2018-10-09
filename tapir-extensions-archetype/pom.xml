@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>io.tapir-test</groupId>
 		<artifactId>tapir-extensions-parent</artifactId>
-		<version>1.0.2-SNAPSHOT</version>
+		<version>1.0.1</version>
 		<relativePath>../tapir-extensions-parent</relativePath>
 	</parent>
 
