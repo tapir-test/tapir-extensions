@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.tapir-test</groupId>
+		<artifactId>tapir-extensions-parent</artifactId>
+		<version>1.0.2-SNAPSHOT</version>
+		<relativePath>../tapir-extensions-parent</relativePath>
+	</parent>
+
+	<artifactId>tapir-extensions-feature-ide</artifactId>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>tapir extension for the FeatureIDE</description>
+	<url>https://www.tapir-test.io</url>
+	
+</project>
