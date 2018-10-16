@@ -1,16 +1,12 @@
 package io.tapirtest.junit5execution.descriptor
 
+import de.bmiag.tapir.execution.model.ExecutionModelElement
+import de.bmiag.tapir.execution.model.ExecutionPlan
 import de.bmiag.tapir.execution.model.TestClass
 import de.bmiag.tapir.execution.model.TestStep
 import de.bmiag.tapir.execution.model.TestSuite
-import de.bmiag.tapir.execution.model.TestParameter
-import de.bmiag.tapir.execution.model.ExecutionModelElement
-import org.springframework.util.DigestUtils
 import org.junit.platform.engine.UniqueId
-import de.bmiag.tapir.execution.model.ExecutionPlan
 import org.springframework.stereotype.Component
-import java.io.Serializable
-import org.springframework.util.SerializationUtils
 
 /**
  * The {@code UniqueIdCalculator} is responsible for building {@link UniqueId unique ids}. It usually does so by append the
@@ -36,37 +32,49 @@ class UniqueIdCalculator {
 	 * @since 1.0.0
 	 */
 	def UniqueId calculateUniqueId(ExecutionModelElement executionModelElement, UniqueId parentUniqueId) {
-		parentUniqueId.append(executionModelElement.class.simpleName, executionModelElement.id)
+		executionModelElement.calculateId(parentUniqueId)
 	}
 
-	def dispatch String getId(ExecutionPlan executionPlan) {
-		"ExecutionPlan"
+	def dispatch UniqueId calculateId(ExecutionPlan executionPlan, UniqueId parentUniqueId) {
+		parentUniqueId.append("ExecutionPlan", "ExecutionPlan")
 	}
 
-	def dispatch String getId(TestClass testClass) {
-		'''«testClass.name»«IF !testClass.parameters.empty»(«FOR param :  testClass.parameters SEPARATOR ","»«param.digest»«ENDFOR»)«ENDIF»'''
-	}
-
-	def dispatch String getId(TestSuite testSuite) {
-		testSuite.name
-	}
-
-	def dispatch String getId(TestStep testStep) {
-		'''«testStep.name»«IF !testStep.parameters.empty»(«FOR param :  testStep.parameters SEPARATOR ","»«param.digest»«ENDFOR»)«ENDIF»'''
-	}
-
-	def dispatch String getId(TestParameter testParameter) {
-		testParameter.value.toString;
-	}
-
-	def private String getDigest(TestParameter testParameter) {
-		val parameterValue = testParameter.value
-		val bytes = switch parameterValue {
-			String : parameterValue.getBytes("UTF-8")
-			Serializable: SerializationUtils.serialize(parameterValue)
-			default: parameterValue.toString.getBytes("UTF-8")
+	def dispatch UniqueId calculateId(TestClass testClass, UniqueId parentUniqueId) {
+		val testClassUniqueId = parentUniqueId.append("TestClass", testClass.name)
+		if (!testClass.parameters.empty) {
+			testClassUniqueId.append("TestClassInvocation", '''#«testClass.invocationIndex»''')
+		} else {
+			testClassUniqueId
 		}
-		DigestUtils.md5DigestAsHex(bytes)
+	}
+
+	def dispatch UniqueId calculateId(TestSuite testSuite, UniqueId parentUniqueId) {
+		parentUniqueId.append("TestSuite", testSuite.name)
+	}
+
+	def dispatch UniqueId calculateId(TestStep testStep, UniqueId parentUniqueId) {
+		if (testStep.isArtificialStep || !testStep.hasMultipleInvocations) {
+			val javaMethod = testStep.javaMethod
+			parentUniqueId.append("TestStep", '''«testStep.name»«IF !javaMethod.parameterTypes.empty»(«FOR paramType : javaMethod.parameterTypes SEPARATOR ","»«paramType.name»«ENDFOR»)«ENDIF»''')
+		} else {
+			parentUniqueId.append("TestStepInvocation", '''#«testStep.invocationIndex»''')
+		}
+	}
+	
+	def private getInvocationIndex(TestClass testClass) {
+		testClass.parent.children.indexOf(testClass)
+	}
+	
+	def private hasMultipleInvocations(TestStep testStep) {
+		testStep.parentTestClass.steps.filter[javaMethod == testStep.javaMethod].size > 1
+	}
+	
+	def private isArtificialStep(TestStep testStep) {
+		!testStep.parentTestClass.steps.contains(testStep)
+	}
+	
+	def private getInvocationIndex(TestStep testStep) {
+		testStep.parentTestClass.steps.filter[javaMethod == testStep.javaMethod].toList.indexOf(testStep)
 	}
 
 }
