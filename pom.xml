@@ -43,7 +43,6 @@
 		<module>tapir-extensions-junit5-execution-test</module>
     	<module>tapir-extensions-archetype</module>
     	<module>tapir-extensions-feature-ide</module>
-    	<module>tapir-extensions-feature-ide-test</module>
 	</modules>
 
 </project>

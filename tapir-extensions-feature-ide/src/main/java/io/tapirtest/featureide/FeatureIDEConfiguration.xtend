@@ -25,6 +25,7 @@
 package io.tapirtest.featureide
 
 import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
+import org.springframework.boot.autoconfigure.AutoConfigureOrder
 
 /**
  * @author Nils Christian Ehmke
@@ -32,5 +33,12 @@ import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
  * @since 1.1.0
  */
 @ModuleConfiguration
+@AutoConfigureOrder(FeatureIDEConfiguration.AUTO_CONFIGURE_ORDER)
 class FeatureIDEConfiguration {
+
+	/**
+	 * @since 1.1.0
+	 */
+	public static final int AUTO_CONFIGURE_ORDER = -10000
+
 }
