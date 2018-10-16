@@ -77,8 +77,8 @@ class ExecutionTest {
 	@Test
 	def void testParameterizedStep() {
 		val testClassUID = TAPIR_ENGINE_UID.append(TestClass.simpleName, TestClassParameterizedStep.name)
-		val step1UID = testClassUID.append(TestStep.simpleName, '''step1(«"value1".digist»)''')
-		val step2UID = testClassUID.append(TestStep.simpleName, '''step2(«"value1".digist»,«"value2".digist»)''')
+		val step1UID = testClassUID.append(TestStep.simpleName, '''step1(«String.name»)''')
+		val step2UID = testClassUID.append(TestStep.simpleName, '''step2(«String.name»,«String.name»)''')
 		val expectedEvents = buildEvents[
 			add(ComparabaleTestExecutionEvent.build [
 				uniqueId = testClassUID
@@ -98,19 +98,19 @@ class ExecutionTest {
 	@Test
 	def void testIteratedParameterizedStep() {
 		val testClassUID = TAPIR_ENGINE_UID.append(TestClass.simpleName, TestClassIteratedParameterizedStep.name)
-		val step1UID = testClassUID.append(TestStep.simpleName, '''step1''')
-		val step2UID = testClassUID.append(TestStep.simpleName, '''step2''')
+		val step1UID = testClassUID.append(TestStep.simpleName, '''step1(«String.name»)''')
+		val step2UID = testClassUID.append(TestStep.simpleName, '''step2(«String.name»,«String.name»)''')
 		val expectedEvents = buildEvents[
 			add(ComparabaleTestExecutionEvent.build [
 				uniqueId = testClassUID
 				type = STARTED
 			])
-			addFinishedStep(step1UID.append(TestStep.simpleName, '''step1(«"value1".digist»)'''))
-			addFinishedStep(step1UID.append(TestStep.simpleName, '''step1(«"value2".digist»)'''))
-			addFinishedStep(step2UID.append(TestStep.simpleName, '''step2(«"param1value1".digist»,«"param2value1".digist»)'''))
-			addFinishedStep(step2UID.append(TestStep.simpleName, '''step2(«"param1value1".digist»,«"param2value2".digist»)'''))
-			addFinishedStep(step2UID.append(TestStep.simpleName, '''step2(«"param1value2".digist»,«"param2value1".digist»)'''))
-			addFinishedStep(step2UID.append(TestStep.simpleName, '''step2(«"param1value2".digist»,«"param2value2".digist»)'''))
+			addFinishedStep(step1UID.append("TestStepInvocation", "#0"))
+			addFinishedStep(step1UID.append("TestStepInvocation", "#1"))
+			addFinishedStep(step2UID.append("TestStepInvocation", "#0"))
+			addFinishedStep(step2UID.append("TestStepInvocation", "#1"))
+			addFinishedStep(step2UID.append("TestStepInvocation", "#2"))
+			addFinishedStep(step2UID.append("TestStepInvocation", "#3"))
 			add(ComparabaleTestExecutionEvent.build [
 				uniqueId = testClassUID
 				type = FINISHED
@@ -150,10 +150,10 @@ class ExecutionTest {
 	@Test
 	def void testIteratedClass() {
 		val testClassUID = TAPIR_ENGINE_UID.append(TestSuite.simpleName, IteratedTestClass.name)
-		val value1UID = testClassUID.append(TestClass.simpleName, '''«IteratedTestClass.name»(«"value1".digist»)''')
-		val value2UID = testClassUID.append(TestClass.simpleName, '''«IteratedTestClass.name»(«"value2".digist»)''')
-		val value1Step2UID = value1UID.append(TestStep.simpleName, '''step2''')
-		val value2Step2UID = value2UID.append(TestStep.simpleName, '''step2''')
+		val value1UID = testClassUID.append(TestClass.simpleName, IteratedTestClass.name).append("TestClassInvocation", "#0")
+		val value2UID = testClassUID.append(TestClass.simpleName, IteratedTestClass.name).append("TestClassInvocation", "#1")
+		val value1Step2UID = value1UID.append(TestStep.simpleName, '''step2(«String.name»)''')
+		val value2Step2UID = value2UID.append(TestStep.simpleName, '''step2(«String.name»)''')
 		val expectedEvents = buildEvents[
 			add(ComparabaleTestExecutionEvent.build [
 				uniqueId = testClassUID
@@ -164,8 +164,8 @@ class ExecutionTest {
 				type = STARTED
 			])
 			addFinishedStep(value1UID.append(TestStep.simpleName, '''step1'''))
-			addFinishedStep(value1Step2UID.append(TestStep.simpleName, '''step2(«"value1".digist»)'''))
-			addFinishedStep(value1Step2UID.append(TestStep.simpleName, '''step2(«"value2".digist»)'''))
+			addFinishedStep(value1Step2UID.append("TestStepInvocation", "#0"))
+			addFinishedStep(value1Step2UID.append("TestStepInvocation", "#1"))
 			add(ComparabaleTestExecutionEvent.build [
 				uniqueId = value1UID
 				type = FINISHED
@@ -175,8 +175,8 @@ class ExecutionTest {
 				type = STARTED
 			])
 			addFinishedStep(value2UID.append(TestStep.simpleName, '''step1'''))
-			addFinishedStep(value2Step2UID.append(TestStep.simpleName, '''step2(«"value1".digist»)'''))
-			addFinishedStep(value2Step2UID.append(TestStep.simpleName, '''step2(«"value2".digist»)'''))
+			addFinishedStep(value2Step2UID.append("TestStepInvocation", "#0"))
+			addFinishedStep(value2Step2UID.append("TestStepInvocation", "#1"))
 			add(ComparabaleTestExecutionEvent.build [
 				uniqueId = value2UID
 				type = FINISHED
