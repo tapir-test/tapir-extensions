@@ -16,6 +16,28 @@
 	<description>tapir extension for the FeatureIDE</description>
 	<url>https://www.tapir-test.io</url>
 
+	<build> 
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sources>src/main/resources/feature.xsd</sources>
+					<packageName>io.tapirtest.featureide.model.feature</packageName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>

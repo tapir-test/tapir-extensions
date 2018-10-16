@@ -65,6 +65,11 @@
 				<version>1.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-feature-ide</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
 				<version>${poi.version}</version>

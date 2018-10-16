@@ -15,5 +15,12 @@
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>tapir extension for the FeatureIDE test</description>
 	<url>https://www.tapir-test.io</url>
-	
+
+	<dependencies>
+		<dependency>
+			<groupId>io.tapir-test</groupId>
+			<artifactId>tapir-extensions-feature-ide</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>
