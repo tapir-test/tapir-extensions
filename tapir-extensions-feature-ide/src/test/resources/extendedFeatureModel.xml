@@ -17,6 +17,10 @@
                     <feature name="F4.1"/>
                     <feature name="F4.2"/>
                 </alt>
+                <and name="F5">
+                    <feature name="F5.1"/>
+                    <feature name="F5.2"/>
+                </and>
             </and>
         </and>
     </struct>

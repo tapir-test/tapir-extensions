@@ -3,23 +3,74 @@
 
 	<xs:element name="featureModel">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="struct" type="struct" />
-			</xs:sequence>
-		</xs:complexType>
+	        <xs:complexContent>
+	            <xs:extension base="featureModelType">
+	            </xs:extension> 
+	        </xs:complexContent>
+	    </xs:complexType>
 	</xs:element>
-
+	
 	<xs:element name="extendedFeatureModel">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="struct" type="struct" />
-			</xs:sequence>
-		</xs:complexType>
+	        <xs:complexContent>
+	            <xs:extension base="featureModelType">
+	            </xs:extension> 
+	        </xs:complexContent>
+	    </xs:complexType>
 	</xs:element>
 
-	<xs:complexType name="struct">
+	<xs:complexType name="featureModelType">
 		<xs:sequence>
+			<xs:element name="properties" type="propertiesType"/>
+			<xs:element name="struct" type="structType" />
+			<xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:complexType name="propertiesType">
+		<xs:sequence>
+			<xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="structType">
+		<xs:choice>
+			<xs:element name="and" type="branchedFeatureType"/>
+			<xs:element name="or" type="branchedFeatureType"/>
+			<xs:element name="alt" type="branchedFeatureType"/>
+			<xs:element name="feature" type="featureType"/>
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:complexType name="branchedFeatureType">
+		<xs:complexContent>
+			<xs:extension base="featureType">
+				<xs:sequence>
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element name="and" type="branchedFeatureType"/>
+						<xs:element name="or" type="branchedFeatureType"/>
+						<xs:element name="alt" type="branchedFeatureType"/>
+						<xs:element name="feature" type="featureType"/>
+						<xs:element name="attribute" type="attributeType"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="featureType">
+		<xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="abstract" type="xs:boolean"/>
+		<xs:attribute name="mandatory" type="xs:boolean"/>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+	
+	<xs:complexType name="attributeType">
+		<xs:sequence>
+			<xs:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:anyAttribute processContents="skip"/>
+	</xs:complexType>
+	
 </xs:schema>
