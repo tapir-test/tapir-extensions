@@ -44,5 +44,19 @@ annotation FeatureIDEFeatures {
 	 * @since 1.1.0
 	 */
 	String value
+	
+	/**
+	 * This prefix is prepended to each generated feature.
+	 * 
+	 * @since 1.1.0
+	 */
+	String prefix = ''
+	
+	/**
+	 * This suffix is appended to each generated feature.
+	 * 
+	 * @since 1.1.0
+	 */
+	String suffix = 'Feature'
 
 }

@@ -25,6 +25,7 @@
 package io.tapirtest.featureide.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
+import de.bmiag.tapir.variant.feature.Feature
 import io.tapirtest.featureide.model.feature.BranchedFeatureType
 import io.tapirtest.featureide.model.feature.FeatureModelType
 import io.tapirtest.featureide.model.feature.FeatureType
@@ -34,15 +35,18 @@ import java.util.List
 import java.util.Optional
 import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
-import org.eclipse.xtend.lib.macro.CodeGenerationContext
 import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
+import org.eclipse.xtend.lib.macro.TransformationContext
+import org.eclipse.xtend.lib.macro.ValidationContext
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
+import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.file.FileLocations
 import org.eclipse.xtend.lib.macro.file.FileSystemSupport
 import org.eclipse.xtend.lib.macro.file.Path
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.annotation.Order
-import org.eclipse.xtend.lib.macro.ValidationContext
+import org.springframework.stereotype.Component
 
 /**
  * @author Nils Christian Ehmke
@@ -62,7 +66,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		if (filePath.present) {
 			// Collect all features and convert them into classes
 			val features = collectFeatures(filePath.get, context)
-			features.map[getFullQualifiedFeatureName(it, annotatedClass)].forEach[registerClass]
+			features.map[getFullQualifiedFeatureName(it, annotatedClass, annotation)].forEach[registerClass]
 		}
 	}
 	
@@ -75,8 +79,27 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		}
 	}
 	
-	override doGenerateCode(ClassDeclaration annotatedClass, extension CodeGenerationContext context) {
+	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
+		val filePath = findFilePath(annotatedClass, annotation, context)
 		
+		if (filePath.present) {
+			// Find all registered feature classes and transform them
+			val features = collectFeatures(filePath.get, context)
+			features.map[getFullQualifiedFeatureName(it, annotatedClass, annotation)].map[findClass].forEach[doTransformFeature(it, context)]
+		}
+	}
+	
+	private def doTransformFeature(MutableClassDeclaration clazz, extension TransformationContext context) {
+		// Let the feature implement the required interface
+		clazz.implementedInterfaces =  #[Feature.findTypeGlobally.newSelfTypeReference]
+		
+		// Now add the required annotations
+		clazz.addAnnotation(Component.newAnnotationReference)
+		clazz.addAnnotation(ConditionalOnProperty.newAnnotationReference([
+			setStringValue('name', '''«clazz.qualifiedName».active''')
+			setStringValue('havingValue', 'true')
+		]))
 	}
 	
 	private def <C extends FileLocations & FileSystemSupport> findFilePath(ClassDeclaration annotatedClass, AnnotationReference annotation, extension C context) {
@@ -150,8 +173,10 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		}
 	}
 	
-	private def String getFullQualifiedFeatureName(String feature, ClassDeclaration annotatedClass) {
-		val simpleFeatureName = feature.replaceAll('(\\W)', '') + 'Feature'
+	private def String getFullQualifiedFeatureName(String feature, ClassDeclaration annotatedClass, AnnotationReference annotation) {
+		val prefix = annotation.getStringValue('prefix')
+		val suffix = annotation.getStringValue('suffix')
+		val simpleFeatureName = prefix + feature.replaceAll('(\\W)', '') + suffix
 		'''«annotatedClass.compilationUnit.packageName».«simpleFeatureName»'''
 	}
 	
