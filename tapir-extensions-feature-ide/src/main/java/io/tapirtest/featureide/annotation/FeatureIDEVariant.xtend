@@ -45,4 +45,11 @@ annotation FeatureIDEVariant {
 	 */
 	String value
 	
+	/**
+	 * The name of the variant. If this is not specified, the class name will be used instead.
+	 * 
+	 * @since 1.1.0
+	 */
+	String name = ''
+	
 }
