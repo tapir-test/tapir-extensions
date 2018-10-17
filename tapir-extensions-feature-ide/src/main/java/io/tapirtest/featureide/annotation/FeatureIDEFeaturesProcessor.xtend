@@ -25,11 +25,24 @@
 package io.tapirtest.featureide.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
+import io.tapirtest.featureide.model.feature.BranchedFeatureType
+import io.tapirtest.featureide.model.feature.FeatureModelType
+import io.tapirtest.featureide.model.feature.FeatureType
+import io.tapirtest.featureide.model.feature.ObjectFactory
+import io.tapirtest.featureide.model.feature.StructType
+import java.util.List
+import java.util.Optional
+import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
-import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
-import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
 import org.eclipse.xtend.lib.macro.CodeGenerationContext
+import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
+import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
+import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
+import org.eclipse.xtend.lib.macro.file.FileLocations
+import org.eclipse.xtend.lib.macro.file.FileSystemSupport
+import org.eclipse.xtend.lib.macro.file.Path
 import org.springframework.core.annotation.Order
+import org.eclipse.xtend.lib.macro.ValidationContext
 
 /**
  * @author Nils Christian Ehmke
@@ -40,10 +53,106 @@ import org.springframework.core.annotation.Order
 @Order(-10000)
 class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
+	static val jaxbContext = JAXBContext.newInstance(ObjectFactory)
+
 	override doRegisterGlobals(ClassDeclaration annotatedClass, extension RegisterGlobalsContext context) {
+		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findUpstreamType)
+		val filePath = findFilePath(annotatedClass, annotation, context)
+		
+		if (filePath.present) {
+			// Collect all features and convert them into classes
+			val features = collectFeatures(filePath.get, context)
+			features.map[getFullQualifiedFeatureName(it, annotatedClass)].forEach[registerClass]
+		}
 	}
-
+	
+	override doValidate(ClassDeclaration annotatedClass, extension ValidationContext context) {
+		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
+		val filePath = findFilePath(annotatedClass, annotation, context)
+		
+		if (!filePath.present) {
+			annotatedClass.addError('The feature model file could not be found.')
+		}
+	}
+	
 	override doGenerateCode(ClassDeclaration annotatedClass, extension CodeGenerationContext context) {
+		
 	}
-
+	
+	private def <C extends FileLocations & FileSystemSupport> findFilePath(ClassDeclaration annotatedClass, AnnotationReference annotation, extension C context) {
+		val filePath = annotation.getStringValue('value')
+		
+		val compilationUnitPath = annotatedClass.compilationUnit.filePath
+		val projectSourceFolders = compilationUnitPath.projectSourceFolders
+		
+		Optional.ofNullable(projectSourceFolders.map[append('/' + filePath)].findFirst[isFile])
+	}
+	
+	private def List<String> collectFeatures(Path filePath, extension FileSystemSupport context) {
+		val list = newArrayList
+		
+		// Parse the feature model from the given XML file
+		var FeatureModelType featureModel
+		val stream = filePath.contentsAsStream
+		try {
+			val unmarshaller = jaxbContext.createUnmarshaller
+			featureModel = unmarshaller.unmarshal(stream) as FeatureModelType
+		} finally {
+			stream.close
+		}
+		
+		// Now read from the feature model
+		collectFeatures(featureModel, list)
+		
+		list
+	}
+	
+	private def void collectFeatures(FeatureModelType featureModel, List<String> list) {
+		collectFeatures(featureModel.struct, list)
+	}
+	
+	private def void collectFeatures(StructType struct, List<String> list) {
+		if (struct.and !== null) {
+			collectFeatures(struct.and, list)
+		}
+		
+		if (struct.alt !== null) {
+			collectFeatures(struct.alt, list)
+		}
+		
+		if (struct.or !== null) {
+			collectFeatures(struct.or, list)
+		}
+		
+		if (struct.feature !== null) {
+			collectFeatures(struct.feature, list)
+		}
+	}
+	
+	private def void collectFeatures(BranchedFeatureType branchedFeature, List<String> list) {
+		collectFeatures(branchedFeature as FeatureType, list)
+		
+		for (element : branchedFeature.andOrOrOrAlt) {
+			val value = element.value
+			
+			// We use this instanceof just to call the correct method. Xtend performs the cast.
+			if (value instanceof BranchedFeatureType) {
+				collectFeatures(value, list)
+			} else {
+				collectFeatures(value, list)		
+			}
+		}
+	}
+	
+	private def void collectFeatures(FeatureType feature, List<String> list) {
+		if (!Boolean.TRUE.equals(feature.abstract)) {
+			list += feature.name
+		}
+	}
+	
+	private def String getFullQualifiedFeatureName(String feature, ClassDeclaration annotatedClass) {
+		val simpleFeatureName = feature.replaceAll('(\\W)', '') + 'Feature'
+		'''«annotatedClass.compilationUnit.packageName».«simpleFeatureName»'''
+	}
+	
 }
