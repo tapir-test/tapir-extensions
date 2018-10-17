@@ -32,7 +32,9 @@
 					</execution>
 				</executions>
 				<configuration>
-					<sources>src/main/resources/feature.xsd</sources>
+					<sources>
+						<source>src/main/resources/feature.xsd</source>
+					</sources>
 					<packageName>io.tapirtest.featureide.model.feature</packageName>
 				</configuration>
 			</plugin>
