@@ -46,12 +46,12 @@
 		<xs:complexContent>
 			<xs:extension base="featureType">
 				<xs:sequence>
+					<xs:element name="attribute" type="attributeType" minOccurs="0" maxOccurs="unbounded"/>
 					<xs:choice minOccurs="1" maxOccurs="unbounded">
 						<xs:element name="and" type="branchedFeatureType"/>
 						<xs:element name="or" type="branchedFeatureType"/>
 						<xs:element name="alt" type="branchedFeatureType"/>
 						<xs:element name="feature" type="featureType"/>
-						<xs:element name="attribute" type="attributeType"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>

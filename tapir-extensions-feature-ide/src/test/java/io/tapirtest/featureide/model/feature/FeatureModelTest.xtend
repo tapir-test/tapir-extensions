@@ -51,7 +51,7 @@ class FeatureModelTest {
 		val branchedFeature = struct.and.andOrOrOrAlt.get(0).value as BranchedFeatureType
 		assertThat(branchedFeature.andOrOrOrAlt, hasSize(4))
 	}
-	
+	 
 	@Test
 	def void extendedFeatureModelFileShouldBeParsable() {
 		val unmarshaller = createUnmarshaller()
@@ -65,7 +65,7 @@ class FeatureModelTest {
 		
 		assertThat(struct.and.name, is('Root'))
 		val branchedFeature = struct.and.andOrOrOrAlt.get(0).value as BranchedFeatureType
-		assertThat(branchedFeature.andOrOrOrAlt, hasSize(5))
+		assertThat(branchedFeature.andOrOrOrAlt, hasSize(4))
 	}
 	
 	
