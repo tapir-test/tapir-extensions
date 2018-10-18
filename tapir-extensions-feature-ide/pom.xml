@@ -22,6 +22,10 @@
 			<artifactId>tapir-extensions-feature-ide-feature-model</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.tapir-test</groupId>
+			<artifactId>tapir-extensions-feature-ide-configuration-model</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
 		</dependency>
