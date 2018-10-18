@@ -24,8 +24,14 @@
  package io.tapirtest.featureide.annotation
 
 import org.eclipse.xtend.core.XtendInjectorSingleton
+import org.eclipse.xtext.diagnostics.Severity
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper
 import org.junit.Test
+
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static org.hamcrest.core.Is.is
+import static org.junit.Assert.assertThat
+import de.bmiag.tapir.variant.annotation.feature.Feature
 
 /**
  * This is a unit test for the {@link FeatureIDEVariantProcessor}.
@@ -35,14 +41,32 @@ import org.junit.Test
 class FeatureIDEVariantProcessorTest {
 	
 	@Test
+	def notAvailableFeatureModelFileShouldResultInError() {
+		val compilationTestHelper = createCompilationTestHelper()
+
+		compilationTestHelper.compile(
+		'''
+			package io.tapirtest.test
+						
+			import «FeatureIDEVariant.name»
+			
+			@«FeatureIDEVariant.simpleName»('nonExistingFile.xml')
+			class MyVariant {
+			}
+		''', [
+			assertThat(errorsAndWarnings, hasSize(1))
+			assertThat(errorsAndWarnings.get(0).severity, is(Severity.ERROR))
+			assertThat(errorsAndWarnings.get(0).message, is('The variant configuration file could not be found.'))
+		])
+	}
+	
+	@Test
 	def simpleModelFileShouldBeGeneratedCorrectly() {
 		val compilationTestHelper = createCompilationTestHelper('myProject/src/model.xml', '''
 			<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 			<configuration>
-			    <feature automatic="selected" name="Root"/>
 			    <feature automatic="selected" name="F1"/>
 			</configuration>
-
 		''')
 
 		compilationTestHelper.assertCompilesTo(
@@ -50,15 +74,39 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test
 			
 			import «FeatureIDEVariant.name»
+			import «Feature.name»
 			
 			@«FeatureIDEVariant.simpleName»('model.xml')
 			class MyVariant {
 			}
+
+			@«Feature.simpleName»			
+			class F1Feature {
+			}
 		''', '''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : /myProject/xtend-gen/io/tapirtest/test/F1Feature.java
+			
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.feature.Feature;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.stereotype.Component;
+			
+			@Component
+			@ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "true")
+			@SuppressWarnings("all")
+			public class F1Feature implements Feature {
+			}
+			
+			File 2 : /myProject/xtend-gen/io/tapirtest/test/MyVariant.java
+			
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
 			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
+			import io.tapirtest.test.F1Feature;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
@@ -74,8 +122,165 @@ class FeatureIDEVariantProcessorTest {
 			  public String variant() {
 			    return MyVariant.NAME;
 			  }
+			  
+			  @Bean
+			  @ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "MyVariant", matchIfMissing = true)
+			  public F1Feature f1Feature() {
+			    return new F1Feature();
+			  }
 			}
+			
 		''')
+	}
+	
+	@Test
+	def prefixesShouldBePrepended() {
+		val compilationTestHelper = createCompilationTestHelper('myProject/src/model.xml', '''
+			<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+			<configuration>
+			    <feature automatic="selected" name="F1"/>
+			</configuration>
+		''')
+
+		compilationTestHelper.assertCompilesTo(
+		'''
+			package io.tapirtest.test
+			
+			import «FeatureIDEVariant.name»
+			import «Feature.name»
+			
+			@«FeatureIDEVariant.simpleName»(value='model.xml', prefix='MyPrefix')
+			class MyVariant {
+			}
+
+			@«Feature.simpleName»			
+			class MyPrefixF1Feature {
+			}
+		''', '''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : /myProject/xtend-gen/io/tapirtest/test/MyPrefixF1Feature.java
+			
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.feature.Feature;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.stereotype.Component;
+			
+			@Component
+			@ConditionalOnProperty(name = "io.tapirtest.test.MyPrefixF1Feature.active", havingValue = "true")
+			@SuppressWarnings("all")
+			public class MyPrefixF1Feature implements Feature {
+			}
+			
+			File 2 : /myProject/xtend-gen/io/tapirtest/test/MyVariant.java
+			
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.Variant;
+			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
+			import io.tapirtest.test.MyPrefixF1Feature;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.context.annotation.Bean;
+			import org.springframework.context.annotation.Configuration;
+			
+			@FeatureIDEVariant(value = "model.xml", prefix = "MyPrefix")
+			@Configuration
+			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
+			@SuppressWarnings("all")
+			public class MyVariant implements Variant {
+			  private final static String NAME = "MyVariant";
+			  
+			  @Bean
+			  public String variant() {
+			    return MyVariant.NAME;
+			  }
+			  
+			  @Bean
+			  @ConditionalOnProperty(name = "io.tapirtest.test.MyPrefixF1Feature.active", havingValue = "MyVariant", matchIfMissing = true)
+			  public MyPrefixF1Feature myPrefixF1Feature() {
+			    return new MyPrefixF1Feature();
+			  }
+			}
+			
+		''')
+	}
+	
+	@Test
+	def suffixesShouldBeAppended() {
+		val compilationTestHelper = createCompilationTestHelper('myProject/src/model.xml', '''
+			<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+			<configuration>
+			    <feature automatic="selected" name="F1"/>
+			</configuration>
+		''')
+
+		compilationTestHelper.assertCompilesTo(
+		'''
+			package io.tapirtest.test
+			
+			import «FeatureIDEVariant.name»
+			import «Feature.name»
+			
+			@«FeatureIDEVariant.simpleName»(value='model.xml', suffix='MySuffix')
+			class MyVariant {
+			}
+
+			@«Feature.simpleName»			
+			class F1MySuffix {
+			}
+		''', '''
+			MULTIPLE FILES WERE GENERATED
+			
+			File 1 : /myProject/xtend-gen/io/tapirtest/test/F1MySuffix.java
+			
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.feature.Feature;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.stereotype.Component;
+			
+			@Component
+			@ConditionalOnProperty(name = "io.tapirtest.test.F1MySuffix.active", havingValue = "true")
+			@SuppressWarnings("all")
+			public class F1MySuffix implements Feature {
+			}
+			
+			File 2 : /myProject/xtend-gen/io/tapirtest/test/MyVariant.java
+			
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.Variant;
+			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
+			import io.tapirtest.test.F1MySuffix;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.context.annotation.Bean;
+			import org.springframework.context.annotation.Configuration;
+			
+			@FeatureIDEVariant(value = "model.xml", suffix = "MySuffix")
+			@Configuration
+			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
+			@SuppressWarnings("all")
+			public class MyVariant implements Variant {
+			  private final static String NAME = "MyVariant";
+			  
+			  @Bean
+			  public String variant() {
+			    return MyVariant.NAME;
+			  }
+			  
+			  @Bean
+			  @ConditionalOnProperty(name = "io.tapirtest.test.F1MySuffix.active", havingValue = "MyVariant", matchIfMissing = true)
+			  public F1MySuffix f1MySuffix() {
+			    return new F1MySuffix();
+			  }
+			}
+			
+		''')
+	}
+	
+	private def createCompilationTestHelper() {
+		createCompilationTestHelper(null, null)
 	}
 	
 	private def createCompilationTestHelper(String filePath, String fileContent) {

@@ -33,6 +33,7 @@ import java.util.Optional
 import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
+import org.eclipse.xtend.lib.macro.ValidationContext
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
@@ -51,29 +52,40 @@ import org.springframework.core.annotation.Order
 @AnnotationProcessor(FeatureIDEVariant)
 @Order(-10000)
 class FeatureIDEVariantProcessor extends AbstractClassProcessor {
-
+ 
 	static val jaxbContext = JAXBContext.newInstance(ObjectFactory)
+	
+	val extension FeatureNameConverter = new FeatureNameConverter()
+	
+	override doValidate(ClassDeclaration annotatedClass, extension ValidationContext context) {
+		val annotation = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
+		val filePath = findFilePath(annotatedClass, annotation, context)
+		
+		if (!filePath.present) {
+			annotatedClass.addError('The variant configuration file could not be found.')
+		}
+	}
 
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-		// Find out the name of the variant
 		val annotation = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
-		var temporaryVariantName = annotation.getStringValue('name')
-		if (temporaryVariantName.isNullOrEmpty) {
-			temporaryVariantName = annotatedClass.simpleName
-		}
-		val variantName = temporaryVariantName
+		val variantName = getVariantName(annotation, annotatedClass)
 		
-		// Add the required annotations
+		addAnnotationAndInterface(annotatedClass, variantName, context)
+		addBasicFieldsAndMethods(annotatedClass, variantName, context)
+		addFeatures(annotatedClass, annotation, variantName, context)
+	}
+	
+	private def void addAnnotationAndInterface(MutableClassDeclaration annotatedClass, String variantName, extension TransformationContext context) {
 		annotatedClass.addAnnotation(org.springframework.context.annotation.Configuration.newAnnotationReference)
 		annotatedClass.addAnnotation(ConditionalOnProperty.newAnnotationReference [
 			setStringValue('name', 'variant')
 			setStringValue('havingValue', variantName)
 		])
-		
-		// Add the interface to mark the class as variant
+		 
 		annotatedClass.implementedInterfaces = annotatedClass.implementedInterfaces + #[Variant.newTypeReference()]
-		
-		// Now the basic fields and methods that are always there
+	}
+	
+	private def void addBasicFieldsAndMethods(MutableClassDeclaration annotatedClass, String variantName, extension TransformationContext context) {
 		annotatedClass.addField('NAME', [
 			final = true
 			static = true
@@ -87,36 +99,40 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 			returnType = String.newTypeReference()
 			body = '''return «annotatedClass.simpleName».NAME;'''
 		])
-		
-		// Now we add the actual features
-		val filePath = findFilePath(annotatedClass, annotation, context)
+	}
+	
+	private def void addFeatures(MutableClassDeclaration annotatedClass, AnnotationReference annotationReference, String variantName, extension TransformationContext context) {
+		val filePath = findFilePath(annotatedClass, annotationReference, context)
 		
 		if (filePath.present) {
-			// Collect all features and convert them into methods
-			val features = collectFeatures(filePath.get, context)
-			for (feature : features) {
-				val fullyQualifiedFeatureName = getFullQualifiedFeatureName(feature, annotatedClass, annotation)
-				val simpleFeaturename = fullyQualifiedFeatureName.substring(fullyQualifiedFeatureName.lastIndexOf('.') + 1).toFirstLower
-				val featureType = fullyQualifiedFeatureName.findTypeGlobally
+			val features = collectFeatureNames(filePath.get, context)
+			features.forEach[addFeature(it, annotatedClass, annotationReference, variantName, context)]
+		}
+	}
+	
+	private def void addFeature(String rawFeatureName, MutableClassDeclaration annotatedClass, AnnotationReference annotationReference, String variantName, extension TransformationContext context) {
+		val packageName = getPackageName(annotatedClass, annotationReference)
+		
+		val fullyQualifiedFeatureName = convertToValidFullQualifiedFeatureName(rawFeatureName, packageName, annotationReference)
+		val simpleFeaturename = convertToValidSimpleFeatureName(rawFeatureName, annotationReference)
+		val featureType = fullyQualifiedFeatureName.findTypeGlobally
+		
+		if (featureType === null) {
+			annotatedClass.addError('''Feature '«fullyQualifiedFeatureName»' could not be found''')
+		} else {
+			annotatedClass.addMethod(simpleFeaturename.toFirstLower, [
+				addAnnotation(Bean.newAnnotationReference)
+				addAnnotation(ConditionalOnProperty.newAnnotationReference [
+					setStringValue('name', '''«fullyQualifiedFeatureName».active''')
+					setStringValue('havingValue', variantName)
+					setBooleanValue('matchIfMissing', true)
+				])
 				
-				if (featureType === null) {
-					annotatedClass.addError('''Feature '«fullyQualifiedFeatureName»' could not be found''')
-				} else {
-					annotatedClass.addMethod(simpleFeaturename, [
-						addAnnotation(Bean.newAnnotationReference)
-						addAnnotation(ConditionalOnProperty.newAnnotationReference [
-							setStringValue('name', '''«fullyQualifiedFeatureName».active''')
-							setStringValue('havingValue', variantName)
-							setBooleanValue('matchIfMissing', true)
-						])
-						
-						returnType = featureType.newSelfTypeReference
-						body = '''
-							return new «featureType.newSelfTypeReference»();
-						'''
-					])
-				}
-			}
+				returnType = featureType.newSelfTypeReference
+				body = '''
+					return new «featureType.newSelfTypeReference»();
+				'''
+			])
 		}
 	}
 	
@@ -129,8 +145,21 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		Optional.ofNullable(projectSourceFolders.map[append('/' + filePath)].findFirst[isFile])
 	}
 	
-	private def List<String> collectFeatures(Path filePath, extension FileSystemSupport context) {
-		// Parse the feature model from the given XML file
+	private def getVariantName(AnnotationReference annotation, ClassDeclaration annotatedClass) {
+		var variantName = annotation.getStringValue('name')
+		if (variantName.isNullOrEmpty) {
+			variantName = annotatedClass.simpleName
+		}
+		
+		variantName
+	}
+	
+	private def List<String> collectFeatureNames(Path filePath, extension FileSystemSupport context) {
+		val configuration = parseVariantModel(filePath, context)
+		configuration.feature.map[name]
+	}
+	
+	private def parseVariantModel(Path filePath, extension FileSystemSupport context) {
 		var Configuration configuration
 		val stream = filePath.contentsAsStream
 		try {
@@ -140,18 +169,16 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 			stream.close
 		}
 		
-		configuration.feature.map[name]
+		configuration
 	}
 	
-	private def String getFullQualifiedFeatureName(String feature, ClassDeclaration annotatedClass, AnnotationReference annotation) {
-		val prefix = annotation.getStringValue('prefix')
-		val suffix = annotation.getStringValue('suffix')
-		val simpleFeatureName = prefix + feature.replaceAll('(\\W)', '') + suffix
+	private def String getPackageName(ClassDeclaration annotatedClass, AnnotationReference annotation) {
 		var packageName = annotation.getStringValue('featuresPackage')
 		if (packageName.empty) {
 			packageName = annotatedClass.compilationUnit.packageName
 		}
-		'''«packageName».«simpleFeatureName»'''
+		
+		packageName
 	}
 
 }

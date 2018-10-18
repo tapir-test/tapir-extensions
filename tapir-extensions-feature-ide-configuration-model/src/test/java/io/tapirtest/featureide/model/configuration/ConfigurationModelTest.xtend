@@ -29,6 +29,7 @@ import javax.xml.bind.Unmarshaller
 import javax.xml.validation.SchemaFactory
 import org.junit.Test
 
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.core.Is.is
 import static org.hamcrest.core.IsInstanceOf.instanceOf
@@ -46,6 +47,9 @@ class ConfigurationModelTest {
 		val configuration = object as Configuration
 
 		assertThat(configuration.feature, hasSize(8))
+		
+		val featureNames = configuration.feature.map[name]
+		assertThat(featureNames, contains(#['Root', 'F1', 'F2', 'F3', 'F3.1', 'F4', 'F4.1', 'F4.2']))
 	}
 	
 	private def Unmarshaller createUnmarshaller() {

@@ -27,7 +27,6 @@
 				<executions>
 					<execution>
 						<id>xjc</id>
-						<phase>initialize</phase>
 						<goals>
 							<goal>xjc</goal>
 						</goals>

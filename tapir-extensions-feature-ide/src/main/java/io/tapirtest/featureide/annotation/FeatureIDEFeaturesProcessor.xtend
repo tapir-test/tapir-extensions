@@ -59,14 +59,16 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
 	static val jaxbContext = JAXBContext.newInstance(ObjectFactory)
 
+	val extension FeatureNameConverter = new FeatureNameConverter()
+
 	override doRegisterGlobals(ClassDeclaration annotatedClass, extension RegisterGlobalsContext context) {
 		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findUpstreamType)
 		val filePath = findFilePath(annotatedClass, annotation, context)
 		
 		if (filePath.present) {
-			// Collect all features and convert them into classes
-			val features = collectFeatures(filePath.get, context)
-			features.map[getFullQualifiedFeatureName(it, annotatedClass, annotation)].forEach[registerClass]
+			val rawFeatureNames = collectFeatureNames(filePath.get, context)
+			val fullQualifiedFeatureNames = rawFeatureNames.map[convertToValidFullQualifiedFeatureName(it, annotatedClass.compilationUnit.packageName, annotation)]
+			fullQualifiedFeatureNames.forEach[registerClass]
 		}
 	}
 	
@@ -85,19 +87,19 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		
 		if (filePath.present) {
 			// Find all registered feature classes and transform them
-			val features = collectFeatures(filePath.get, context)
-			features.map[getFullQualifiedFeatureName(it, annotatedClass, annotation)].map[findClass].forEach[doTransformFeature(it, context)]
+			val rawFeatureNames = collectFeatureNames(filePath.get, context)
+			val fullQualifiedFeatureNames = rawFeatureNames.map[convertToValidFullQualifiedFeatureName(it, annotatedClass.compilationUnit.packageName, annotation)]
+			val featureClasses = fullQualifiedFeatureNames.map[findClass]
+			featureClasses.forEach[doTransformFeature(it, context)]
 		}
 	}
 	
-	private def doTransformFeature(MutableClassDeclaration clazz, extension TransformationContext context) {
-		// Let the feature implement the required interface
-		clazz.implementedInterfaces =  #[Feature.findTypeGlobally.newSelfTypeReference]
+	private def doTransformFeature(MutableClassDeclaration featureClass, extension TransformationContext context) {
+		featureClass.implementedInterfaces = #[Feature.findTypeGlobally.newSelfTypeReference]
 		
-		// Now add the required annotations
-		clazz.addAnnotation(Component.newAnnotationReference)
-		clazz.addAnnotation(ConditionalOnProperty.newAnnotationReference([
-			setStringValue('name', '''«clazz.qualifiedName».active''')
+		featureClass.addAnnotation(Component.newAnnotationReference)
+		featureClass.addAnnotation(ConditionalOnProperty.newAnnotationReference([
+			setStringValue('name', '''«featureClass.qualifiedName».active''')
 			setStringValue('havingValue', 'true')
 		]))
 	}
@@ -107,15 +109,23 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		
 		val compilationUnitPath = annotatedClass.compilationUnit.filePath
 		val projectSourceFolders = compilationUnitPath.projectSourceFolders
+		val firstExistingFile = projectSourceFolders.map[append('/' + filePath)].findFirst[isFile]
 		
-		Optional.ofNullable(projectSourceFolders.map[append('/' + filePath)].findFirst[isFile])
+		Optional.ofNullable(firstExistingFile)
 	}
 	
-	private def List<String> collectFeatures(Path filePath, extension FileSystemSupport context) {
+	private def List<String> collectFeatureNames(Path filePath, extension FileSystemSupport context) {
 		val list = newArrayList
 		
-		// Parse the feature model from the given XML file
+		val featureModel = parseFeatureModel(filePath, context)
+		collectFeatureNames(featureModel, list)
+		
+		list
+	}
+	
+	private def parseFeatureModel(Path filePath, extension FileSystemSupport context) {
 		var FeatureModelType featureModel
+		
 		val stream = filePath.contentsAsStream
 		try {
 			val unmarshaller = jaxbContext.createUnmarshaller
@@ -124,60 +134,50 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			stream.close
 		}
 		
-		// Now read from the feature model
-		collectFeatures(featureModel, list)
-		
-		list
+		featureModel
 	}
 	
-	private def void collectFeatures(FeatureModelType featureModel, List<String> list) {
-		collectFeatures(featureModel.struct, list)
+	private def void collectFeatureNames(FeatureModelType featureModel, List<String> list) {
+		collectFeatureNames(featureModel.struct, list)
 	}
 	
-	private def void collectFeatures(StructType struct, List<String> list) {
+	private def void collectFeatureNames(StructType struct, List<String> list) {
 		if (struct.and !== null) {
-			collectFeatures(struct.and, list)
+			collectFeatureNames(struct.and, list)
 		}
 		
 		if (struct.alt !== null) {
-			collectFeatures(struct.alt, list)
+			collectFeatureNames(struct.alt, list)
 		}
 		
 		if (struct.or !== null) {
-			collectFeatures(struct.or, list)
+			collectFeatureNames(struct.or, list)
 		}
 		
 		if (struct.feature !== null) {
-			collectFeatures(struct.feature, list)
+			collectFeatureNames(struct.feature, list)
 		}
 	}
 	
-	private def void collectFeatures(BranchedFeatureType branchedFeature, List<String> list) {
-		collectFeatures(branchedFeature as FeatureType, list)
+	private def void collectFeatureNames(BranchedFeatureType branchedFeature, List<String> list) {
+		collectFeatureNames(branchedFeature as FeatureType, list)
 		
 		for (element : branchedFeature.andOrOrOrAlt) {
 			val value = element.value
 			
 			// We use this instanceof just to call the correct method. Xtend performs the cast.
 			if (value instanceof BranchedFeatureType) {
-				collectFeatures(value, list)
+				collectFeatureNames(value, list)
 			} else {
-				collectFeatures(value, list)		
+				collectFeatureNames(value, list)		
 			}
 		}
 	}
 	
-	private def void collectFeatures(FeatureType feature, List<String> list) {
+	private def void collectFeatureNames(FeatureType feature, List<String> list) {
 		if (!Boolean.TRUE.equals(feature.abstract)) {
 			list += feature.name
 		}
-	}
-	
-	private def String getFullQualifiedFeatureName(String feature, ClassDeclaration annotatedClass, AnnotationReference annotation) {
-		val prefix = annotation.getStringValue('prefix')
-		val suffix = annotation.getStringValue('suffix')
-		val simpleFeatureName = prefix + feature.replaceAll('(\\W)', '') + suffix
-		'''«annotatedClass.compilationUnit.packageName».«simpleFeatureName»'''
 	}
 	
 }
