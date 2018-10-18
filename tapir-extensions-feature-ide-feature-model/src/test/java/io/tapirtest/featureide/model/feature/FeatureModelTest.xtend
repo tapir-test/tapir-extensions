@@ -35,7 +35,7 @@ import static org.hamcrest.core.IsNull.notNullValue
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 
 class FeatureModelTest {
-	 
+	   
 	@Test
 	def void featureModelFileShouldBeParsable() {
 		val unmarshaller = createUnmarshaller()
@@ -68,7 +68,6 @@ class FeatureModelTest {
 		assertThat(branchedFeature.andOrOrOrAlt, hasSize(4))
 	}
 	
-	
 	private def Unmarshaller createUnmarshaller() {
 		val jaxbContext = JAXBContext.newInstance(ObjectFactory)
 		val unmarshaller = jaxbContext.createUnmarshaller
@@ -78,6 +77,5 @@ class FeatureModelTest {
 		
 		unmarshaller
 	}
-	
 	
 }

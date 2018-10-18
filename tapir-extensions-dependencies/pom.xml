@@ -69,6 +69,16 @@
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-feature-ide-feature-model</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-feature-ide-configuration-model</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-feature-ide</artifactId>
 				<version>1.0.2-SNAPSHOT</version>
 			</dependency>

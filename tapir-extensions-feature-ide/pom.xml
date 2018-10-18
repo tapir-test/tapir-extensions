@@ -10,38 +10,17 @@
 		<version>1.0.2-SNAPSHOT</version>
 		<relativePath>../tapir-extensions-parent</relativePath>
 	</parent>
-
+ 
 	<artifactId>tapir-extensions-feature-ide</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>tapir extension for the FeatureIDE</description>
 	<url>https://www.tapir-test.io</url>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>xjc</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>xjc</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<sources>
-						<source>src/main/resources/feature.xsd</source>
-					</sources>
-					<packageName>io.tapirtest.featureide.model.feature</packageName>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 	<dependencies>
+		<dependency>
+			<groupId>io.tapir-test</groupId>
+			<artifactId>tapir-extensions-feature-ide-feature-model</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.xtext</groupId>
 			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>

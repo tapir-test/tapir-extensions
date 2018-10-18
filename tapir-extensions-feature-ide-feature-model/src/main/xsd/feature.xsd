@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"> 
 
 	<xs:element name="featureModel">
 		<xs:complexType>
@@ -8,10 +8,10 @@
 	            </xs:extension> 
 	        </xs:complexContent>
 	    </xs:complexType>
-	</xs:element>
-	
+	</xs:element> 
+	 
 	<xs:element name="extendedFeatureModel">
-		<xs:complexType>
+		<xs:complexType>   
 	        <xs:complexContent>
 	            <xs:extension base="featureModelType">
 	            </xs:extension> 
@@ -39,9 +39,9 @@
 			<xs:element name="or" type="branchedFeatureType"/>
 			<xs:element name="alt" type="branchedFeatureType"/>
 			<xs:element name="feature" type="featureType"/>
-		</xs:choice>
+		</xs:choice>  
 	</xs:complexType>
-	
+	 
 	<xs:complexType name="branchedFeatureType">
 		<xs:complexContent>
 			<xs:extension base="featureType">

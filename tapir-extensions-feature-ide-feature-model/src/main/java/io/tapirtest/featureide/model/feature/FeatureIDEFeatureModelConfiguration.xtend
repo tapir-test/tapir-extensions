@@ -22,55 +22,23 @@
  * SOFTWARE.
  */
 
-package io.tapirtest.featureide.annotation
+package io.tapirtest.featureide.model.feature
 
-import de.bmiag.tapir.annotationprocessing.annotation.DynamicActive
-import java.lang.annotation.Target
+import de.bmiag.tapir.bootstrap.annotation.ModuleConfiguration
+import org.springframework.boot.autoconfigure.AutoConfigureOrder
 
 /**
- * This annotation can be used to generate a {@code tapir} variant from a variant configuration file created with the {@code FeatureIDE}.
- * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.1.0
  */
-@DynamicActive
-@Target(TYPE)
-annotation FeatureIDEVariant {
+@ModuleConfiguration
+@AutoConfigureOrder(FeatureIDEFeatureModelConfiguration.AUTO_CONFIGURE_ORDER)
+class FeatureIDEFeatureModelConfiguration {
 
 	/**
-	 * The path to a variant configuration file from the {@code FeatureIDE} containing a set of features. The file path has to be relative to one of the source folders.
-	 * 
 	 * @since 1.1.0
 	 */
-	String value
-	
-	/**
-	 * The name of the variant. If this is not specified, the class name will be used instead.
-	 * 
-	 * @since 1.1.0
-	 */
-	String name = ''
-	
-	/**
-	 * The prefix prepended to each generated feature.
-	 * 
-	 * @since 1.1.0
-	 */
-	String prefix = ''
-	
-	/**
-	 * The suffix appended to each generated feature.
-	 * 
-	 * @since 1.1.0
-	 */
-	String suffix = 'Feature'
-	
-	/**
-	 * The package in which the features are contained. If this is empty, the package of the annotated class is used instead.
-	 * 
-	 * @since 1.1.0
-	 */
-	String featuresPackage = ''
-	
+	public static final int AUTO_CONFIGURE_ORDER = -10000
+
 }

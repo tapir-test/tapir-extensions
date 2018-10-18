@@ -25,14 +25,14 @@
 package io.tapirtest.featureide.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
+import de.bmiag.tapir.variant.Variant
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
-import org.springframework.core.annotation.Order
-import org.springframework.context.annotation.Configuration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import de.bmiag.tapir.variant.Variant
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 
 /**
  * @author Nils Christian Ehmke
