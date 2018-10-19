@@ -37,7 +37,6 @@ import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
 import org.eclipse.xtend.lib.macro.TransformationContext
-import org.eclipse.xtend.lib.macro.ValidationContext
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
@@ -74,15 +73,6 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		}
 	}
 	
-	override doValidate(ClassDeclaration annotatedClass, extension ValidationContext context) {
-		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
-		val filePath = findFilePath(annotatedClass, annotation, context)
-		
-		if (!filePath.present) {
-			annotatedClass.addError('The feature model file could not be found.')
-		}
-	}
-	
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
 		val filePath = findFilePath(annotatedClass, annotation, context)
@@ -91,7 +81,11 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			// Find all registered feature classes and transform them
 			val features = collectFeatures(filePath.get, context)
 			features.forEach[doTransformFeature(it, annotatedClass, annotation, context)]
+		} else {
+			annotatedClass.addError('The feature model file could not be found.')
 		}
+		
+		annotatedClass.removeAnnotation(annotation)
 	}
 	
 	private def doTransformFeature(FeatureType featureType, ClassDeclaration annotatedClass, AnnotationReference annotation, extension TransformationContext context) {

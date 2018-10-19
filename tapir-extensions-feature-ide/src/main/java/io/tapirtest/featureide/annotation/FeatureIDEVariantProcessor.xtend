@@ -33,7 +33,6 @@ import java.util.Optional
 import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
-import org.eclipse.xtend.lib.macro.ValidationContext
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
@@ -58,15 +57,6 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	
 	val extension FeatureNameConverter = new FeatureNameConverter()
 	
-	override doValidate(ClassDeclaration annotatedClass, extension ValidationContext context) {
-		val annotation = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
-		val filePath = findFilePath(annotatedClass, annotation, context)
-		
-		if (!filePath.present) {
-			annotatedClass.addError('The variant configuration file could not be found.')
-		}
-	}
-
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 		val annotation = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
 		val variantName = getVariantName(annotation, annotatedClass)
@@ -74,6 +64,8 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		addAnnotationAndInterface(annotatedClass, variantName, context)
 		addBasicFieldsAndMethods(annotatedClass, variantName, context)
 		addFeatures(annotatedClass, annotation, variantName, context)
+		
+		annotatedClass.removeAnnotation(annotation)
 	}
 	
 	private def void addAnnotationAndInterface(MutableClassDeclaration annotatedClass, String variantName, extension TransformationContext context) {
@@ -108,6 +100,8 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		if (filePath.present) {
 			val features = collectFeatureNames(filePath.get, context)
 			features.forEach[addFeature(it, annotatedClass, annotationReference, variantName, context)]
+		} else {
+			annotatedClass.addError('The variant configuration file could not be found.')
 		}
 	}
 	

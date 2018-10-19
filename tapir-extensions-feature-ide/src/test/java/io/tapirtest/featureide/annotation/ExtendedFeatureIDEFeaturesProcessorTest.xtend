@@ -252,9 +252,6 @@ class ExtendedFeatureIDEFeaturesProcessorTest {
 			
 			package io.tapirtest.test;
 			
-			import io.tapirtest.featureide.annotation.FeatureIDEFeatures;
-			
-			@FeatureIDEFeatures("«filePath»")
 			@SuppressWarnings("all")
 			public class Features {
 			}

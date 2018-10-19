@@ -87,9 +87,6 @@ class FeatureIDEFeaturesProcessorTest {
 			
 			package io.tapirtest.test;
 			
-			import io.tapirtest.featureide.annotation.FeatureIDEFeatures;
-			
-			@FeatureIDEFeatures("model.xml")
 			@SuppressWarnings("all")
 			public class Features {
 			}
@@ -139,9 +136,6 @@ class FeatureIDEFeaturesProcessorTest {
 			
 			package io.tapirtest.test;
 			
-			import io.tapirtest.featureide.annotation.FeatureIDEFeatures;
-			
-			@FeatureIDEFeatures(value = "model.xml", prefix = "MyPrefix")
 			@SuppressWarnings("all")
 			public class Features {
 			}
@@ -191,9 +185,6 @@ class FeatureIDEFeaturesProcessorTest {
 			
 			package io.tapirtest.test;
 			
-			import io.tapirtest.featureide.annotation.FeatureIDEFeatures;
-			
-			@FeatureIDEFeatures(value = "model.xml", suffix = "MySuffix")
 			@SuppressWarnings("all")
 			public class Features {
 			}
@@ -257,9 +248,6 @@ class FeatureIDEFeaturesProcessorTest {
 			
 			package io.tapirtest.test;
 			
-			import io.tapirtest.featureide.annotation.FeatureIDEFeatures;
-			
-			@FeatureIDEFeatures("model.xml")
 			@SuppressWarnings("all")
 			public class Features {
 			}

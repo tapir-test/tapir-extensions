@@ -105,13 +105,11 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
 			import io.tapirtest.test.F1Feature;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
 			
-			@FeatureIDEVariant("model.xml")
 			@Configuration
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
@@ -178,13 +176,11 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
 			import io.tapirtest.test.MyPrefixF1Feature;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
 			
-			@FeatureIDEVariant(value = "model.xml", prefix = "MyPrefix")
 			@Configuration
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
@@ -251,13 +247,11 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
 			import io.tapirtest.test.F1MySuffix;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
 			
-			@FeatureIDEVariant(value = "model.xml", suffix = "MySuffix")
 			@Configuration
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
@@ -316,12 +310,10 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
 			
-			@FeatureIDEVariant("model.xml")
 			@Configuration
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
@@ -382,12 +374,10 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.featureide.annotation.FeatureIDEVariant;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
 			
-			@FeatureIDEVariant("model.xml")
 			@Configuration
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
@@ -400,6 +390,66 @@ class FeatureIDEVariantProcessorTest {
 			  }
 			}
 			
+		''')
+	}
+	
+	@Test
+	def missingFeatureShouldResultInError() {
+		val compilationTestHelper = createCompilationTestHelper('myProject/src/model.xml', '''
+			<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+			<configuration>
+			    <feature automatic="selected" name="F1"/>
+			</configuration>
+		''')
+
+		compilationTestHelper.compile(
+		'''
+			package io.tapirtest.test
+						
+			import «FeatureIDEVariant.name»
+			
+			@«FeatureIDEVariant.simpleName»('model.xml')
+			class MyVariant {
+			}
+		''', [
+			assertThat(errorsAndWarnings, hasSize(1))
+			assertThat(errorsAndWarnings.get(0).severity, is(Severity.ERROR))
+			assertThat(errorsAndWarnings.get(0).message, is('Feature \'io.tapirtest.test.F1Feature\' could not be found'))
+		])
+	}
+	
+	@Test
+	def explicitVariantNameShouldOverwriteDefault() {
+		val compilationTestHelper = createCompilationTestHelper()
+
+		compilationTestHelper.assertCompilesTo(
+		'''
+			package io.tapirtest.test
+			
+			import «FeatureIDEVariant.name»
+
+			@«FeatureIDEVariant.simpleName»(value = 'model.xml', name = 'SomeVariant')
+			class MyVariant {
+			}
+		''', '''
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.Variant;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.context.annotation.Bean;
+			import org.springframework.context.annotation.Configuration;
+			
+			@Configuration
+			@ConditionalOnProperty(name = "variant", havingValue = "SomeVariant")
+			@SuppressWarnings("all")
+			public class MyVariant implements Variant {
+			  private final static String NAME = "SomeVariant";
+			  
+			  @Bean
+			  public String variant() {
+			    return MyVariant.NAME;
+			  }
+			}
 		''')
 	}
 	
