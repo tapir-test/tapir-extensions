@@ -36,7 +36,10 @@ import java.awt.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Map
+import javax.annotation.PostConstruct
 import org.apache.commons.io.FileUtils
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFColor
@@ -58,11 +61,34 @@ import org.springframework.stereotype.Component
 @Order(7000)
 class ExcelReportingExecutionListener extends AbstractBaseReportingListener {
 
-	@Value("${rapid.reporting.excel.outputDirectory:.}")
+	static final Logger LOGGER = LogManager.getLogger(ExcelReportingExecutionListener)
+
+	@Value("${tapir.extensions.reporting.excel.outputDirectory:}")
 	String outputDirectory
+
+	@Value("${rapid.reporting.excel.outputDirectory:.}")
+	String oldOutputDirectory
+	
+	@Value("${tapir.extensions.reporting.excel.displayStepParameters:}")
+	Boolean displayStepParameters
 	
 	@Value("${rapid.reporting.excel.displayStepParameters:false}")
-	boolean displayStepParameters
+	boolean oldDisplayStepParameters
+	
+	@PostConstruct
+	def void initialize() {
+		// Use old parameters as fallback
+		if (outputDirectory === null || outputDirectory.empty) {
+			LOGGER.warn('Value for "tapir.extensions.reporting.excel.outputDirectory" not set. Using value of "rapid.reporting.excel.outputDirectory" as fallback. This will no longer be supported with Version 2.0.0.')
+			outputDirectory = oldOutputDirectory
+		}
+		
+		if (displayStepParameters === null) {
+			LOGGER.warn('Value for "tapir.extensions.reporting.excel.displayStepParameters" not set. Using value of "rapid.reporting.excel.displayStepParameters" as fallback. This will no longer be supported with Version 2.0.0.')
+			displayStepParameters = oldDisplayStepParameters
+		}
+	}
+	
 
 	override finalizeReport(ExecutionPlan executionPlan, Map<Identifiable, ExecutionReport> reportMap) {
 		val workbook = new XSSFWorkbook
