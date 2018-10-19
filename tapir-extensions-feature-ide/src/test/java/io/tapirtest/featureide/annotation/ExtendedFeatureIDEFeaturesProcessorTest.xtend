@@ -259,6 +259,14 @@ class ExtendedFeatureIDEFeaturesProcessorTest {
 			public class Features {
 			}
 			
+			File 15 : /myProject/xtend-gen/io/tapirtest/test/RootFeature.java
+			
+			package io.tapirtest.test;
+			
+			@SuppressWarnings("all")
+			public abstract class RootFeature {
+			}
+			
 		''')
 	}
 	

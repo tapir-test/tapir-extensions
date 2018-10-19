@@ -47,6 +47,7 @@ import org.eclipse.xtend.lib.macro.file.Path
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import org.apache.commons.lang3.BooleanUtils
 
 /**
  * @author Nils Christian Ehmke
@@ -66,7 +67,8 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val filePath = findFilePath(annotatedClass, annotation, context)
 		
 		if (filePath.present) {
-			val rawFeatureNames = collectFeatureNames(filePath.get, context)
+			val features = collectFeatures(filePath.get, context)
+			val rawFeatureNames = features.map[name]
 			val fullQualifiedFeatureNames = rawFeatureNames.map[convertToValidFullQualifiedFeatureName(it, annotatedClass.compilationUnit.packageName, annotation)]
 			fullQualifiedFeatureNames.forEach[registerClass]
 		}
@@ -87,21 +89,27 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		
 		if (filePath.present) {
 			// Find all registered feature classes and transform them
-			val rawFeatureNames = collectFeatureNames(filePath.get, context)
-			val fullQualifiedFeatureNames = rawFeatureNames.map[convertToValidFullQualifiedFeatureName(it, annotatedClass.compilationUnit.packageName, annotation)]
-			val featureClasses = fullQualifiedFeatureNames.map[findClass]
-			featureClasses.forEach[doTransformFeature(it, context)]
+			val features = collectFeatures(filePath.get, context)
+			features.forEach[doTransformFeature(it, annotatedClass, annotation, context)]
 		}
 	}
 	
-	private def doTransformFeature(MutableClassDeclaration featureClass, extension TransformationContext context) {
-		featureClass.implementedInterfaces = #[Feature.findTypeGlobally.newSelfTypeReference]
-		
-		featureClass.addAnnotation(Component.newAnnotationReference)
-		featureClass.addAnnotation(ConditionalOnProperty.newAnnotationReference([
-			setStringValue('name', '''«featureClass.qualifiedName».active''')
-			setStringValue('havingValue', 'true')
-		]))
+	private def doTransformFeature(FeatureType featureType, ClassDeclaration annotatedClass, AnnotationReference annotation, extension TransformationContext context) {
+		val rawFeatureName = featureType.name
+		val fullQualifiedFeatureName = convertToValidFullQualifiedFeatureName(rawFeatureName, annotatedClass.compilationUnit.packageName, annotation)
+		val featureClass = fullQualifiedFeatureName.findClass
+			
+		if (BooleanUtils.isTrue(featureType.abstract)) {
+			featureClass.abstract = true
+		} else {
+			featureClass.implementedInterfaces = #[Feature.findTypeGlobally.newSelfTypeReference]
+			
+			featureClass.addAnnotation(Component.newAnnotationReference)
+			featureClass.addAnnotation(ConditionalOnProperty.newAnnotationReference([
+				setStringValue('name', '''«featureClass.qualifiedName».active''')
+				setStringValue('havingValue', 'true')
+			]))
+		}
 	}
 	
 	private def <C extends FileLocations & FileSystemSupport> findFilePath(ClassDeclaration annotatedClass, AnnotationReference annotation, extension C context) {
@@ -114,11 +122,11 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		Optional.ofNullable(firstExistingFile)
 	}
 	
-	private def List<String> collectFeatureNames(Path filePath, extension FileSystemSupport context) {
+	private def List<FeatureType> collectFeatures(Path filePath, extension FileSystemSupport context) {
 		val list = newArrayList
 		
 		val featureModel = parseFeatureModel(filePath, context)
-		collectFeatureNames(featureModel, list)
+		collectFeatures(featureModel, list)
 		
 		list
 	}
@@ -137,47 +145,45 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		featureModel
 	}
 	
-	private def void collectFeatureNames(FeatureModelType featureModel, List<String> list) {
-		collectFeatureNames(featureModel.struct, list)
+	private def void collectFeatures(FeatureModelType featureModel, List<FeatureType> list) {
+		collectFeatures(featureModel.struct, list)
 	}
 	
-	private def void collectFeatureNames(StructType struct, List<String> list) {
+	private def void collectFeatures(StructType struct, List<FeatureType> list) {
 		if (struct.and !== null) {
-			collectFeatureNames(struct.and, list)
+			collectFeatures(struct.and, list)
 		}
 		
 		if (struct.alt !== null) {
-			collectFeatureNames(struct.alt, list)
+			collectFeatures(struct.alt, list)
 		}
 		
 		if (struct.or !== null) {
-			collectFeatureNames(struct.or, list)
+			collectFeatures(struct.or, list)
 		}
 		
 		if (struct.feature !== null) {
-			collectFeatureNames(struct.feature, list)
+			collectFeatures(struct.feature, list)
 		}
 	}
 	
-	private def void collectFeatureNames(BranchedFeatureType branchedFeature, List<String> list) {
-		collectFeatureNames(branchedFeature as FeatureType, list)
+	private def void collectFeatures(BranchedFeatureType branchedFeature, List<FeatureType> list) {
+		collectFeatures(branchedFeature as FeatureType, list)
 		
 		for (element : branchedFeature.andOrOrOrAlt) {
 			val value = element.value
 			
 			// We use this instanceof just to call the correct method. Xtend performs the cast.
 			if (value instanceof BranchedFeatureType) {
-				collectFeatureNames(value, list)
+				collectFeatures(value, list)
 			} else {
-				collectFeatureNames(value, list)		
+				collectFeatures(value, list)		
 			}
 		}
 	}
 	
-	private def void collectFeatureNames(FeatureType feature, List<String> list) {
-		if (!Boolean.TRUE.equals(feature.abstract)) {
-			list += feature.name
-		}
+	private def void collectFeatures(FeatureType feature, List<FeatureType> list) {
+		list += feature
 	}
 	
 }

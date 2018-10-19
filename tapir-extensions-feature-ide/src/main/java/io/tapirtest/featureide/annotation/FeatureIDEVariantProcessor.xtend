@@ -43,6 +43,7 @@ import org.eclipse.xtend.lib.macro.file.Path
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
+import de.bmiag.tapir.variant.feature.Feature
 
 /**
  * @author Nils Christian Ehmke
@@ -120,19 +121,23 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		if (featureType === null) {
 			annotatedClass.addError('''Feature '«fullyQualifiedFeatureName»' could not be found''')
 		} else {
-			annotatedClass.addMethod(simpleFeaturename.toFirstLower, [
-				addAnnotation(Bean.newAnnotationReference)
-				addAnnotation(ConditionalOnProperty.newAnnotationReference [
-					setStringValue('name', '''«fullyQualifiedFeatureName».active''')
-					setStringValue('havingValue', variantName)
-					setBooleanValue('matchIfMissing', true)
+			val isNonAbstractFeature = Feature.findTypeGlobally.isAssignableFrom(featureType)
+			
+			if (isNonAbstractFeature) {
+				annotatedClass.addMethod(simpleFeaturename.toFirstLower, [
+					addAnnotation(Bean.newAnnotationReference)
+					addAnnotation(ConditionalOnProperty.newAnnotationReference [
+						setStringValue('name', '''«fullyQualifiedFeatureName».active''')
+						setStringValue('havingValue', variantName)
+						setBooleanValue('matchIfMissing', true)
+					])
+					
+					returnType = featureType.newSelfTypeReference
+					body = '''
+						return new «featureType.newSelfTypeReference»();
+					'''
 				])
-				
-				returnType = featureType.newSelfTypeReference
-				body = '''
-					return new «featureType.newSelfTypeReference»();
-				'''
-			])
+			}
 		}
 	}
 	
@@ -155,8 +160,8 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	}
 	
 	private def List<String> collectFeatureNames(Path filePath, extension FileSystemSupport context) {
-		val configuration = parseVariantModel(filePath, context)
-		configuration.feature.map[name]
+		val configuration = parseVariantModel(filePath, context) 
+		configuration.feature.filter[automatic == 'selected' || manual == 'selected'].map[name].toList
 	}
 	
 	private def parseVariantModel(Path filePath, extension FileSystemSupport context) {
