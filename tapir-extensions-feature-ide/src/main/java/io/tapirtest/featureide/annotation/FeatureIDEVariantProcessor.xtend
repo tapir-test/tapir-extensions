@@ -43,6 +43,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
 import de.bmiag.tapir.variant.feature.Feature
+import org.eclipse.xtend.lib.macro.declaration.Visibility
 
 /**
  * @author Nils Christian Ehmke
@@ -82,6 +83,7 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		annotatedClass.addField('NAME', [
 			final = true
 			static = true
+			visibility = Visibility.PUBLIC
 			type = String.newTypeReference()
 			initializer = '''"«variantName»"'''
 		])
