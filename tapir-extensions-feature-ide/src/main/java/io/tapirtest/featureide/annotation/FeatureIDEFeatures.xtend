@@ -39,11 +39,13 @@ import java.lang.annotation.Target
 annotation FeatureIDEFeatures {
 
 	/**
-	 * The path to a feature model file from the {@code FeatureIDE} containing the available features. The file path has to be relative to one of the source folders.
+	 * The path to a feature model file from the {@code FeatureIDE} containing the available features. The file path is relative to the annotated class.
+	 * If the file path starts with a slash ({@code /}), the file path is absolute. If this value is not given, it is assumed that the feature model is
+	 * contained in a file {@code model.xml} next to the annotated class.
 	 * 
 	 * @since 1.1.0
 	 */
-	String value
+	String value = ''
 	
 	/**
 	 * This prefix is prepended to each generated feature.

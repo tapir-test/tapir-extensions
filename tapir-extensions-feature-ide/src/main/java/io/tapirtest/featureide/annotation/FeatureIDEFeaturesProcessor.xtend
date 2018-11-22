@@ -63,6 +63,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
 	override doRegisterGlobals(ClassDeclaration annotatedClass, extension RegisterGlobalsContext context) {
 		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findUpstreamType)
+		
 		val filePath = findFilePath(annotatedClass, annotation, context)
 		
 		if (filePath.present) {
@@ -107,11 +108,23 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	}
 	
 	private def <C extends FileLocations & FileSystemSupport> findFilePath(ClassDeclaration annotatedClass, AnnotationReference annotation, extension C context) {
-		val filePath = annotation.getStringValue('value')
+		var tempFilePath = annotation.getStringValue('value')
+		if (tempFilePath == '') {
+			tempFilePath = 'model.xml'
+		}
+		val filePath = tempFilePath
 		
-		val compilationUnitPath = annotatedClass.compilationUnit.filePath
-		val projectSourceFolders = compilationUnitPath.projectSourceFolders
-		val firstExistingFile = projectSourceFolders.map[append('/' + filePath)].findFirst[isFile]
+		var Path firstExistingFile
+		if (filePath.startsWith('/')) {
+			val compilationUnitPath = annotatedClass.compilationUnit.filePath
+			firstExistingFile = compilationUnitPath.projectSourceFolders.map[append(filePath)].findFirst[isFile]
+		} else {
+			val compilationUnitPathParent = annotatedClass.compilationUnit.filePath.parent
+			val potentialFile = compilationUnitPathParent.append(filePath)
+			if (potentialFile.isFile) {
+				firstExistingFile = potentialFile
+			}
+		}
 		
 		Optional.ofNullable(firstExistingFile)
 	}

@@ -138,12 +138,25 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	}
 	
 	private def <C extends FileLocations & FileSystemSupport> findFilePath(ClassDeclaration annotatedClass, AnnotationReference annotation, extension C context) {
-		val filePath = annotation.getStringValue('value')
+		var tempFilePath = annotation.getStringValue('value')
+		if (tempFilePath == '') {
+			tempFilePath = annotatedClass.simpleName + '.xml'
+		}
+		val filePath = tempFilePath
 		
-		val compilationUnitPath = annotatedClass.compilationUnit.filePath
-		val projectSourceFolders = compilationUnitPath.projectSourceFolders
+		var Path firstExistingFile
+		if (filePath.startsWith('/')) {
+			val compilationUnitPath = annotatedClass.compilationUnit.filePath
+			firstExistingFile = compilationUnitPath.projectSourceFolders.map[append(filePath)].findFirst[isFile]
+		} else {
+			val compilationUnitPathParent = annotatedClass.compilationUnit.filePath.parent
+			val potentialFile = compilationUnitPathParent.append(filePath)
+			if (potentialFile.isFile) {
+				firstExistingFile = potentialFile
+			}
+		}
 		
-		Optional.ofNullable(projectSourceFolders.map[append('/' + filePath)].findFirst[isFile])
+		Optional.ofNullable(firstExistingFile)
 	}
 	
 	private def getVariantName(AnnotationReference annotation, ClassDeclaration annotatedClass) {

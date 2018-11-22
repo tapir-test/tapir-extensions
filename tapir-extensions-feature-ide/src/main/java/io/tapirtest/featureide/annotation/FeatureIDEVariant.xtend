@@ -39,11 +39,13 @@ import java.lang.annotation.Target
 annotation FeatureIDEVariant {
 
 	/**
-	 * The path to a variant configuration file from the {@code FeatureIDE} containing a set of features. The file path has to be relative to one of the source folders.
+	 * The path to a variant configuration file from the {@code FeatureIDE} containing a set of features. The file path is relative to the annotated class.
+	 * If the file path starts with a slash ({@code /}), the file path is absolute. If this value is not given, it is assumed that the configuration model is
+	 * contained in an xml file next to the annotated class with the same name as the annotated class.
 	 * 
 	 * @since 1.1.0
 	 */
-	String value
+	String value = ''
 	
 	/**
 	 * The name of the variant. If this is not specified, the class name will be used instead.
