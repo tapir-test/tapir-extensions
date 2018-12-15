@@ -11,9 +11,9 @@
 		<relativePath>../tapir-extensions-parent</relativePath>
 	</parent>
 
-	<artifactId>tapir-extensions-feature-ide</artifactId>
+	<artifactId>tapir-extensions-featuregen</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>tapir extension for the FeatureIDE</description>
+	<description>tapir extension for feature-gen</description>
 	<url>https://www.tapir-test.io</url>
 
 	<dependencies>
@@ -28,18 +28,15 @@
 		<dependency>
 			<groupId>de.bmiag.tapir</groupId>
 			<artifactId>tapir-annotation-processing</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.rhocas.featuregen</groupId>
+			<artifactId>featuregen-lib</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>de.bmiag.tapir</groupId>
 			<artifactId>tapir-variant</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.rhocas.featuregen</groupId>
-			<artifactId>featuregen-feature-ide-configuration-model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.rhocas.featuregen</groupId>
-			<artifactId>featuregen-feature-ide-feature-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -52,6 +49,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.tapir-test</groupId>
+			<artifactId>tapir-extensions-featuregen-test-base</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

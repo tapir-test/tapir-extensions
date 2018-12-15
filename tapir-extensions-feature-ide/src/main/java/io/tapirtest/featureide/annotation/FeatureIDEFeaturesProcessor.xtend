@@ -26,14 +26,15 @@ package io.tapirtest.featureide.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
 import de.bmiag.tapir.variant.feature.Feature
-import io.tapirtest.featureide.model.feature.BranchedFeatureType
-import io.tapirtest.featureide.model.feature.FeatureModelType
-import io.tapirtest.featureide.model.feature.FeatureType
-import io.tapirtest.featureide.model.feature.ObjectFactory
-import io.tapirtest.featureide.model.feature.StructType
+import de.rhocas.featuregen.featureide.model.feature.BranchedFeatureType
+import de.rhocas.featuregen.featureide.model.feature.FeatureModelType
+import de.rhocas.featuregen.featureide.model.feature.FeatureType
+import de.rhocas.featuregen.featureide.model.feature.ObjectFactory
+import de.rhocas.featuregen.featureide.model.feature.StructType
 import java.util.List
 import java.util.Optional
 import javax.xml.bind.JAXBContext
+import org.apache.commons.lang3.BooleanUtils
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
 import org.eclipse.xtend.lib.macro.TransformationContext
@@ -46,7 +47,6 @@ import org.eclipse.xtend.lib.macro.file.Path
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
-import org.apache.commons.lang3.BooleanUtils
 
 /**
  * @author Nils Christian Ehmke

@@ -28,6 +28,7 @@
 		<allure2-model.version>1.0.0</allure2-model.version>
 		<tapir-shared-resources.version>1.0.1</tapir-shared-resources.version>
 		<guice.version>3.0</guice.version>
+		<featuregen.version>2.0.0</featuregen.version>
 	</properties>
 
 	<dependencyManagement>
@@ -69,18 +70,33 @@
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
-				<artifactId>tapir-extensions-feature-ide-feature-model</artifactId>
-				<version>1.0.2-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>io.tapir-test</groupId>
-				<artifactId>tapir-extensions-feature-ide-configuration-model</artifactId>
-				<version>1.0.2-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-feature-ide</artifactId>
 				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-featuregen</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-featuregen-test-base</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.featuregen</groupId>
+				<artifactId>featuregen-lib</artifactId>
+				<version>${featuregen.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.featuregen</groupId>
+				<artifactId>featuregen-feature-ide-configuration-model</artifactId>
+				<version>${featuregen.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.featuregen</groupId>
+				<artifactId>featuregen-feature-ide-feature-model</artifactId>
+				<version>${featuregen.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>

@@ -26,8 +26,9 @@ package io.tapirtest.featureide.annotation
 
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
 import de.bmiag.tapir.variant.Variant
-import io.tapirtest.featureide.model.configuration.Configuration
-import io.tapirtest.featureide.model.configuration.ObjectFactory
+import de.bmiag.tapir.variant.feature.Feature
+import de.rhocas.featuregen.featureide.model.configuration.Configuration
+import de.rhocas.featuregen.featureide.model.configuration.ObjectFactory
 import java.util.List
 import java.util.Optional
 import javax.xml.bind.JAXBContext
@@ -36,14 +37,13 @@ import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
+import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtend.lib.macro.file.FileLocations
 import org.eclipse.xtend.lib.macro.file.FileSystemSupport
 import org.eclipse.xtend.lib.macro.file.Path
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
-import de.bmiag.tapir.variant.feature.Feature
-import org.eclipse.xtend.lib.macro.declaration.Visibility
 
 /**
  * @author Nils Christian Ehmke
