@@ -201,6 +201,7 @@ class TestDescriptorBuilder {
 		switch javaClassBased {
 			TestSuite: javaClassBased.displayText
 			TestClass: javaClassBased.getDisplayText(false)
+			ExecutionPlan : javaClassBased.displayText
 			default: throw new IllegalArgumentException('''getDisplayText: Unhandled parameter type: «javaClassBased.class.name»''')
 		}
 	}
