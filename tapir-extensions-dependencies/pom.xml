@@ -245,6 +245,6 @@
 	</distributionManagement>
 
   <scm>
-    <tag>1.0.1</tag>
+    <tag>1.0.x</tag>
   </scm>
 </project>
