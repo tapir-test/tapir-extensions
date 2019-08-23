@@ -69,17 +69,17 @@
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-feature-ide</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-featuregen</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-featuregen-test-base</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.rhocas.featuregen</groupId>
