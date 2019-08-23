@@ -73,13 +73,13 @@ class DiscoveryTest {
 			type = Type.CONTAINER
 			children = #[
 				ComparableTestIdentifier.build [
-					uniqueId = testClassUID.append(TestStep.simpleName, '''step1(«"value1".digist»)''')
+					uniqueId = testClassUID.append(TestStep.simpleName, '''step1(«String.name»)''')
 					displayName = '''step1 [value1]'''
 					source = MethodSource.from(TestClassParameterizedStep.name, "step1", String.name)
 					type = Type.TEST
 				],
 				ComparableTestIdentifier.build [
-					uniqueId = testClassUID.append(TestStep.simpleName, '''step2(«"value1".digist»,«"value2".digist»)''')
+					uniqueId = testClassUID.append(TestStep.simpleName, '''step2(«String.name»,«String.name»)''')
 					displayName = '''step2 [value1, value2]'''
 					source = MethodSource.from(TestClassParameterizedStep.name, "step2", '''«String.name», «String.name»''')
 					type = Type.TEST
@@ -97,8 +97,8 @@ class DiscoveryTest {
 			displayName = TestClassIteratedParameterizedStep.name
 			source = ClassSource.from(TestClassIteratedParameterizedStep)
 			type = Type.CONTAINER
-			val step1UID = testClassUID.append(TestStep.simpleName, "step1")
-			val step2UID = testClassUID.append(TestStep.simpleName, "step2")
+			val step1UID = testClassUID.append(TestStep.simpleName, '''step1(«String.name»)''')
+			val step2UID = testClassUID.append(TestStep.simpleName, '''step2(«String.name»,«String.name»)''')
 			children = #[
 				ComparableTestIdentifier.build [
 					uniqueId = step1UID
@@ -107,13 +107,13 @@ class DiscoveryTest {
 					type = Type.CONTAINER
 					children = #[
 						ComparableTestIdentifier.build [
-							uniqueId = step1UID.append(TestStep.simpleName, '''step1(«"value1".digist»)''')
+							uniqueId = step1UID.append("TestStepInvocation", "#0")
 							displayName = '''[value1]'''
 							source = MethodSource.from(TestClassIteratedParameterizedStep.name, "step1", String.name)
 							type = Type.TEST
 						],
 						ComparableTestIdentifier.build [
-							uniqueId = step1UID.append(TestStep.simpleName, '''step1(«"value2".digist»)''')
+							uniqueId = step1UID.append("TestStepInvocation", "#1")
 							displayName = '''[value2]'''
 							source = MethodSource.from(TestClassIteratedParameterizedStep.name, "step1", String.name)
 							type = Type.TEST
@@ -127,32 +127,28 @@ class DiscoveryTest {
 					type = Type.CONTAINER
 					children = #[
 						ComparableTestIdentifier.build [
-							uniqueId = step2UID.append(
-								TestStep.simpleName, '''step2(«"param1value1".digist»,«"param2value1".digist»)''')
+							uniqueId = step2UID.append("TestStepInvocation", "#0")
 							displayName = '''[param1value1, param2value1]'''
 							source = MethodSource.from(TestClassIteratedParameterizedStep.name,
 								"step2", '''«String.name», «String.name»''')
 							type = Type.TEST
 						],
 						ComparableTestIdentifier.build [
-							uniqueId = step2UID.append(
-								TestStep.simpleName, '''step2(«"param1value1".digist»,«"param2value2".digist»)''')
+							uniqueId = step2UID.append("TestStepInvocation", "#1")
 							displayName = '''[param1value1, param2value2]'''
 							source = MethodSource.from(TestClassIteratedParameterizedStep.name,
 								"step2", '''«String.name», «String.name»''')
 							type = Type.TEST
 						],
 						ComparableTestIdentifier.build [
-							uniqueId = step2UID.append(
-								TestStep.simpleName, '''step2(«"param1value2".digist»,«"param2value1".digist»)''')
+							uniqueId = step2UID.append("TestStepInvocation", "#2")
 							displayName = '''[param1value2, param2value1]'''
 							source = MethodSource.from(TestClassIteratedParameterizedStep.name,
 								"step2", '''«String.name», «String.name»''')
 							type = Type.TEST
 						],
 						ComparableTestIdentifier.build [
-							uniqueId = step2UID.append(
-								TestStep.simpleName, '''step2(«"param1value2".digist»,«"param2value2".digist»)''')
+							uniqueId = step2UID.append("TestStepInvocation", "#3")
 							displayName = '''[param1value2, param2value2]'''
 							source = MethodSource.from(TestClassIteratedParameterizedStep.name,
 								"step2", '''«String.name», «String.name»''')
@@ -173,15 +169,15 @@ class DiscoveryTest {
 			displayName = IteratedTestClass.name
 			source = ClassSource.from(IteratedTestClass)
 			type = Type.CONTAINER
-			val value1UID = testClassUID.append(TestClass.simpleName, '''«IteratedTestClass.name»(«"value1".digist»)''')
-			val value2UID = testClassUID.append(TestClass.simpleName, '''«IteratedTestClass.name»(«"value2".digist»)''')
+			val value1UID = testClassUID.append(TestClass.simpleName, '''«IteratedTestClass.name»''').append("TestClassInvocation", "#0")
+			val value2UID = testClassUID.append(TestClass.simpleName, '''«IteratedTestClass.name»''').append("TestClassInvocation", "#1")
 			children = #[
 				ComparableTestIdentifier.build [
 					uniqueId = value1UID
 					displayName = '''[value1]'''
 					source = ClassSource.from(IteratedTestClass)
 					type = Type.CONTAINER
-					val value1Step2UID = value1UID.append(TestStep.simpleName, '''step2''')
+					val value1Step2UID = value1UID.append(TestStep.simpleName, '''step2(«String.name»)''')
 					children = #[
 						ComparableTestIdentifier.build [
 							uniqueId = value1UID.append(TestStep.simpleName, '''step1''')
@@ -196,13 +192,13 @@ class DiscoveryTest {
 							type = Type.CONTAINER
 							children = #[
 								ComparableTestIdentifier.build [
-									uniqueId = value1Step2UID.append(TestStep.simpleName, '''step2(«"value1".digist»)''')
+									uniqueId = value1Step2UID.append("TestStepInvocation", "#0")
 									displayName = '''[value1]'''
 									source = MethodSource.from(IteratedTestClass.name, "step2", String.name)
 									type = Type.TEST
 								],
 								ComparableTestIdentifier.build [
-									uniqueId = value1Step2UID.append(TestStep.simpleName, '''step2(«"value2".digist»)''')
+									uniqueId = value1Step2UID.append("TestStepInvocation", "#1")
 									displayName = '''[value2]'''
 									source = MethodSource.from(IteratedTestClass.name, "step2", String.name)
 									type = Type.TEST
@@ -216,7 +212,7 @@ class DiscoveryTest {
 					displayName = '''[value2]'''
 					source = ClassSource.from(IteratedTestClass)
 					type = Type.CONTAINER
-					val value2Step2UID = value2UID.append(TestStep.simpleName, '''step2''')
+					val value2Step2UID = value2UID.append(TestStep.simpleName, '''step2(«String.name»)''')
 					children = #[
 						ComparableTestIdentifier.build [
 							uniqueId = value2UID.append(TestStep.simpleName, '''step1''')
@@ -231,13 +227,13 @@ class DiscoveryTest {
 							type = Type.CONTAINER
 							children = #[
 								ComparableTestIdentifier.build [
-									uniqueId = value2Step2UID.append(TestStep.simpleName, '''step2(«"value1".digist»)''')
+									uniqueId = value2Step2UID.append("TestStepInvocation", "#0")
 									displayName = '''[value1]'''
 									source = MethodSource.from(IteratedTestClass.name, "step2", String.name)
 									type = Type.TEST
 								],
 								ComparableTestIdentifier.build [
-									uniqueId = value2Step2UID.append(TestStep.simpleName, '''step2(«"value2".digist»)''')
+									uniqueId = value2Step2UID.append("TestStepInvocation", "#1")
 									displayName = '''[value2]'''
 									source = MethodSource.from(IteratedTestClass.name, "step2", String.name)
 									type = Type.TEST

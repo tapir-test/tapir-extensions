@@ -112,7 +112,7 @@ class JUnitExecutionDescriptionBuilder {
 					testStepFilterPredicate = [ testStep, applicationContext |
 						val testDescriptorRegistry = applicationContext.getBean(TestDescriptorRegistry)
 						val testDescriptor = testDescriptorRegistry.getTestDescriptor(testStep)
-						testDescriptor.filter[uniqueId.hasPrefix(uniqueId)].present
+						testDescriptor.filter[it.uniqueId.hasPrefix(uniqueId)].present
 					]
 				]
 			)

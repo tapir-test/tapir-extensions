@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>de.bmiag.tapir</groupId>
 		<artifactId>tapir-starter-module</artifactId>
-		<version>3.2.1-SNAPSHOT</version>
+		<version>3.3.2-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
 	<groupId>io.tapir-test</groupId>
 	<artifactId>tapir-extensions-dependencies</artifactId>
-	<version>1.0.1.Unstable-SNAPSHOT</version>
+	<version>1.1.1.Unstable-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -24,6 +24,9 @@
 		<junit.jupiter.version>5.2.0</junit.jupiter.version>
 		<junit.platform.version>1.2.0</junit.platform.version>
 		<allure2-model.version>1.0.0</allure2-model.version>
+		<tapir-shared-resources.version>1.0.1</tapir-shared-resources.version>
+		<guice.version>3.0</guice.version>
+		<featuregen.version>2.0.0</featuregen.version>
 	</properties>
 
 	<dependencyManagement>
@@ -31,37 +34,67 @@
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-allure2</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-datasource-excel</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-reporting-base</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-reporting-excel</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-execution-gui</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-junit5-execution</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-junit5</artifactId>
-				<version>1.0.1.Unstable-SNAPSHOT</version>
+				<version>1.1.1.Unstable-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-feature-ide</artifactId>
+				<version>1.1.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-featuregen</artifactId>
+				<version>1.1.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.tapir-test</groupId>
+				<artifactId>tapir-extensions-featuregen-test-base</artifactId>
+				<version>1.1.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.featuregen</groupId>
+				<artifactId>featuregen-lib</artifactId>
+				<version>${featuregen.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.featuregen</groupId>
+				<artifactId>featuregen-feature-ide-configuration-model</artifactId>
+				<version>${featuregen.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.rhocas.featuregen</groupId>
+				<artifactId>featuregen-feature-ide-feature-model</artifactId>
+				<version>${featuregen.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
@@ -126,6 +159,16 @@
 				<artifactId>junit-platform-commons</artifactId>
 				<version>${junit.platform.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext</artifactId>
+				<version>${xtend.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>${guice.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -139,6 +182,26 @@
 						<groupId>org.eclipse.platform</groupId>
 						<artifactId>org.eclipse.equinox.common</artifactId>
 						<version>3.10.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.core</artifactId>
+						<version>3.13.102</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.compiler.apt</artifactId>
+						<version>1.3.110</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.compiler.tool</artifactId>
+						<version>1.2.101</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.codegen</artifactId>
+						<version>2.11.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>

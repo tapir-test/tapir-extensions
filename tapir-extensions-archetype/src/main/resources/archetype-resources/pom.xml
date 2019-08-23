@@ -10,7 +10,7 @@
     <parent>
         <groupId>de.bmiag.tapir</groupId>
         <artifactId>tapir-starter-module</artifactId>
-        <version>3.2.1-SNAPSHOT</version>
+        <version>3.3.2-SNAPSHOT</version>
         <relativePath />
     </parent>
     
@@ -173,7 +173,7 @@
    
     <build>
         <plugins>
-if (${useTapirExecution} != 'true' && (${useAllure1} == 'true' || ${useAllure2} == 'true'))
+#if (${useTapirExecution} != 'true' && (${useAllure1} == 'true' || ${useAllure2} == 'true'))
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>

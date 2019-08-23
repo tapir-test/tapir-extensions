@@ -1,9 +1,11 @@
 language: java
 script: "mvn clean deploy --settings maven-settings.xml"
+sudo: required
 
 branches:
   only:
   - master
+  - 1.0.x
   
 env:
   global:
