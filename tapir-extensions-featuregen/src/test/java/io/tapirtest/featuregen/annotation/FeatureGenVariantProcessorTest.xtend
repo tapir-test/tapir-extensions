@@ -258,4 +258,59 @@ class FeatureGenVariantProcessorTest {
 		])
 	}
 	
+	@Test
+	def explicitPropertyNameShouldOverwriteDefault() {
+		compile(
+		'''
+			package io.tapirtest.test
+			
+			import «FeatureGenFeatures.name»
+			import «FeatureGenVariant.name»
+			import «Variant1.name»
+			import «FeatureGenTestFeature.name»
+			
+			@«FeatureGenFeatures.simpleName»(«FeatureGenTestFeature.simpleName»)
+			class Features {
+			}
+			
+			@«FeatureGenVariant.simpleName»(featuresClass = Features, variantClass = «Variant1.simpleName», propertyName = 'customer')
+			class TapirVariant1 {
+			}
+		''', [
+			val String expected = '''
+				package io.tapirtest.test;
+				
+				import de.bmiag.tapir.variant.Variant;
+				import io.tapirtest.featuregen.annotation.FeatureGenVariant;
+				import io.tapirtest.featuregen.test.featuregen.variant.Variant1;
+				import io.tapirtest.test.F1Feature;
+				import io.tapirtest.test.Features;
+				import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+				import org.springframework.context.annotation.Bean;
+				import org.springframework.context.annotation.Configuration;
+				
+				@FeatureGenVariant(featuresClass = Features.class, variantClass = Variant1.class, propertyName = "customer")
+				@Configuration
+				@ConditionalOnProperty(name = "customer", havingValue = "TapirVariant1")
+				@SuppressWarnings("all")
+				public class TapirVariant1 implements Variant {
+				  public final static String NAME = "TapirVariant1";
+				  
+				  @Bean
+				  public String variant() {
+				    return TapirVariant1.NAME;
+				  }
+				  
+				  @Bean
+				  @ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "true", matchIfMissing = true)
+				  public F1Feature f1Feature() {
+				    return new F1Feature();
+				  }
+				}
+			'''
+			val String actual = allGeneratedResources.get('/myProject/xtend-gen/io/tapirtest/test/TapirVariant1.java').toString
+			assertEquals(expected, actual)
+		])
+	}
+	
 }

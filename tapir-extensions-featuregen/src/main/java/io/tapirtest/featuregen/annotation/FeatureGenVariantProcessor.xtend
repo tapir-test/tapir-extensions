@@ -35,11 +35,16 @@ class FeatureGenVariantProcessor extends AbstractClassProcessor {
 	private def void addAnnotationAndInterface(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 		annotatedClass.addAnnotation(Configuration.newAnnotationReference)
 		annotatedClass.addAnnotation(ConditionalOnProperty.newAnnotationReference [
-			setStringValue('name', 'variant')
+			setStringValue('name', getPropertyName(annotatedClass, context))
 			setStringValue('havingValue', getVariantName(annotatedClass, context))
 		])
 		 
 		annotatedClass.implementedInterfaces = annotatedClass.implementedInterfaces + #[Variant.newTypeReference()]
+	}
+	
+	private def getPropertyName(ClassDeclaration annotatedClass, extension TransformationContext context) {
+		val annotation = annotatedClass.findAnnotation(FeatureGenVariant.findTypeGlobally)
+		annotation.getStringValue('propertyName')
 	}
 	
 	private def getVariantName(ClassDeclaration annotatedClass, extension TransformationContext context) {
