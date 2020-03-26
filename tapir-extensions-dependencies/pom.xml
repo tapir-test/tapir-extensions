@@ -11,7 +11,7 @@
 
 	<groupId>io.tapir-test</groupId>
 	<artifactId>tapir-extensions-dependencies</artifactId>
-	<version>1.2.1-SNAPSHOT</version>
+	<version>1.2.0</version>
 	<packaging>pom</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -34,52 +34,52 @@
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-allure2</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-datasource-excel</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-reporting-base</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-reporting-excel</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-execution-gui</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-junit5-execution</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-junit5</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-feature-ide</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-featuregen</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>io.tapir-test</groupId>
 				<artifactId>tapir-extensions-featuregen-test-base</artifactId>
-				<version>1.2.1-SNAPSHOT</version>
+				<version>1.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.rhocas.featuregen</groupId>
@@ -285,4 +285,8 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+
+  <scm>
+    <tag>1.2.0</tag>
+  </scm>
 </project>
