@@ -1,7 +1,10 @@
 language: java
 script: "mvn clean deploy --settings maven-settings.xml"
 sudo: required
-
+dist: trusty
+jdk:
+  - oraclejdk8
+  
 branches:
   only:
   - master

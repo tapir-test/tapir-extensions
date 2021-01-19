@@ -75,4 +75,11 @@ annotation FeatureIDEVariant {
 	 */
 	String featuresPackage = ''
 	
+	/**
+     * The name of the property which determines the active variant. If not specified explicitly 'variant' is used
+     * 
+     * @since 1.2.0
+     */
+    String propertyName = 'variant'
+	
 }

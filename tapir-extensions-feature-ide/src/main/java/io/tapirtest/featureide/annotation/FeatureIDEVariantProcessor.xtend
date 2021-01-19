@@ -72,11 +72,16 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	private def void addAnnotationAndInterface(MutableClassDeclaration annotatedClass, String variantName, extension TransformationContext context) {
 		annotatedClass.addAnnotation(org.springframework.context.annotation.Configuration.newAnnotationReference)
 		annotatedClass.addAnnotation(ConditionalOnProperty.newAnnotationReference [
-			setStringValue('name', 'variant')
+			setStringValue('name', getPropertyName(annotatedClass, context))
 			setStringValue('havingValue', variantName)
 		])
 		 
 		annotatedClass.implementedInterfaces = annotatedClass.implementedInterfaces + #[Variant.newTypeReference()]
+	}
+	
+	private def getPropertyName(ClassDeclaration annotatedClass, extension TransformationContext context) {
+		val annotation = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
+		annotation.getStringValue('propertyName')
 	}
 	
 	private def void addBasicFieldsAndMethods(MutableClassDeclaration annotatedClass, String variantName, extension TransformationContext context) {

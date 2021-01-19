@@ -453,6 +453,41 @@ class FeatureIDEVariantProcessorTest {
 		''')
 	}
 	
+	@Test
+	def explicitpropertyNameShouldOverwriteDefault() {
+		val compilationTestHelper = createCompilationTestHelper()
+
+		compilationTestHelper.assertCompilesTo(
+		'''
+			package io.tapirtest.test
+			
+			import «FeatureIDEVariant.name»
+
+			@«FeatureIDEVariant.simpleName»(value = 'model.xml', propertyName = 'customer')
+			class MyVariant {
+			}
+		''', '''
+			package io.tapirtest.test;
+			
+			import de.bmiag.tapir.variant.Variant;
+			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+			import org.springframework.context.annotation.Bean;
+			import org.springframework.context.annotation.Configuration;
+			
+			@Configuration
+			@ConditionalOnProperty(name = "customer", havingValue = "MyVariant")
+			@SuppressWarnings("all")
+			public class MyVariant implements Variant {
+			  public final static String NAME = "MyVariant";
+			  
+			  @Bean
+			  public String variant() {
+			    return MyVariant.NAME;
+			  }
+			}
+		''')
+	}
+	
 	private def createCompilationTestHelper() {
 		createCompilationTestHelper(null, null)
 	}
