@@ -114,7 +114,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "MyVariant";
+			  public static final String NAME = "MyVariant";
 			  
 			  @Bean
 			  public String variant() {
@@ -185,7 +185,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "MyVariant";
+			  public static final String NAME = "MyVariant";
 			  
 			  @Bean
 			  public String variant() {
@@ -256,7 +256,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "MyVariant";
+			  public static final String NAME = "MyVariant";
 			  
 			  @Bean
 			  public String variant() {
@@ -318,7 +318,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "MyVariant";
+			  public static final String NAME = "MyVariant";
 			  
 			  @Bean
 			  public String variant() {
@@ -382,7 +382,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "variant", havingValue = "MyVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "MyVariant";
+			  public static final String NAME = "MyVariant";
 			  
 			  @Bean
 			  public String variant() {
@@ -443,7 +443,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "variant", havingValue = "SomeVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "SomeVariant";
+			  public static final String NAME = "SomeVariant";
 			  
 			  @Bean
 			  public String variant() {
@@ -478,7 +478,7 @@ class FeatureIDEVariantProcessorTest {
 			@ConditionalOnProperty(name = "customer", havingValue = "MyVariant")
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
-			  public final static String NAME = "MyVariant";
+			  public static final String NAME = "MyVariant";
 			  
 			  @Bean
 			  public String variant() {
