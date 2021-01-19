@@ -74,7 +74,7 @@ class FeatureGenVariantProcessorTest {
 				@ConditionalOnProperty(name = "variant", havingValue = "TapirVariant1")
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
-				  public final static String NAME = "TapirVariant1";
+				  public static final String NAME = "TapirVariant1";
 				  
 				  @Bean
 				  public String variant() {
@@ -129,7 +129,7 @@ class FeatureGenVariantProcessorTest {
 				@ConditionalOnProperty(name = "variant", havingValue = "TapirVariant1")
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
-				  public final static String NAME = "TapirVariant1";
+				  public static final String NAME = "TapirVariant1";
 				  
 				  @Bean
 				  public String variant() {
@@ -184,7 +184,7 @@ class FeatureGenVariantProcessorTest {
 				@ConditionalOnProperty(name = "variant", havingValue = "TapirVariant1")
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
-				  public final static String NAME = "TapirVariant1";
+				  public static final String NAME = "TapirVariant1";
 				  
 				  @Bean
 				  public String variant() {
@@ -239,7 +239,7 @@ class FeatureGenVariantProcessorTest {
 				@ConditionalOnProperty(name = "variant", havingValue = "SomeVariant")
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
-				  public final static String NAME = "SomeVariant";
+				  public static final String NAME = "SomeVariant";
 				  
 				  @Bean
 				  public String variant() {
@@ -294,7 +294,7 @@ class FeatureGenVariantProcessorTest {
 				@ConditionalOnProperty(name = "customer", havingValue = "TapirVariant1")
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
-				  public final static String NAME = "TapirVariant1";
+				  public static final String NAME = "TapirVariant1";
 				  
 				  @Bean
 				  public String variant() {
