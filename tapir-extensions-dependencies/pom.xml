@@ -19,7 +19,7 @@
 	<url>https://www.tapir-test.io</url>
 
 	<properties>
-		<poi.version>3.17</poi.version>
+		<poi.version>4.1.1</poi.version>
 		<mvvmfx.version>1.7.0</mvvmfx.version>
 		<junit.jupiter.version>5.2.0</junit.jupiter.version>
 		<junit.platform.version>1.2.0</junit.platform.version>
