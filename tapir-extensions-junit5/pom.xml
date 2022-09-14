@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>io.tapir-test</groupId>
 		<artifactId>tapir-extensions-parent</artifactId>
-		<version>1.1.1.Unstable-SNAPSHOT</version>
+		<version>2.0.0.Unstable-SNAPSHOT</version>
 		<relativePath>../tapir-extensions-parent</relativePath>
 	</parent>
 
@@ -110,4 +110,20 @@
 			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<configuration>
+						<ignoredNonTestScopedDependencies>
+							<ignoredNonTestScopedDependency>org.springframework:spring-beans:*</ignoredNonTestScopedDependency>
+						</ignoredNonTestScopedDependencies>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

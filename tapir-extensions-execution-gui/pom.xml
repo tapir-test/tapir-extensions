@@ -1,11 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>io.tapir-test</groupId>
 		<artifactId>tapir-extensions-parent</artifactId>
-		<version>1.1.1.Unstable-SNAPSHOT</version>
+		<version>2.0.0.Unstable-SNAPSHOT</version>
 		<relativePath>../tapir-extensions-parent</relativePath>
 	</parent>
 
@@ -18,6 +20,22 @@
 		<dependency>
 			<groupId>de.bmiag.tapir</groupId>
 			<artifactId>tapir-execution</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -40,5 +58,24 @@
 			<artifactId>mvvmfx</artifactId>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<configuration>
+						<ignoredUnusedDeclaredDependencies>
+							<ignoredUnusedDeclaredDependency>org.openjfx:*</ignoredUnusedDeclaredDependency>
+						</ignoredUnusedDeclaredDependencies>
+						<ignoredUsedUndeclaredDependencies>
+							<ignoredUnusedDeclaredDependency>org.openjfx:*</ignoredUnusedDeclaredDependency>
+						</ignoredUsedUndeclaredDependencies>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 </project>

@@ -63,8 +63,6 @@ class FeatureGenVariantProcessorTest {
 				import de.bmiag.tapir.variant.Variant;
 				import io.tapirtest.featuregen.annotation.FeatureGenVariant;
 				import io.tapirtest.featuregen.test.featuregen.variant.Variant1;
-				import io.tapirtest.test.F1Feature;
-				import io.tapirtest.test.Features;
 				import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 				import org.springframework.context.annotation.Bean;
 				import org.springframework.context.annotation.Configuration;
@@ -75,12 +73,12 @@ class FeatureGenVariantProcessorTest {
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
 				  public static final String NAME = "TapirVariant1";
-				  
+				
 				  @Bean
 				  public String variant() {
 				    return TapirVariant1.NAME;
 				  }
-				  
+				
 				  @Bean
 				  @ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "true", matchIfMissing = true)
 				  public F1Feature f1Feature() {
@@ -118,8 +116,6 @@ class FeatureGenVariantProcessorTest {
 				import de.bmiag.tapir.variant.Variant;
 				import io.tapirtest.featuregen.annotation.FeatureGenVariant;
 				import io.tapirtest.featuregen.test.featuregen.variant.Variant1;
-				import io.tapirtest.test.Features;
-				import io.tapirtest.test.MyPrefixF1Feature;
 				import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 				import org.springframework.context.annotation.Bean;
 				import org.springframework.context.annotation.Configuration;
@@ -130,12 +126,12 @@ class FeatureGenVariantProcessorTest {
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
 				  public static final String NAME = "TapirVariant1";
-				  
+				
 				  @Bean
 				  public String variant() {
 				    return TapirVariant1.NAME;
 				  }
-				  
+				
 				  @Bean
 				  @ConditionalOnProperty(name = "io.tapirtest.test.MyPrefixF1Feature.active", havingValue = "true", matchIfMissing = true)
 				  public MyPrefixF1Feature myPrefixF1Feature() {
@@ -173,8 +169,6 @@ class FeatureGenVariantProcessorTest {
 				import de.bmiag.tapir.variant.Variant;
 				import io.tapirtest.featuregen.annotation.FeatureGenVariant;
 				import io.tapirtest.featuregen.test.featuregen.variant.Variant1;
-				import io.tapirtest.test.F1MySuffix;
-				import io.tapirtest.test.Features;
 				import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 				import org.springframework.context.annotation.Bean;
 				import org.springframework.context.annotation.Configuration;
@@ -185,12 +179,12 @@ class FeatureGenVariantProcessorTest {
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
 				  public static final String NAME = "TapirVariant1";
-				  
+				
 				  @Bean
 				  public String variant() {
 				    return TapirVariant1.NAME;
 				  }
-				  
+				
 				  @Bean
 				  @ConditionalOnProperty(name = "io.tapirtest.test.F1MySuffix.active", havingValue = "true", matchIfMissing = true)
 				  public F1MySuffix f1MySuffix() {
@@ -228,8 +222,6 @@ class FeatureGenVariantProcessorTest {
 				import de.bmiag.tapir.variant.Variant;
 				import io.tapirtest.featuregen.annotation.FeatureGenVariant;
 				import io.tapirtest.featuregen.test.featuregen.variant.Variant1;
-				import io.tapirtest.test.F1Feature;
-				import io.tapirtest.test.Features;
 				import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 				import org.springframework.context.annotation.Bean;
 				import org.springframework.context.annotation.Configuration;
@@ -240,12 +232,12 @@ class FeatureGenVariantProcessorTest {
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
 				  public static final String NAME = "SomeVariant";
-				  
+				
 				  @Bean
 				  public String variant() {
 				    return TapirVariant1.NAME;
 				  }
-				  
+				
 				  @Bean
 				  @ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "true", matchIfMissing = true)
 				  public F1Feature f1Feature() {
@@ -283,8 +275,6 @@ class FeatureGenVariantProcessorTest {
 				import de.bmiag.tapir.variant.Variant;
 				import io.tapirtest.featuregen.annotation.FeatureGenVariant;
 				import io.tapirtest.featuregen.test.featuregen.variant.Variant1;
-				import io.tapirtest.test.F1Feature;
-				import io.tapirtest.test.Features;
 				import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 				import org.springframework.context.annotation.Bean;
 				import org.springframework.context.annotation.Configuration;
@@ -295,12 +285,12 @@ class FeatureGenVariantProcessorTest {
 				@SuppressWarnings("all")
 				public class TapirVariant1 implements Variant {
 				  public static final String NAME = "TapirVariant1";
-				  
+				
 				  @Bean
 				  public String variant() {
 				    return TapirVariant1.NAME;
 				  }
-				  
+				
 				  @Bean
 				  @ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "true", matchIfMissing = true)
 				  public F1Feature f1Feature() {

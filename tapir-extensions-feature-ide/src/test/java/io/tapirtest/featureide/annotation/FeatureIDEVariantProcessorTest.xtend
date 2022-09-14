@@ -105,7 +105,6 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.test.F1Feature;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
@@ -115,12 +114,12 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "MyVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
 			  }
-			  
+			
 			  @Bean
 			  @ConditionalOnProperty(name = "io.tapirtest.test.F1Feature.active", havingValue = "MyVariant", matchIfMissing = true)
 			  public F1Feature f1Feature() {
@@ -176,7 +175,6 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.test.MyPrefixF1Feature;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
@@ -186,12 +184,12 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "MyVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
 			  }
-			  
+			
 			  @Bean
 			  @ConditionalOnProperty(name = "io.tapirtest.test.MyPrefixF1Feature.active", havingValue = "MyVariant", matchIfMissing = true)
 			  public MyPrefixF1Feature myPrefixF1Feature() {
@@ -247,7 +245,6 @@ class FeatureIDEVariantProcessorTest {
 			package io.tapirtest.test;
 			
 			import de.bmiag.tapir.variant.Variant;
-			import io.tapirtest.test.F1MySuffix;
 			import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 			import org.springframework.context.annotation.Bean;
 			import org.springframework.context.annotation.Configuration;
@@ -257,12 +254,12 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "MyVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
 			  }
-			  
+			
 			  @Bean
 			  @ConditionalOnProperty(name = "io.tapirtest.test.F1MySuffix.active", havingValue = "MyVariant", matchIfMissing = true)
 			  public F1MySuffix f1MySuffix() {
@@ -319,7 +316,7 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "MyVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
@@ -383,7 +380,7 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "MyVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
@@ -444,7 +441,7 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "SomeVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
@@ -479,7 +476,7 @@ class FeatureIDEVariantProcessorTest {
 			@SuppressWarnings("all")
 			public class MyVariant implements Variant {
 			  public static final String NAME = "MyVariant";
-			  
+			
 			  @Bean
 			  public String variant() {
 			    return MyVariant.NAME;
