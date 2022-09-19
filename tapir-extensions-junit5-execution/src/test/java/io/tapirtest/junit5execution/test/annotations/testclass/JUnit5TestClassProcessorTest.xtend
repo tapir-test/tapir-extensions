@@ -10,10 +10,10 @@ import org.junit.platform.commons.annotation.Testable
 import org.springframework.beans.factory.annotation.Autowired
 
 class JUnit5TestClassProcessorTest {
-    
-    
+  
+  
     extension XtendCompilerTester compilerTester = XtendCompilerTester.newXtendCompilerTester(TestClass.classLoader)
-    
+  
     @org.junit.jupiter.api.Test
     def void testCompiler() {
         '''
@@ -21,7 +21,7 @@ class JUnit5TestClassProcessorTest {
 			
 			@«TestClass.simpleName»
 			class MyTest {
-			    
+			  
 			}
 		'''.assertCompilesTo(
         '''
@@ -41,15 +41,15 @@ class JUnit5TestClassProcessorTest {
 			  @«Extension.simpleName»
 			  @«Autowired.simpleName»
 			  private «TapirAssertions.simpleName» _«TapirAssertions.simpleName.toLowerCase»;
-			  
+			
 			  @«Extension.simpleName»
 			  @«Autowired.simpleName»
 			  private «CoreAssertions.simpleName» _«CoreAssertions.simpleName.toLowerCase»;
-			  
+			
 			  public static void main(final String[] args) {
 			    «TapirLauncher.simpleName».launch(MyTest.class);
 			  }
-			  
+			
 			  @«Test.simpleName»
 			  public void _xtendCompliance() {
 			    
@@ -58,5 +58,5 @@ class JUnit5TestClassProcessorTest {
 		''')
 
     }
-    
+  
 }

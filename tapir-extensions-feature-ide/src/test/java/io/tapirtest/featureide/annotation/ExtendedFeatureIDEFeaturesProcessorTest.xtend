@@ -50,7 +50,7 @@ class ExtendedFeatureIDEFeaturesProcessorTest {
 	def static data() {
 		#['/featureModel.xml', '/extendedFeatureModel.xml']
     }
-    
+  
     @Test
 	def featureModelShouldBeGeneratedCorrectly() {
 		val compilationTestHelper = createCompilationTestHelper(filePath)

@@ -33,7 +33,7 @@ class UnitTestProcessorTest {
 			
 			@«UnitTest.simpleName»("browser=htmlunit")
 			class MyUnitTestClass {
-			    
+			  
 			}
 		'''.assertCompilesTo(
         '''

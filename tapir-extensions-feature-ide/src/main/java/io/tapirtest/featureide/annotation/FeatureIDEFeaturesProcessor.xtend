@@ -33,7 +33,6 @@ import de.rhocas.featuregen.featureide.model.feature.ObjectFactory
 import de.rhocas.featuregen.featureide.model.feature.StructType
 import java.util.List
 import java.util.Optional
-import javax.xml.bind.JAXBContext
 import org.apache.commons.lang3.BooleanUtils
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
@@ -47,6 +46,7 @@ import org.eclipse.xtend.lib.macro.file.Path
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import com.sun.xml.bind.v2.ContextFactory
 
 /**
  * @author Nils Christian Ehmke
@@ -57,7 +57,7 @@ import org.springframework.stereotype.Component
 @Order(-10000)
 class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
-	static val jaxbContext = JAXBContext.newInstance(ObjectFactory)
+	static val jaxbContext = ContextFactory.createContext(#[ObjectFactory], #{})
 
 	val extension FeatureNameConverter = new FeatureNameConverter()
 

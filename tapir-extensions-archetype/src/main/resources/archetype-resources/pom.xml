@@ -10,7 +10,7 @@
     <parent>
         <groupId>de.bmiag.tapir</groupId>
         <artifactId>tapir-starter-module</artifactId>
-        <version>3.6.2</version>
+        <version>4.0.0</version>
         <relativePath />
     </parent>
     
@@ -32,6 +32,7 @@
         <dependency>
             <groupId>de.bmiag.tapir</groupId>
             <artifactId>tapir-starter-selenium-execution</artifactId>
+            <type>pom</type>
          </dependency>
 #end
 #if (${useJUnit5} == 'true')

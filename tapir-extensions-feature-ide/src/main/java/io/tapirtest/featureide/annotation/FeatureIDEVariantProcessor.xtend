@@ -24,6 +24,7 @@
 
 package io.tapirtest.featureide.annotation
 
+import com.sun.xml.bind.v2.ContextFactory
 import de.bmiag.tapir.annotationprocessing.annotation.AnnotationProcessor
 import de.bmiag.tapir.variant.Variant
 import de.bmiag.tapir.variant.feature.Feature
@@ -31,7 +32,6 @@ import de.rhocas.featuregen.featureide.model.configuration.Configuration
 import de.rhocas.featuregen.featureide.model.configuration.ObjectFactory
 import java.util.List
 import java.util.Optional
-import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
@@ -54,7 +54,7 @@ import org.springframework.core.annotation.Order
 @Order(-10000)
 class FeatureIDEVariantProcessor extends AbstractClassProcessor {
  
-	static val jaxbContext = JAXBContext.newInstance(ObjectFactory)
+	static val jaxbContext = ContextFactory.createContext(#[ObjectFactory], #{})
 	
 	val extension FeatureNameConverter = new FeatureNameConverter()
 	

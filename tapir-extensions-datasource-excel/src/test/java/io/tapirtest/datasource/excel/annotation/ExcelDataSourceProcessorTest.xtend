@@ -71,7 +71,6 @@ class ExcelDataSourceProcessorTest {
 			
 			import io.tapirtest.datasource.excel.AbstractExcelDataSource;
 			import io.tapirtest.datasource.excel.ExcelRecord;
-			import io.tapirtest.test.User;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -82,7 +81,7 @@ class ExcelDataSourceProcessorTest {
 			public class UserExcelDataSource extends AbstractExcelDataSource<User> {
 			  @Autowired
 			  private ConversionService conversionService;
-			  
+			
 			  @Override
 			  public User mapDataSet(final ExcelRecord excelRecord) {
 			    return User.build(it -> {
@@ -142,7 +141,6 @@ class ExcelDataSourceProcessorTest {
 			
 			import io.tapirtest.datasource.excel.AbstractExcelDataSource;
 			import io.tapirtest.datasource.excel.ExcelRecord;
-			import io.tapirtest.test.User;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -153,7 +151,7 @@ class ExcelDataSourceProcessorTest {
 			public class UserExcelDataSource extends AbstractExcelDataSource<User> {
 			  @Autowired
 			  private ConversionService conversionService;
-			  
+			
 			  @Override
 			  public User mapDataSet(final ExcelRecord excelRecord) {
 			    return User.build(it -> {
@@ -211,7 +209,6 @@ class ExcelDataSourceProcessorTest {
 			
 			import io.tapirtest.datasource.excel.AbstractExcelDataSource;
 			import io.tapirtest.datasource.excel.ExcelRecord;
-			import io.tapirtest.test.User;
 			import org.apache.poi.ss.usermodel.Cell;
 			import org.springframework.beans.factory.annotation.Autowired;
 			import org.springframework.core.convert.ConversionService;
@@ -222,7 +219,7 @@ class ExcelDataSourceProcessorTest {
 			public class UserExcelDataSource extends AbstractExcelDataSource<User> {
 			  @Autowired
 			  private ConversionService conversionService;
-			  
+			
 			  @Override
 			  public User mapDataSet(final ExcelRecord excelRecord) {
 			    return User.build(it -> {

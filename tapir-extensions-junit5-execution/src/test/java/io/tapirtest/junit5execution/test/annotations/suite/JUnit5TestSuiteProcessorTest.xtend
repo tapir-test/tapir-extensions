@@ -7,9 +7,9 @@ import org.junit.platform.commons.annotation.Testable
 import org.junit.jupiter.api.Test
 
 class JUnit5TestSuiteProcessorTest {
-    
+  
     extension XtendCompilerTester compilerTester = XtendCompilerTester.newXtendCompilerTester(TestSuite.classLoader)
-    
+  
     @Test
     def void testCompiler() {
         '''
@@ -17,7 +17,7 @@ class JUnit5TestSuiteProcessorTest {
 			
 			@«TestSuite.simpleName»(#[MyTestSuite])
 			class MyTestSuite {
-			    
+			  
 			}
 		'''.assertCompilesTo(
         '''
@@ -33,7 +33,7 @@ class JUnit5TestSuiteProcessorTest {
 			  public static void main(final String[] args) {
 			    «TapirLauncher.simpleName».launch(MyTestSuite.class);
 			  }
-			  
+			
 			  @«io.tapirtest.junit5execution.annotations.Test.simpleName»
 			  public void _xtendCompliance() {
 			    
@@ -42,5 +42,5 @@ class JUnit5TestSuiteProcessorTest {
 		''')
 
     }
-    
+  
 }
